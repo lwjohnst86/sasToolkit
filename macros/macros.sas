@@ -101,7 +101,16 @@
     run;
     data &outds;
         set &outds;
-        format P: pvalue8.5 _numeric_ 5.2;
+        %for(i, in=(&rowvar), do=%nrstr(
+            length t&i. $ 45;
+	    &i. = round(&i, 0.01);
+            if &i. = 1 then;
+            else if P&i. < 0.001 then t&i = &i.||' ***'; 
+            else if P&i. < 0.01 then t&i = &i.||' **';
+            else if P&i. < 0.05 then t&i = &i.||' *';
+            else t&i. = &i.;
+            drop &i. P&i.;
+        ));
     run;
     %mend correlation;
 
