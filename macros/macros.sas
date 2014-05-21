@@ -152,6 +152,35 @@
 
 
 * ANOVA with Tukey *;
+
+
+/**
+ *  Runs an ANOVA and outputs the results into a nice
+ *  format that can easily be pushed to LaTeX/pgfplotstable
+ *  to be generated into tables in reports or presentations.
+ *  There are loops in this macro, such that the variables on
+ *  the side of the output ("category") are looped by the header
+ *  variable (top of the output, "numerical").  For example,
+ *  I want an output to eventually use as a table, with BMI and waist
+ *  as the columns and sex and ethnicity on the side as rows.  Sex
+ *  and ethnicity get looped by BMI first, then sex and ethnicity get
+ *  looped by waist next.  This way, BMI will be the first column of 
+ *  results and waist will be the next column of results.  In addition,
+ *  the output are formatted in a way to not need to manipulate the 
+ *  results in any way to fit as a table in a manuscript or presentations.
+ *  For instance, means and standard deviations are output as a single
+ *  column (as "mean (SD)"), when before they were two columns.
+ *  
+ *  @param	category	Discrete variable (e.g. Sex) on the side of the table.
+ *  @param	numerical	Continuous variable (e.g. BMI) at the top of table.
+ *  @param	dsn		Dataset to be used (&ds variable is default).
+ *  @param	adjust		Adjustment made for post-hoc test (Tukey is default).
+ *  @param	outds		Main output that is the purpose for this macro (_NULL_ is default).
+ *  @param	outpdiff	Name of output for the between group p-values (_NULL_ is default).
+ *  @param	dcovar		If ANCOVA is needed, this is the discrete covariate(s) to adjust for.
+ *  @param	ccovar		If ANCOVA is needed, this is the continuous covariate(s) to adjust for.
+ *  @return	The main output are proc prints of the output datasets outds and outpdiff, though these datasets are by default not output into the SAS workspace.
+ */
 %macro anova(category=, numerical=, dsn=&ds,
     adjust=tukey, outds=_NULL_, outpdiff=_NULL_,
     dcovar=, ccovar=);
@@ -179,8 +208,6 @@
             run;
             ods listing;
 
-            proc print data=diff&count;
-
             data anova&count;
                 length Variable $ 45.;
                 Variable = "&categ";
@@ -198,16 +225,15 @@
                 else Variable = "";
                 rename &categ = Categories;
             run;
-
             %end;
 
         data anovaCombined&numvarCount;
             set anova&startNum.-anova&count;
             Header = "&numvar";
             drop _control_ NObs;
-
         run;
         %end;
+
     data &outds;
         retain ;
         %for(i, in=1:%sysfunc(countw(&numerical)), do=%nrstr(
