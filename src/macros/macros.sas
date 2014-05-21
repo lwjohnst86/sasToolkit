@@ -151,9 +151,6 @@
     %mend discr_means;
 
 
-* ANOVA with Tukey *;
-
-
 /**
  *  Runs an ANOVA and outputs the results into a nice
  *  format that can easily be pushed to LaTeX/pgfplotstable
