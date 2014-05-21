@@ -61,7 +61,7 @@
 
 
 ************************************************************;
-/** (QUASI) DIVARIATE ANALYSIS MACRO SECTION **/ 
+/** (QUASI) BIVARIATE ANALYSIS MACRO SECTION **/ 
 /* means --- Computing means and concatenating the output
     into a dataset */
 %macro means(vars=, by=, class=, outds=, dsn=&ds);
@@ -69,13 +69,14 @@
                     stddev min max median Q1 Q3 maxdec=3;
         var &vars;
         class &class;
-        by &by;
+        by &by; * Untested in ods output for this macro;
         ods output summary=&outds;
     run;
 
     data &outds (drop=Mean StdDev Median Q1 Q3);
         set &outds;
-        * Create two new variables which concat. together other variables;
+        * Create two new variables which concat. ;
+        * together other variables;
         MeanSD = round(Mean, 0.01)||' ('||
             strip(round(StdDev, 0.01))||')';
         MedianIQR = round(Median, 0.01)||' ('||
@@ -91,14 +92,17 @@
     outds=, coeff_test=Spearman, dsn=&ds);
     %if &covar = %then %let partial = ;
     %else %let partial = Partial;
+    ods listing close;
     proc corr data=&dsn &coeff_test;
         * indicate coefficient test to use (default;
         * is Spearman rank correlation);
         partial &covar; * variables to adjust for;
         var &rowvar; * variables in the header row;
-        with &colvar; * variables on the side of the output, the column;
+        with &colvar; * variables on the side of the output, ;
+            * the column;
         ods output &partial.&coeff_test.Corr = &outds;
     run;
+    ods listing;
     data &outds;
         set &outds;
         %for(i, in=(&rowvar), do=%nrstr(
@@ -146,32 +150,81 @@
         %end;
     %mend discr_means;
 
-/* Update. Macro for ANCOVA Tukey */
-%macro ancova_x / parmbuff;
-    %local i;
-    %let i = 1;
-    %let x = %scan(&syspbuff, &i);
-    %do %while(&x ne);
-        proc glm data=&ds;
-            class &x &dcovar; * Need to define before hand;
-            model &y = &x &ccovar &dcovar / ss3;
-            lsmeans &x / adjust=tukey pdiff;
-        run;
-        %let i = %eval(&i + 1);
-        %let x = %scan(&syspbuff, &i);
-        %end;
-    %mend ancova_x;
 
-%macro ancova_tukey / parmbuff;
-    %local j;
-    %let j = 1;
-    %let y = %scan(&syspbuff, &j);
-    %do %while(&y ne);
-        %ancova_x(&xvar);
-        %let j = %eval(&j + 1);
-        %let y = %scan(&syspbuff, &j);
+* ANOVA with Tukey *;
+%macro anova(category=, numerical=, dsn=&ds,
+    adjust=tukey, outds=_NULL_, outpdiff=_NULL_,
+    dcovar=, ccovar=);
+
+    %local i j count numvarCount;
+    %let count = 0;
+    %let numvarCount = 0;
+
+    %do i = 1 %to %sysfunc(countw(&numerical));
+        %let numvar = %scan(&numerical, &i);
+        %let startNum = %eval(&count + 1);
+        %let numvarCount = %eval(&numvarCount + 1);
+        %do j = 1 %to %sysfunc(countw(&category));
+            %let categ = %scan(&category, &j);
+            %let count = %eval(&count + 1);
+
+            ods listing close;
+            %means(vars=&numvar, class=&categ, outds=mean&count);
+
+            proc glm data=&dsn;
+                class &categ &dcovar;
+                model &numvar = &categ &ccovar / ss3;
+                lsmeans &categ / adjust=&adjust pdiff;
+                ods output Diff=diff&count ModelANOVA=model&count;
+            run;
+            ods listing;
+
+            proc print data=diff&count;
+
+            data anova&count;
+                length Variable $ 45.;
+                Variable = "&categ";
+                set mean&count (drop=Variable);
+                if _n_ = 1 then do;
+                    set model&count (keep=ProbF);
+                    end;
+
+            data anova&count;
+                set anova&count;
+                by ProbF;
+                if first.ProbF then ProbF = ProbF;
+                else ProbF = .;
+                if first.ProbF then Variable = Variable;
+                else Variable = "";
+                rename &categ = Categories;
+            run;
+
+            %end;
+
+        data anovaCombined&numvarCount;
+            set anova&startNum.-anova&count;
+            Header = "&numvar";
+            drop _control_ NObs;
+
+        run;
         %end;
-    %mend ancova_tukey;
+    data &outds;
+        retain ;
+        %for(i, in=1:%sysfunc(countw(&numerical)), do=%nrstr(
+            %let head = %scan(&numerical, &i);
+        set anovaCombined&i. (where=(Header="&head")
+            rename=(N=N_&head Min=Min_&head Max=Max_&head
+            MeanSD=MeanSD_&head MedianIQR=MedianIGR_&head
+            ProbF=ProbF_&head)
+            );
+        ));
+        drop Header;
+    proc print;
+
+    data &outpdiff;
+        set diff1-diff&count;
+    proc print;
+    %mend anova;
 
 
 **********************************************************;
@@ -317,7 +370,11 @@
 * y and x given in a combinatory way (e.g. there are 2 *;
 * y and 2 x, the analysis will run y1 with x1, then y1 with *;
 * x2, then y2 with x2, etc.) *;
-%macro beta_glm(y=&dep,x=&indep,dcovar=,ccovar=,dsn=&ds,outall=_NULL_,outcore=_NULL_,outObs=_NULL_,outRSq=_NULL_);
+%macro beta_glm(y=&dep, x=&indep,
+    dcovar=, ccovar=,
+    dsn=&ds, outall=_NULL_,
+    outcore=_NULL_, outObs=_NULL_,
+    outRSq=_NULL_);
     %local i j count;
     %let count = 0;
     %do i = 1 %to %sysfunc(countw(&y));
