@@ -214,13 +214,15 @@
                     end;
 
             data anova&count;
+                length Categories $ 45.;
                 set anova&count;
                 by ProbF;
                 if first.ProbF then ProbF = ProbF;
                 else ProbF = .;
                 if first.ProbF then Variable = Variable;
                 else Variable = "";
-                rename &categ = Categories;
+                Categories = &categ;
+                drop &categ;
             run;
             %end;
 
