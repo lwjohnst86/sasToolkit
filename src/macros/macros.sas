@@ -99,8 +99,8 @@
 
 */
 %macro freq(vars=, dsn=&ds, outds=_NULL_);
-    proc freq data=&ds;
-        tables &MetS_vars &d_IR Ethnicity Sex / list;
+    proc freq data=&dsn;
+        tables &vars / list;
         ods output OneWayFreqs = &outds;
     run;
     %mend freq;
