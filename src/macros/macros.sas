@@ -152,32 +152,33 @@
 
 
 /**
- *  Runs an ANOVA and outputs the results into a nice
- *  format that can easily be pushed to LaTeX/pgfplotstable
- *  to be generated into tables in reports or presentations.
- *  There are loops in this macro, such that the variables on
- *  the side of the output ("category") are looped by the header
- *  variable (top of the output, "numerical").  For example,
- *  I want an output to eventually use as a table, with BMI and waist
- *  as the columns and sex and ethnicity on the side as rows.  Sex
- *  and ethnicity get looped by BMI first, then sex and ethnicity get
- *  looped by waist next.  This way, BMI will be the first column of 
- *  results and waist will be the next column of results.  In addition,
- *  the output are formatted in a way to not need to manipulate the 
- *  results in any way to fit as a table in a manuscript or presentations.
- *  For instance, means and standard deviations are output as a single
- *  column (as "mean (SD)"), when before they were two columns.
- *  
- *  @param	category	Discrete variable (e.g. Sex) on the side of the table.
- *  @param	numerical	Continuous variable (e.g. BMI) at the top of table.
- *  @param	dsn		Dataset to be used (&ds variable is default).
- *  @param	adjust		Adjustment made for post-hoc test (Tukey is default).
- *  @param	outds		Main output that is the purpose for this macro (_NULL_ is default).
- *  @param	outpdiff	Name of output for the between group p-values (_NULL_ is default).
- *  @param	dcovar		If ANCOVA is needed, this is the discrete covariate(s) to adjust for.
- *  @param	ccovar		If ANCOVA is needed, this is the continuous covariate(s) to adjust for.
- *  @return	The main output are proc prints of the output datasets outds and outpdiff, though these datasets are by default not output into the SAS workspace.
- */
+
+   Runs an ANOVA and outputs the results into a nice format that can
+    easily be pushed to LaTeX/pgfplotstable to be generated into tables in
+    reports or presentations. There are loops in this macro, such that the
+    variables on the side of the output ("category") are looped by the
+    header variable (top of the output, "numerical").  For example, I want
+    an output to eventually use as a table, with BMI and waist as the
+    columns and sex and ethnicity on the side as rows.  Sex and ethnicity
+    get looped by BMI first, then sex and ethnicity get looped by waist
+    next.  This way, BMI will be the first column of results and waist
+    will be the next column of results.  In addition, the output are
+    formatted in a way to not need to manipulate the results in any way to
+    fit as a table in a manuscript or presentations. For instance, means
+    and standard deviations are output as a single column (as "mean
+    (SD)"), when before they were two columns.
+    
+   @param	category	Discrete variable (e.g. Sex) on the side of the table.
+   @param	numerical	Continuous variable (e.g. BMI) at the top of table.
+   @param	dsn		Dataset to be used (&ds variable is default).
+   @param	adjust		Adjustment made for post-hoc test.
+   @param	outds		Main output that is the purpose for this macro.
+   @param	outpdiff	Name of output for the between group p-values.
+   @param	dcovar		If ANCOVA is needed, this is the discrete covariate(s) to adjust for.
+   @param	ccovar		If ANCOVA is needed, this is the continuous covariate(s) to adjust for.
+   @return	The main output are proc prints of the output datasets outds and outpdiff, though these datasets are by default not output into the SAS workspace.
+
+    */
 %macro anova(category=, numerical=, dsn=&ds,
     adjust=tukey, outds=_NULL_, outpdiff=_NULL_,
     dcovar=, ccovar=);
@@ -388,13 +389,15 @@
     %mend compareROC;
 
 
-************************************************************;
-/** LINEAR REGRESSION MACROS SECTION **/
-/* beta_glm --- determine beta coeff from glm (linear reg) */ 
-* This macro will run a linear regression on each of the *;
-* y and x given in a combinatory way (e.g. there are 2 *;
-* y and 2 x, the analysis will run y1 with x1, then y1 with *;
-* x2, then y2 with x2, etc.) *;
+
+/**
+    LINEAR REGRESSION MACROS
+ beta_glm --- determine beta coeff from glm (linear reg) 
+* This macro will run a linear regression on each of the 
+* y and x given in a combinatory way (e.g. there are 2 
+* y and 2 x, the analysis will run y1 with x1, then y1 with 
+* x2, then y2 with x2, etc.) 
+*/
 %macro beta_glm(y=&dep, x=&indep,
     dcovar=, ccovar=,
     dsn=&ds, outall=_NULL_,
