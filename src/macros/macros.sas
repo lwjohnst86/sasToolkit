@@ -141,17 +141,23 @@
     %mend correlation;
 
 /* Macro for PCA --- update this macro */
-%macro pca (riskfact=, n=, opt_rotate=none, varname=, varlabel=, byvar=);
-    proc factor data=&ds
+%macro pca (vars=, dsn= &ds, n=, opt_rotate=none, pcname=, varlabel=,
+    outeig= _NULL_, outpattern= _NULL_, outrotpat= _NULL_,
+    outvariance= _NULL_);
+    proc factor data=&dsn
         simple method=prin priors=one nfact=&n
-        rotate=&opt_rotate out=&ds;
-        var &riskfact;
-        by VN &byvar;
+        rotate=&opt_rotate out=&dsn;
+        var &vars;
+        ods output Eigenvalues = &outeig FactorPattern = &outpattern
+            VarExplain = &outvariance;
+        %if &opt_rotate = varimax %then %do;
+            ods output OrthRotFactPat = &outrotpat;
+            %end;
     run;
     %if &n = 1 %then %do;
-        data &ds;
-            set &ds;
-            rename Factor1 = &varname;
+        data &dsn;
+            set &dsn;
+            rename Factor1 = &pcname;
             label Factor1 = "&varlabel";
         run;
         %end;
@@ -466,14 +472,15 @@
     * @param	outcore	Dataset with only the betas, SE for the `x` variables
     * @param	outObs		Dataset with the sample size used in each model
     * @param	outRSq		Dataset with the $R^2$ for the model
+    * @param	outResid	Dataset that contains the raw and studentized residuals
     * @return	The results of `outcore`, `outObs`, and `outRSq` are printed, but by default no datasets are output, unless specified.
 
     */
-%macro beta_glm(y=&dep, x=&indep,
-    dcovar=, ccovar=,
-    dsn=&ds, outall=_NULL_,
-    outcore=_NULL_, outObs=_NULL_,
-    outRSq=_NULL_);
+%macro beta_glm(y  =  &dep, x = &indep,
+    dcovar = , ccovar = ,
+    dsn = &ds, outall = _NULL_,
+    outcore = _NULL_, outObs = _NULL_,
+    outRSq = _NULL_, outResid = _NULL_);
     %local i j count;
     %let count = 0;
     %do i = 1 %to %sysfunc(countw(&y));
@@ -490,9 +497,9 @@
             proc glm data=&dsn;
                 class &dcovar;
                 model &yvar = &xvar &dcovar &ccovar / solution;
-                ods output ParameterEstimates=beta&count
-                    FitStatistics=fit&count NObs=obs&count;
-                * Include an ods output dataset for residuals;
+                ods output ParameterEstimates = beta&count
+                    FitStatistics = fit&count NObs = obs&count;
+                output out = &outResid student = rstud_&yvar r = r_&yvar;
             run;
             ods listing;
             
