@@ -64,7 +64,23 @@
 /** (QUASI) BIVARIATE ANALYSIS MACRO SECTION **/ 
 /* means --- Computing means and concatenating the output
     into a dataset */
+
+/**
+
+    Macro to generate univariate (or divariate if a class variable is
+    specified) means of continuous variables.  It compresses the mean + SD
+    and the median + IQR into one column/variable.
+
+    * @param	vars	Continuous variables to determine the mean
+    * @param	by	I haven't tested this option yet.  It may not work
+    * @param	class	Can do the means of a variable by a discrete variable
+    * @param	outds	Dataset to output results to
+    * @param	dsn	The name of the input dataset to use
+    * @return	Returns a proc print of the results by default, but outputs a dataset if specified.
+    */
 %macro means(vars=, by=, class=, outds=_NULL_, dsn=&ds);
+
+    ods listing close;
     proc means data=&dsn stackods n mean 
                     stddev min max median Q1 Q3 maxdec=3;
         var &vars;
@@ -72,6 +88,7 @@
         by &by; * Untested in ods output for this macro;
         ods output summary=&outds;
     run;
+    ods listing;
 
     data &outds (drop=Mean StdDev Median Q1 Q3);
         set &outds;
@@ -97,12 +114,23 @@
     * @param	outds	Results dataset to output
     * @return	Only prints the results by default, but does output a dataset if specified
 
-*/
+    */
 %macro freq(vars=, dsn=&ds, outds=_NULL_);
+
+    ods listing close;
     proc freq data=&dsn;
         tables &vars / list;
         ods output OneWayFreqs = &outds;
     run;
+    ods listing;
+    
+    data &outds;
+        set &outds;
+        nPerc = trim(Frequency)||' ('||
+            strip(round(Percent, 0.1))||')';
+    proc print;
+    run;
+
     %mend freq;
 
 
@@ -480,7 +508,7 @@
     dcovar = , ccovar = ,
     dsn = &ds, outall = _NULL_,
     outcore = _NULL_, outObs = _NULL_,
-    outRSq = _NULL_, outResid = _NULL_);
+    outRSq = _NULL_, outResid = tmp);
     %local i j count;
     %let count = 0;
     %do i = 1 %to %sysfunc(countw(&y));
@@ -545,6 +573,8 @@
     data &outRSq;
         set fit1-fit&count;
     proc print;
+    run;
+
     %mend beta_glm;
 
 
