@@ -82,7 +82,7 @@
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro3">beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ )</a></b></code>
+					<code><b><a href="#macro3">beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs linear regression, sending the results into output datasets that can be used in LaTeX as tables.
 				</td>
 			</tr>
@@ -139,7 +139,7 @@
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro11">means ( vars= , by= , class= , outds=_NULL_ , dsn=&ds )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Macro to generate univariate (or divariate if a class variable is specified) means of continuous variables.
 				</td>
 			</tr>
 					
@@ -166,7 +166,7 @@
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro15">pca ( riskfact= , n= , opt_rotate=none , varname= , varlabel= , byvar= )</a></b></code>
+					<code><b><a href="#macro15">pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
@@ -270,7 +270,7 @@
 		<a name="macro3"></a>
 
 		<h3>beta_glm</h3>
-		<pre>%macro <b>beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ )</b>;</pre>
+		<pre>%macro <b>beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp )</b>;</pre>
 		<dl>
 			<dd>Runs linear regression, sending the results into output datasets that can be used in LaTeX as tables.  In this macro, there are two loops going on.  This allows any number of exposures and outcomes to be specified in the macro, running regressions on each outcome with each exposure.  This is allows the code to be cleaner, leaner, more efficient, and more maintainable. <p> The loops work in a combinatoric fashion, starting with the `y`, or dependent variable, then going through each of the `x` variables.  For instance, I want to run a regression on BMI and dietary fat with insulin resistance and blood lipids.  The `y` variable would have insulin resistance and blood lipids, while the `x` would have BMI and dietary fat.  The macro would run insulin resistance with BMI, then insulin resistance with dietary fat, then blood lipids and BMI and so on. <p> All output datasets are optional as each of the dataset variables are set to _NULL_.  The results datasets that can be output are the beta and standard error (plus p-value), the $R^2$, and the sample size. <p> Each variable, except for the dataset variables, can have multiple variables included, each separated by a space, not a comma. <p> As a reminder (for using the below variables), the linear regression equation is: y = B_0 + B_1 x_1 + ... + B_n x_n + e</dd>
 			<dd>
@@ -301,6 +301,9 @@
 															</dd>
 													<dd>outRSq - Dataset with the $R^2$ for the model
 																 (default value: _NULL_)
+															</dd>
+													<dd>outResid - Dataset that contains the raw and studentized residuals
+																 (default value: tmp)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
@@ -492,24 +495,26 @@
 		<h3>means</h3>
 		<pre>%macro <b>means ( vars= , by= , class= , outds=_NULL_ , dsn=&ds )</b>;</pre>
 		<dl>
-			<dd></dd>
+			<dd>Macro to generate univariate (or divariate if a class variable is specified) means of continuous variables.  It compresses the mean + SD and the median + IQR into one column/variable.</dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>vars - 
+													<dd>vars - Continuous variables to determine the mean
 															</dd>
-													<dd>by - 
+													<dd>by - I haven't tested this option yet.  It may not work
 															</dd>
-													<dd>class - 
+													<dd>class - Can do the means of a variable by a discrete variable
 															</dd>
-													<dd>outds - 
+													<dd>outds - Dataset to output results to
 																 (default value: _NULL_)
 															</dd>
-													<dd>dsn - 
+													<dd>dsn - The name of the input dataset to use
 																 (default value: &ds)
 															</dd>
 																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Returns a proc print of the results by default, but outputs a dataset if specified.</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -601,25 +606,38 @@
 		<a name="macro15"></a>
 
 		<h3>pca</h3>
-		<pre>%macro <b>pca ( riskfact= , n= , opt_rotate=none , varname= , varlabel= , byvar= )</b>;</pre>
+		<pre>%macro <b>pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</b>;</pre>
 		<dl>
 			<dd></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>riskfact - 
+													<dd>vars - 
+															</dd>
+													<dd>dsn - 
+																 (default value: &ds)
 															</dd>
 													<dd>n - 
 															</dd>
 													<dd>opt_rotate - 
 																 (default value: none)
 															</dd>
-													<dd>varname - 
+													<dd>pcname - 
 															</dd>
 													<dd>varlabel - 
 															</dd>
-													<dd>byvar - 
+													<dd>outeig - 
+																 (default value: _NULL_)
+															</dd>
+													<dd>outpattern - 
+																 (default value: _NULL_)
+															</dd>
+													<dd>outrotpat - 
+																 (default value: _NULL_)
+															</dd>
+													<dd>outvariance - 
+																 (default value: _NULL_)
 															</dd>
 																
 									</dl>
@@ -674,7 +692,7 @@
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on May 23, 2014</td>
+		<td align="left" width="50%">Last updated on June 01, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">
