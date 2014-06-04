@@ -49,9 +49,18 @@
 <h2>root/macros</h2>
 <h1>macros</h1>
 
+Contains macros that are used to make statistical analysis more or less easier, more manageable, and the code in the main script to be cleaner.
 
 
-
+	<dl>
+	
+				<dt><br><b>Author:</b></dt>
+	
+							<dd>Luke Johnston</dd>
+						
+					<dt><br><b>Created:</b></dt>
+			<dd>Early 2013</dd>
+			</dl>
 
 <br>
 
@@ -82,7 +91,7 @@
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro3">beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp )</a></b></code>
+					<code><b><a href="#macro3">beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs linear regression, sending the results into output datasets that can be used in LaTeX as tables.
 				</td>
 			</tr>
@@ -160,7 +169,7 @@
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro14">output_data ( dataset= , dir=../output )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Macro to output a dataset to a csv file in a specified directory (i.
 				</td>
 			</tr>
 					
@@ -270,7 +279,7 @@
 		<a name="macro3"></a>
 
 		<h3>beta_glm</h3>
-		<pre>%macro <b>beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp )</b>;</pre>
+		<pre>%macro <b>beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 )</b>;</pre>
 		<dl>
 			<dd>Runs linear regression, sending the results into output datasets that can be used in LaTeX as tables.  In this macro, there are two loops going on.  This allows any number of exposures and outcomes to be specified in the macro, running regressions on each outcome with each exposure.  This is allows the code to be cleaner, leaner, more efficient, and more maintainable. <p> The loops work in a combinatoric fashion, starting with the `y`, or dependent variable, then going through each of the `x` variables.  For instance, I want to run a regression on BMI and dietary fat with insulin resistance and blood lipids.  The `y` variable would have insulin resistance and blood lipids, while the `x` would have BMI and dietary fat.  The macro would run insulin resistance with BMI, then insulin resistance with dietary fat, then blood lipids and BMI and so on. <p> All output datasets are optional as each of the dataset variables are set to _NULL_.  The results datasets that can be output are the beta and standard error (plus p-value), the $R^2$, and the sample size. <p> Each variable, except for the dataset variables, can have multiple variables included, each separated by a space, not a comma. <p> As a reminder (for using the below variables), the linear regression equation is: y = B_0 + B_1 x_1 + ... + B_n x_n + e</dd>
 			<dd>
@@ -304,6 +313,9 @@
 															</dd>
 													<dd>outResid - Dataset that contains the raw and studentized residuals
 																 (default value: tmp)
+															</dd>
+													<dd>sigDigits - 
+																 (default value: 0.01)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
@@ -586,17 +598,19 @@
 		<h3>output_data</h3>
 		<pre>%macro <b>output_data ( dataset= , dir=../output )</b>;</pre>
 		<dl>
-			<dd></dd>
+			<dd>Macro to output a dataset to a csv file in a specified directory (i.e. a folder).  It also suppresses double quotes. <p> <b>Examples:</b> <p> proc means;<br> ods output summary=means;<br> run;<br> <p> %output_data(dataset=means, dir=./output);<br></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dataset - 
+													<dd>dataset - Results output dataset to print to csv
 															</dd>
-													<dd>dir - 
+													<dd>dir - Directory where the results will be output to
 																 (default value: ../output)
 															</dd>
 																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Outputs a csv file to a specified directory</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -692,7 +706,7 @@
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on June 01, 2014</td>
+		<td align="left" width="50%">Last updated on June 03, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">
