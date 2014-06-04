@@ -1,10 +1,16 @@
-*****************************************************;
-/** This file was created in early 2013.  It has been updated in
-    2014-01-21.  It contains macros to make running analyses easier,
-    simpler, and more efficiently. **/
+/*!
 
-********************************************************;
-/** IMPORTING DATA INTO SAS **/
+    Contains macros that are used to make statistical analysis more or
+    less easier, more manageable, and the code in the main script to be
+    cleaner.
+
+    * @author Luke Johnston
+    * @created Early 2013
+
+    */
+
+/****************************************************************/
+
 /* csvgz_import --- Import a compress csv file into sas */
 %macro csvgz_import(dataset=, outds=&dataset, dir=../dataset);
     * Uncompress the file ;
@@ -41,8 +47,27 @@
         %end;
     %mend contents;
 
-/* output_data --- Macro that outputs data to csv file and
-   suppresses double quotes */
+/**
+
+    Macro to output a dataset to a csv file in a specified directory
+    (i.e. a folder).  It also suppresses double quotes.
+
+    <p>
+    <b>Examples:</b>
+    <p>
+    proc means;<br>
+    ods output summary=means;<br>
+    run;<br>
+    <p>
+    %output_data(dataset=means, dir=./output);<br>
+
+    * @param	dataset	Results output dataset to print to csv
+    * @param	dir		Directory where the results will be output to
+    * @return	Outputs a csv file to a specified directory
+    * @example
+
+
+    */
 %macro output_data(dataset= , dir=../output);
     ods csv file=temp;
     ods listing close;
@@ -60,7 +85,6 @@
     %mend output_data;
 
 
-************************************************************;
 /** (QUASI) BIVARIATE ANALYSIS MACRO SECTION **/ 
 /* means --- Computing means and concatenating the output
     into a dataset */
@@ -77,6 +101,7 @@
     * @param	outds	Dataset to output results to
     * @param	dsn	The name of the input dataset to use
     * @return	Returns a proc print of the results by default, but outputs a dataset if specified.
+
     */
 %macro means(vars=, by=, class=, outds=_NULL_, dsn=&ds);
 
@@ -124,10 +149,21 @@
     run;
     ods listing;
     
-    data &outds;
+    proc sort data=&outds;
+        by Table;
+        
+    data &outds (rename=(Table = Variable));
+        length Categories $ 45.;
         set &outds;
+        by Table;
         nPerc = trim(Frequency)||' ('||
             strip(round(Percent, 0.1))||')';
+        %for(i, in=(&vars), do=%nrstr(
+            if &i. ne '' then Categories = &i.;
+        ));
+        if first.Table then Table = Table;
+        else Table = '';
+        keep Table Categories nPerc CumFrequency;
     proc print;
     run;
 
@@ -508,7 +544,7 @@
     dcovar = , ccovar = ,
     dsn = &ds, outall = _NULL_,
     outcore = _NULL_, outObs = _NULL_,
-    outRSq = _NULL_, outResid = tmp);
+    outRSq = _NULL_, outResid = tmp, sigDigits = 0.01);
     %local i j count;
     %let count = 0;
     %do i = 1 %to %sysfunc(countw(&y));
@@ -534,14 +570,14 @@
             data beta&count (drop=Biased tValue);
                 length Independent $ 45. Dependent $ 45. betaSE $ 32.;
                 set beta&count;
-                format Probt pvalue8.4;
+                format Probt pvalue8.3;
                 * Include?: format Estimate 8.3 StdErr 8.3;
                 Independent = "&xvar";
                 Dependent = "&yvar";
-                betaSE = trim(round(Estimate, 0.001))||' ('||
-                    strip(round(StdErr, 0.001))||')';
+                betaSE = trim(round(Estimate, &sigDigits.))||' ('||
+                    strip(round(StdErr, &sigDigits.))||')';
                 betaSE = right(betaSE);
-                if Probt > 0.01 then Probt = round(Probt, 0.01);
+                *include this?: if Probt > 0.01 then Probt = round(Probt, 0.01);
                 rename Probt = p;
                 
             data betaCore&count (drop=Parameter);
@@ -553,7 +589,7 @@
                 length Independent $ 45. Dependent $ 45.;
                 set fit&count;
                 Independent = "&xvar";
-                RSquare = round(RSquare, 0.001);
+                RSquare = round(RSquare, &sigDigits.);
                 
             data obs&count;
                 length Independent $ 45. Dependent $ 45.;
@@ -562,6 +598,7 @@
                 Dependent = "&yvar";
                 %end;
             %end;
+
     data &outall;
         set beta1-beta&count;
     data &outcore;
