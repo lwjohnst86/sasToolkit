@@ -55,11 +55,13 @@
     <p>
     <b>Examples:</b>
     <p>
+    <code>
     proc means;<br>
     ods output summary=means;<br>
     run;<br>
     <p>
     %output_data(dataset=means, dir=./output);<br>
+    </code>
 
     * @param	dataset	Results output dataset to print to csv
     * @param	dir		Directory where the results will be output to
@@ -531,6 +533,7 @@
     * @param	x		Independent, or exposure, variable
     * @param	dcovar		Discrete covariates included in the model (i.e. Sex)
     * @param	ccovar		Continuous covariates in the model (i.e. Age)
+    * @param	interactvar	The <b>discrete</b> interaction term (i.e. Sex)
     * @param	dsn		Name of the dataset to analyze
     * @param	outall		Dataset with all the betas, SE of each variable in the model
     * @param	outcore	Dataset with only the betas, SE for the `x` variables
@@ -541,7 +544,7 @@
 
     */
 %macro beta_glm(y  =  &dep, x = &indep,
-    dcovar = , ccovar = ,
+    dcovar = , ccovar = , interactvar = ,
     dsn = &ds, outall = _NULL_,
     outcore = _NULL_, outObs = _NULL_,
     outRSq = _NULL_, outResid = tmp, sigDigits = 0.01);
@@ -559,8 +562,15 @@
             ods listing close;
                 * listing close prevents output to the lst file;
             proc glm data=&dsn;
-                class &dcovar;
-                model &yvar = &xvar &dcovar &ccovar / solution;
+                %if %length(&interactvar) ne 0 %then %do;
+                    class &dcovar &interactvar;
+                    model &yvar = &xvar &dcovar &ccovar
+                        &xvar * &interactvar / solution;
+                    %end;
+                %else %do;
+                    class &dcovar;
+                    model &yvar = &xvar &dcovar &ccovar / solution;
+                    %end;
                 ods output ParameterEstimates = beta&count
                     FitStatistics = fit&count NObs = obs&count;
                 output out = &outResid student = rstud_&yvar r = r_&yvar;
