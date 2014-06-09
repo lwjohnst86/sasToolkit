@@ -91,7 +91,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro3">beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 )</a></b></code>
+					<code><b><a href="#macro3">beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , interactvar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs linear regression, sending the results into output datasets that can be used in LaTeX as tables.
 				</td>
 			</tr>
@@ -279,7 +279,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<a name="macro3"></a>
 
 		<h3>beta_glm</h3>
-		<pre>%macro <b>beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 )</b>;</pre>
+		<pre>%macro <b>beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , interactvar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 )</b>;</pre>
 		<dl>
 			<dd>Runs linear regression, sending the results into output datasets that can be used in LaTeX as tables.  In this macro, there are two loops going on.  This allows any number of exposures and outcomes to be specified in the macro, running regressions on each outcome with each exposure.  This is allows the code to be cleaner, leaner, more efficient, and more maintainable. <p> The loops work in a combinatoric fashion, starting with the `y`, or dependent variable, then going through each of the `x` variables.  For instance, I want to run a regression on BMI and dietary fat with insulin resistance and blood lipids.  The `y` variable would have insulin resistance and blood lipids, while the `x` would have BMI and dietary fat.  The macro would run insulin resistance with BMI, then insulin resistance with dietary fat, then blood lipids and BMI and so on. <p> All output datasets are optional as each of the dataset variables are set to _NULL_.  The results datasets that can be output are the beta and standard error (plus p-value), the $R^2$, and the sample size. <p> Each variable, except for the dataset variables, can have multiple variables included, each separated by a space, not a comma. <p> As a reminder (for using the below variables), the linear regression equation is: y = B_0 + B_1 x_1 + ... + B_n x_n + e</dd>
 			<dd>
@@ -295,6 +295,8 @@ Contains macros that are used to make statistical analysis more or less easier, 
 													<dd>dcovar - Discrete covariates included in the model (i.e. Sex)
 															</dd>
 													<dd>ccovar - Continuous covariates in the model (i.e. Age)
+															</dd>
+													<dd>interactvar - The <b>discrete</b> interaction term (i.e. Sex)
 															</dd>
 													<dd>dsn - Name of the dataset to analyze
 																 (default value: &ds)
@@ -598,7 +600,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<h3>output_data</h3>
 		<pre>%macro <b>output_data ( dataset= , dir=../output )</b>;</pre>
 		<dl>
-			<dd>Macro to output a dataset to a csv file in a specified directory (i.e. a folder).  It also suppresses double quotes. <p> <b>Examples:</b> <p> proc means;<br> ods output summary=means;<br> run;<br> <p> %output_data(dataset=means, dir=./output);<br></dd>
+			<dd>Macro to output a dataset to a csv file in a specified directory (i.e. a folder).  It also suppresses double quotes. <p> <b>Examples:</b> <p> <code> proc means;<br> ods output summary=means;<br> run;<br> <p> %output_data(dataset=means, dir=./output);<br> </code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
@@ -706,7 +708,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on June 03, 2014</td>
+		<td align="left" width="50%">Last updated on June 06, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">
