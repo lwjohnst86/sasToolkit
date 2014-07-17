@@ -11,7 +11,20 @@
 
 /****************************************************************/
 
-/* csvgz_import --- Import a compress csv file into sas */
+/**
+
+    Imports a compressed (gz) csv file into SAS.  SAS uncompresses it, reads it, then deletes the uncompressed version while keeping the compressed version.
+    
+    <p>
+    
+    Dependencies currently: some type of Unix shell, as well as uses `csvimport` macro.
+    
+    * @param dataset Input dataset
+    * @param outds Output dataset
+    * @param dir Directory where the input dataset is stored
+    * @return Creates a temp dataset in SAS
+    
+    */
 %macro csvgz_import(dataset=, outds=&dataset, dir=../dataset);
     * Uncompress the file ;
     x gunzip -c &dir./&dataset..csv.gz > &dir./&dataset..csv;
@@ -85,11 +98,6 @@
         put _infile_;
     run;
     %mend output_data;
-
-
-/** (QUASI) BIVARIATE ANALYSIS MACRO SECTION **/ 
-/* means --- Computing means and concatenating the output
-    into a dataset */
 
 /**
 
@@ -173,9 +181,32 @@
 
 
 
-/* correlations --- Macro to compute Pearson or Spearman
-    correlations, either Partial or unadjusted, to an output
-    dataset */
+/**
+
+    Computes correlation coefficients and outputs a csv file with asterisks as significance values.
+    
+    <p>
+    
+    You can specify which type of test you compute, such as Spearman or Pearson. You can also run partial correlations (adjusting for covariates).
+    
+    <p>
+    
+    <b>Examples:</b>
+    
+    <p>
+    
+    
+    
+    * @param rowvar Contains the variables that will be on the side of the output, i.e. those that make up the <b>rows</b>
+    * @param colvar Contains the variables that will be on the top of the output, i.e. those that make up the <b>columns</b>
+    * @param covar Contains the optional 
+    * @param
+    * @param
+    * @return
+    
+    
+    
+    */
 %macro correlation(rowvar=, colvar=, covar=, 
     outds=, coeff_test=Spearman, dsn=&ds);
     %if &covar = %then %let partial = ;
@@ -639,4 +670,4 @@
         set &ds;
         if mod(_n_, &n) eq 0 then output;
     run;
-    %mend nth_ds; 
+    %mend nth_ds;

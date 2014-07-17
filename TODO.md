@@ -9,3 +9,6 @@
 * Develop the README file more.  Get DocItOut to recognize README.md
   the same as it recognizes readme.txt.
 * Get rid of formats.sas file.  Incorporate the values into the raw dataset.
+* make a makefile to change name of readme from .txt to .md.
+* have some way to produce an example documentation like in roxygen 
+
