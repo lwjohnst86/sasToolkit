@@ -113,14 +113,14 @@ Contains macros that are used to make statistical analysis more or less easier, 
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro6">correlation ( rowvar= , colvar= , covar= , outds= , coeff_test=Spearman , dsn=&ds )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Computes correlation coefficients and outputs a csv file with asterisks as significance values.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro7">csvgz_import ( dataset= , outds=&dataset , dir=../dataset )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Imports a compressed (gz) csv file into SAS.
 				</td>
 			</tr>
 					
@@ -382,16 +382,16 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<h3>correlation</h3>
 		<pre>%macro <b>correlation ( rowvar= , colvar= , covar= , outds= , coeff_test=Spearman , dsn=&ds )</b>;</pre>
 		<dl>
-			<dd></dd>
+			<dd>Computes correlation coefficients and outputs a csv file with asterisks as significance values. <p> You can specify which type of test you compute, such as Spearman or Pearson. You can also run partial correlations (adjusting for covariates). <p> <b>Examples:</b> <p></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>rowvar - 
+													<dd>rowvar - Contains the variables that will be on the side of the output, i.e. those that make up the <b>rows</b>
 															</dd>
-													<dd>colvar - 
+													<dd>colvar - Contains the variables that will be on the top of the output, i.e. those that make up the <b>columns</b>
 															</dd>
-													<dd>covar - 
+													<dd>covar - Contains the optional
 															</dd>
 													<dd>outds - 
 															</dd>
@@ -413,20 +413,22 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<h3>csvgz_import</h3>
 		<pre>%macro <b>csvgz_import ( dataset= , outds=&dataset , dir=../dataset )</b>;</pre>
 		<dl>
-			<dd></dd>
+			<dd>Imports a compressed (gz) csv file into SAS.  SAS uncompresses it, reads it, then deletes the uncompressed version while keeping the compressed version. <p> Dependencies currently: some type of Unix shell, as well as uses `csvimport` macro.</dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dataset - 
+													<dd>dataset - Input dataset
 															</dd>
-													<dd>outds - 
+													<dd>outds - Output dataset
 																 (default value: &dataset)
 															</dd>
-													<dd>dir - 
+													<dd>dir - Directory where the input dataset is stored
 																 (default value: ../dataset)
 															</dd>
 																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Creates a temp dataset in SAS</dd>
 									</dl>
 			</dd>
 		</dl>
