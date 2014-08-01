@@ -138,6 +138,8 @@
     run;
     %mend means;
 
+%means(vars= Hgt Wgt, outds=meanstest.csv);
+
 /**
 
     Macro for frequencies of categorical/discrete variables.  Only
@@ -671,3 +673,4 @@
         if mod(_n_, &n) eq 0 then output;
     run;
     %mend nth_ds;
+
