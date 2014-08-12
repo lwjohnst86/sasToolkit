@@ -12,3 +12,5 @@
   and a new macro as 0.1, while major changes = 1 (maybe?)
 * Use a development branch vs a master branch to have it more stable
   over time.
+* Add a command to create a output dir if none exists in the
+  output_data macro
