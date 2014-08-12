@@ -25,20 +25,20 @@
     * @return Creates a temp dataset in SAS
     
     */
-%macro csvgz_import(dataset=, outds=&dataset, dir=../dataset);
+%macro csvgz_import(dataset=, outds=&dataset, dir= );
     * Uncompress the file ;
-    x gunzip -c &dir./&dataset..csv.gz > &dir./&dataset..csv;
+    x gunzip -c &dir./&dataset. > &dir./temp.csv;
     
     * Import using csvimport macro;
-    %csvimport(dataset=&dataset, outds=&outds);
+    %csvimport(dataset=temp.csv, outds=&outds, dir=&dir);
 
     * Delete the temporary uncompressed file;
-    x rm &dir./&dataset..csv;
+    x rm &dir./temp.csv;
     %mend csvgz_import;
 
 /* csvimport -- import csv into sas */
-%macro csvimport(dataset=, outds=&dataset, dir=../dataset);
-    proc import datafile="&dir./&dataset..csv"
+%macro csvimport(dataset=, outds=&dataset, dir= );
+    proc import datafile="&dir./&dataset."
         out=&outds
         dbms=csv
         replace;
@@ -120,7 +120,7 @@
                     stddev min max median Q1 Q3 maxdec=3;
         var &vars;
         class &class;
-        by &by; * Untested in ods output for this macro;
+        by &by;
         ods output summary=&outds;
     run;
     ods listing;
@@ -138,25 +138,24 @@
     run;
     %mend means;
 
-%means(vars= Hgt Wgt, outds=meanstest.csv);
-
 /**
 
     Macro for frequencies of categorical/discrete variables.  Only
     does univariate frequencies.
 
     * @param	vars	Discrete variables to analyze
-
+    * @param	by	Variable to group by
     * @param	dsn	Name of dataset to analyze
     * @param	outds	Results dataset to output
     * @return	Only prints the results by default, but does output a dataset if specified
 
     */
-%macro freq(vars=, dsn=&ds, outds=_NULL_);
+%macro freq(vars=, by=, dsn=&ds, outds=_NULL_);
 
     ods listing close;
     proc freq data=&dsn;
         tables &vars / list;
+        by &by;
         ods output OneWayFreqs = &outds;
     run;
     ods listing;
