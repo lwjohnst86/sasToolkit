@@ -1,16 +1,18 @@
-# To do list #
+* TASK LIST
 
-* Develop a tool to convert SAS comments into a markdown document,
-  also into a pdf.  It will need to also run through several files in
-  the macro directory.
-      * Include a TOC.
-* Develop the README file more.  Get DocItOut to recognize README.md
-  the same as it recognizes readme.txt.
-* make a makefile to change name of readme from .txt to .md.
-* have some way to produce an example documentation like in roxygen 
-* Develop a version numbering, with each change to a macro = to 0.01
-  and a new macro as 0.1, while major changes = 1 (maybe?)
-* Use a development branch vs a master branch to have it more stable
-  over time.
-* Add a command to create a output dir if none exists in the
-  output_data macro
+*** TODO Create tool to convert SAS comments into md or pdf
+    It will need to also run through several files in
+    the macro directory. Include a TOC.
+
+*** TODO Develop README file more.  
+    Get DocItOut to recognize README.md the same as it recognizes
+    readme.txt.
+*** TODO Make a makefile to change name of readme from .txt to .md?
+*** TODO Create way to produce example documentation like in roxygen 
+*** TODO Develop a version numbering system
+    e.g. with each change to a macro = to 0.01 and a new macro as 0.1,
+    while major changes = 1 (maybe?)
+*** DONE Use a development branch vs a master branch 
+    CLOSED: [2014-08-12 Tue 13:21]
+    To have it more stable over time.
+*** TODO Add command in output_data to create a output dir
