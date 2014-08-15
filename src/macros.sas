@@ -13,21 +13,26 @@
 
 /**
 
-    Imports a compressed (gz) csv file into SAS.  SAS uncompresses it, reads it, then deletes the uncompressed version while keeping the compressed version.
+    Imports a compressed (gz) csv file into SAS.  SAS uncompresses it,
+    reads it, then deletes the uncompressed version while keeping the
+    compressed version.
     
     <p>
     
     Dependencies currently: some type of Unix shell, as well as uses `csvimport` macro.
     
-    * @param dataset Input dataset
+    * @param dataset Input dataset, with full path to its location
     * @param outds Output dataset
     * @param dir Directory where the input dataset is stored
     * @return Creates a temp dataset in SAS
     
     */
-%macro csvgz_import(dataset=, outds=&dataset, dir= );
+%macro csvgz_import(dataset=, outds=&ds, dir= );
+    * Check if dir exists, create if needed;
+    x "if [ ! -d &dir ] ; then mkdir &dir; fi";
+
     * Uncompress the file ;
-    x gunzip -c &dir./&dataset. > &dir./temp.csv;
+    x gunzip -c &dataset. > &dir./temp.csv;
     
     * Import using csvimport macro;
     %csvimport(dataset=temp.csv, outds=&outds, dir=&dir);
@@ -77,27 +82,30 @@
     </code>
 
     * @param	dataset	Results output dataset to print to csv
-    * @param	dir		Directory where the results will be output to
+    * @param	dir		Directory where the results will be output into.  If no such directory exists, one will be created
     * @return	Outputs a csv file to a specified directory
     * @example
 
 
     */
-%macro output_data(dataset= , dir=../output);
-    ods csv file=temp;
-    ods listing close;
-    proc print data=&dataset;
-    run;
-    ods listing;
-    ods csv close;
-    data _null_;
-        infile temp;
-        file "&dir./&dataset..csv";
-        input;
-        _infile_ = compress(_infile_,'"');
-        put _infile_;
-    run;
-    %mend output_data;
+%macro output_data(dataset= , dir=); 
+    filename temp temp;
+    %put Checking if &dir needs to be created; 
+    x "if [ ! -d &dir ] ; then mkdir &dir; fi";
+    ods csv file=temp; 
+    ods listing close; 
+    proc print data=&dataset; 
+    run; 
+    ods listing; 
+    ods csv close; 
+    data _null_; 
+        infile temp; 
+        file "&dir./&dataset..csv"; 
+        input; 
+        _infile_ = compress(_infile_,'"'); 
+        put _infile_; 
+    run; 
+    %mend output_data; 
 
 /**
 
@@ -154,7 +162,7 @@
 
     ods listing close;
     proc freq data=&dsn;
-        tables &vars / list;
+        table &vars / list;
         by &by;
         ods output OneWayFreqs = &outds;
     run;
@@ -167,6 +175,7 @@
         length Categories $ 45.;
         set &outds;
         by Table;
+            
         nPerc = trim(Frequency)||' ('||
             strip(round(Percent, 0.1))||')';
         %for(i, in=(&vars), do=%nrstr(
@@ -174,7 +183,12 @@
         ));
         if first.Table then Table = Table;
         else Table = '';
-        keep Table Categories nPerc CumFrequency;
+        %if &by = %then %do;
+            keep Table Categories nPerc CumFrequency;
+            %end;
+        %else %if &by ne %then %do;
+            keep VN Table Categories nPerc CumFrequency;
+            %end;
     proc print;
     run;
 

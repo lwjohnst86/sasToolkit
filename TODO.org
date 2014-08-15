@@ -12,6 +12,9 @@
 *** TODO Develop a version numbering system
     e.g. with each change to a macro = to 0.01 and a new macro as 0.1,
     while major changes = 1 (maybe?)
+    Or, better yet, how about + 1.0.0 for major changes, + 0.1.0 for
+    new macros, and + 0.0.1 for edits to existing macros from past
+    release points.
 *** DONE Use a development branch vs a master branch 
     CLOSED: [2014-08-12 Tue 13:21]
     To have it more stable over time.
