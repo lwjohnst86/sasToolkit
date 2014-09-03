@@ -125,7 +125,7 @@
 
     ods listing close;
     proc means data=&dsn stackods n mean 
-                    stddev min max median Q1 Q3 maxdec=3;
+        stddev min max median Q1 Q3 maxdec=3;
         var &vars;
         class &class;
         by &by;
@@ -176,7 +176,7 @@
         length Categories $ 45.;
         set &outds;
         by Table;
-            
+        
         nPerc = trim(Frequency)||' ('||
             strip(round(Percent, 0.1))||')';
         %for(i, in=(&vars), do=%nrstr(
@@ -199,32 +199,48 @@
 
 /**
 
-    Computes correlation coefficients and outputs a csv file with asterisks as significance values.
+    Correlation coefficient test
+
+    <p>
+    
+    Computes correlation coefficients and outputs a csv file with
+    asterisks as significance values.
     
     <p>
     
-    You can specify which type of test you compute, such as Spearman or Pearson. You can also run partial correlations (adjusting for covariates).
+    You can specify which type of test you compute, such as Spearman
+    or Pearson. You can also run partial correlations (adjusting for
+    covariates).
     
     <p>
-    
     <b>Examples:</b>
-    
     <p>
+    <code>
+    %let continuous = Weight Height Age;
+    %let exposure = CarbIntake ProteinIntake;
+    %correlation(topvar=&exposure, sidevar=&continuous, dsn=dataset,
+        outds=corr, where=Sex eq "Male", coeff_test=Pearson);
+    proc print data=corr;
+    run;
+    <\code>
     
-    
-    
-    * @param rowvar Contains the variables that will be on the side of the output, i.e. those that make up the <b>rows</b>
-    * @param colvar Contains the variables that will be on the top of the output, i.e. those that make up the <b>columns</b>
-    * @param covar Contains the optional 
-    * @param
-    * @param
-    * @return
-    
-    
+    * @param sidevar Variables that will be on the side of the output,
+    i.e. those that make up the <b>rows</b>
+    * @param topvar Variables that will be on the top of the output,
+    i.e. those that make up the <b>columns</b>
+    * @param covar Variables to adjust for the correlation (ie. confounder)
+    * @param where Variable to subset by (ie. where sex = "male")
+    * @param outds Output dataset
+    * @param coeff_test The correlation coefficient test to use
+    * @param dsn Dataset that contains the variables that will be analyzed
+    by the correlation test
+    * @return By default the results are printed, but no dataset is output.
+    An output dataset can be specified by providing a name for the variable
+    <code>outds</code>
     
     */
-%macro correlation(rowvar=, colvar=, covar=, 
-    outds=, coeff_test=Spearman, dsn=&ds);
+%macro correlation(topvar=, sidevar=, covar=, where=,
+    outds=_NULL_, coeff_test=Spearman, dsn=&ds);
     %if &covar = %then %let partial = ;
     %else %let partial = Partial;
     ods listing close;
@@ -232,25 +248,26 @@
         * indicate coefficient test to use (default;
         * is Spearman rank correlation);
         partial &covar; * variables to adjust for;
-        var &rowvar; * variables in the header row;
-        with &colvar; * variables on the side of the output, ;
+        var &topvar; * variables in the header row;
+        with &sidevar; * variables on the side of the output, ;
             * the column;
+        where &where;
         ods output &partial.&coeff_test.Corr = &outds;
     run;
     ods listing;
     data &outds;
         set &outds;
-        %for(i, in=(&rowvar), do=%nrstr(
+        %for(i, in=(&topvar), do=%nrstr(
             length t&i. $ 45;
         &i. = round(&i, 0.01);
-        if &i. = 1 then;
-        else if P&i. < 0.001 then t&i = &i.||' ***'; 
+        if P&i. < 0.001 then t&i = &i.||' ***'; 
         else if P&i. < 0.01 then t&i = &i.||' **';
         else if P&i. < 0.05 then t&i = &i.||' *';
         else t&i. = &i.;
         drop &i. P&i.;
         ));
     run;
+    proc print;
     %mend correlation;
 
 /* Macro for PCA --- update this macro */
