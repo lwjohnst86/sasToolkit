@@ -121,7 +121,7 @@
     * @return	Returns a proc print of the results by default, but outputs a dataset if specified.
 
     */
-%macro means(vars=, by=, class=, outds=_NULL_, dsn=&ds);
+%macro means(vars=, by=, class=, where=, outds=_NULL_, dsn=&ds);
 
     ods listing close;
     proc means data=&dsn stackods n mean 
@@ -129,6 +129,7 @@
         var &vars;
         class &class;
         by &by;
+        where &where;
         ods output summary=&outds;
     run;
     ods listing;
@@ -293,28 +294,18 @@
 
 /**
 
-    Runs an ANOVA and outputs the results into a nice format that can
-    easily be pushed to LaTeX/pgfplotstable to be generated into tables in
-    reports or presentations.
+    ANOVA loop
+
+    Runs an ANOVA and outputs the results into a dataset that can be
+    converted into a nice format that can easily be pushed to
+    LaTeX/pgfplotstable to generate tables in reports or presentations.
 
     <p>
 
-    There are loops in this macro, such that the variables on the side
-    of the output ("category") are looped by the header variable (top of
-    the output, "numerical").  For example, I want an output to eventually
-    use as a table, with BMI and waist as the columns and sex and
-    ethnicity on the side as rows.  Sex and ethnicity get looped by BMI
-    first, then sex and ethnicity get looped by waist next.  This way, BMI
-    will be the first column of results and waist will be the next column
-    of results.
-
-    <p>
-
-    In addition, the output are formatted in a way to not
-    need to manipulate the results in any way to fit as a table in a
-    manuscript or presentations. For instance, means and standard
-    deviations are output as a single column (as "mean (SD)"), when before
-    they were two columns.
+    An ANCOVA can be run if ccovar or dcovar variables are used
+    (ie. adjusting for confounders).  The output of this macro can be used
+    in conjunction with the %means macro to make into a nice table format
+    with means and SD, etc.
     
     * @param	category	Discrete variable (e.g. Sex) on the side of the table.
     * @param	numerical	Continuous variable (e.g. BMI) at the top of table.
@@ -327,25 +318,19 @@
     * @return	The main output are proc prints of the output datasets outds and outpdiff, though these datasets are by default not output into the SAS workspace.
 
     */
-%macro anova(category=, numerical=, dsn=&ds,
-    adjust=tukey, outds=_NULL_, outpdiff=_NULL_,
-    dcovar=, ccovar=);
+%macro anova(category=, numerical=, dsn=&ds, adjust=tukey,
+    outds=_NULL_, outpdiff=_NULL_, dcovar=, ccovar=);
 
-    %local i j count numvarCount;
+    %local i j count;
     %let count = 0;
-    %let numvarCount = 0;
 
     %do i = 1 %to %sysfunc(countw(&numerical));
         %let numvar = %scan(&numerical, &i);
-        %let startNum = %eval(&count + 1);
-        %let numvarCount = %eval(&numvarCount + 1);
         %do j = 1 %to %sysfunc(countw(&category));
             %let categ = %scan(&category, &j);
             %let count = %eval(&count + 1);
 
             ods listing close;
-            %means(vars=&numvar, class=&categ, outds=mean&count);
-
             proc glm data=&dsn;
                 class &categ &dcovar;
                 model &numvar = &categ &ccovar / ss3;
@@ -354,49 +339,14 @@
             run;
             ods listing;
 
-            data anova&count;
-                length Variable $ 45.;
-                Variable = "&categ";
-                set mean&count (drop=Variable);
-                if _n_ = 1 then do;
-                    set model&count (keep=ProbF);
-                    end;
-
-            data anova&count;
-                length Categories $ 45.;
-                set anova&count;
-                by ProbF;
-                if first.ProbF then ProbF = ProbF;
-                else ProbF = .;
-                if first.ProbF then Variable = Variable;
-                else Variable = "";
-                Categories = &categ;
-                drop &categ;
-            run;
-            %end;
-
-        data anovaCombined&numvarCount;
-            set anova&startNum.-anova&count;
-            Header = "&numvar";
-            drop _control_ NObs;
-        run;
+            %end; 
         %end;
 
     data &outds;
-        retain ;
-        %for(i, in=1:%sysfunc(countw(&numerical)), do=%nrstr(
-            %let head = %scan(&numerical, &i);
-        set anovaCombined&i. (where=(Header="&head")
-            rename=(N=N_&head Min=Min_&head Max=Max_&head
-            MeanSD=MeanSD_&head MedianIQR=MedianIGR_&head
-            ProbF=ProbF_&head)
-            );
-        ));
-        drop Header;
-    proc print;
-
-    data &outpdiff;
-        set diff1-diff&count;
+        set model1-model&count;
+    proc print; 
+    data &outpdiff; 
+        set diff1-diff&count; 
     proc print;
     %mend anova;
 
