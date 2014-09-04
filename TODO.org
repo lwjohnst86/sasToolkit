@@ -1,15 +1,30 @@
 * TASK LIST
 
 *** TODO Create tool to convert SAS comments into md or pdf
+    :PROPERTIES:
+    :ID:       b2e0ecc8-222a-43bd-9310-052922498a52
+    :END:
     It will need to also run through several files in
     the macro directory. Include a TOC.
 
-*** TODO Develop README file more.  
+*** TODO Develop README file more.
+    :PROPERTIES:
+    :ID:       83ecf69a-6e52-4cab-b99a-0c772aca8b69
+    :END:  
     Get DocItOut to recognize README.md the same as it recognizes
     readme.txt.
 *** TODO Make a makefile to change name of readme from .txt to .md?
-*** TODO Create way to produce example documentation like in roxygen 
+    :PROPERTIES:
+    :ID:       7034661a-07f4-425a-b825-3be7f4762b1f
+    :END:
+*** TODO Create way to produce example documentation like in roxygen
+    :PROPERTIES:
+    :ID:       42e8e5ef-4e79-4511-82d5-a39b065836e8
+    :END: 
 *** TODO Develop a version numbering system
+    :PROPERTIES:
+    :ID:       2f9b9609-ce49-424d-8dce-db7a411323f2
+    :END:
     e.g. with each change to a macro = to 0.01 and a new macro as 0.1,
     while major changes = 1 (maybe?)
     Or, better yet, how about + 1.0.0 for major changes, + 0.1.0 for
@@ -19,3 +34,6 @@
     CLOSED: [2014-08-12 Tue 13:21]
     To have it more stable over time.
 *** TODO Add command in output_data to create a output dir
+    :PROPERTIES:
+    :ID:       e08688b2-5c23-4576-8004-ed146f1dceb6
+    :END:
