@@ -102,8 +102,13 @@
 
 /**
 
-    Macro to output a dataset to a csv file in a specified directory
-    (i.e. a folder).  It also suppresses double quotes.
+    Output dataset to csv file
+
+    <p>
+    
+    Saves a dataset, typically one that contains the results from a
+    statistical test (eg. means), as a csv file.  It also suppresses
+    double quotes.
 
     <p>
     <b>Examples:</b>
@@ -116,9 +121,9 @@
     %output_data(dataset=means, dir=./output);<br>
     </code>
 
-    * @param	dataset	Results output dataset to print to csv
-    * @param	dir		Directory where the results will be output to
-    * @return	Outputs a csv file to a specified directory
+    * @param dataset Dataset to save as a csv file
+    * @param dir Directory where the results will be output to
+    * @return Outputs a csv file to a specified directory
     * @example
 
     proc means;
