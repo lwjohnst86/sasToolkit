@@ -13,16 +13,25 @@
 
 /**
 
-    Imports a compressed (gz) csv file into SAS.  SAS uncompresses it, reads it, then deletes the uncompressed version while keeping the compressed version.
+    Import gzipped csv dataset
+
+    <p>
+
+    Imports a compressed (gz) csv file into SAS.  SAS uncompresses it,
+    reads it, then deletes the uncompressed version while keeping the
+    compressed version.
     
     <p>
     
-    Dependencies currently: some type of Unix shell, as well as uses `csvimport` macro.
+    Dependencies: some type of Unix shell, `csvimport` macro.
     
     * @param dataset Input dataset
     * @param outds Output dataset
     * @param dir Directory where the input dataset is stored
     * @return Creates a temp dataset in SAS
+    * @example
+
+    %csvgz_import(dataset=cohortData, outds=working, dir=./data);
     
     */
 %macro csvgz_import(dataset=, outds=&dataset, dir=../dataset);
