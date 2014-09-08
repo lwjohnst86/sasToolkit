@@ -45,7 +45,21 @@
     x rm &dir./&dataset..csv;
     %mend csvgz_import;
 
-/* csvimport -- import csv into sas */
+/**
+
+    Import csv dataset
+
+    <p>
+
+    Imports a non-compressed csv (comma separated values) dataset and
+    puts it in the SAS workspace (outds).
+
+    * @param dataset Input dataset
+    * @param outds Output dataset
+    * @param dir Directory where the input dataset is located
+    * @return Outputs the csv dataset into the SAS workspace
+
+    */
 %macro csvimport(dataset=, outds=&dataset, dir=../dataset);
     proc import datafile="&dir./&dataset..csv"
         out=&outds
