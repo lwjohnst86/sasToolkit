@@ -121,6 +121,9 @@
     * @return	Outputs a csv file to a specified directory
     * @example
 
+    proc means;
+    ods output summary=means;
+    %output_data(dataset=means, dir=./output);
 
     */
 %macro output_data(dataset= , dir=../output);
@@ -141,26 +144,38 @@
 
 /**
 
+    Summary statistics: means and medians
+
+    <p>
+
     Macro to generate univariate (or divariate if a class variable is
     specified) means of continuous variables.  It compresses the mean + SD
     and the median + IQR into one column/variable.
 
-    * @param	vars	Continuous variables to determine the mean
-    * @param	by	I haven't tested this option yet.  It may not work
-    * @param	class	Can do the means of a variable by a discrete variable
-    * @param	outds	Dataset to output results to
-    * @param	dsn	The name of the input dataset to use
+    * @param	vars	Continuous variables to summarize
+    * @param	class	Generate summary stats on each value of a discrete
+    variable. Does not need to be sorted
+    * @param	by	Does the exact same thing as class, and though it is
+    faster, it requires a proc sort beforehand
+    * @param	outds	Dataset name that the results will be output into
+    * @param	dsn	Input dataset
     * @return	Returns a proc print of the results by default, but outputs a dataset if specified.
+    * @example
+
+    data working;
+    set sashelp.class;
+    %means(vars=Height Weight Age, class=Sex, dsn=working, outds=means);
 
     */
 %macro means(vars=, by=, class=, outds=_NULL_, dsn=&ds);
 
+    * Suppress output to lst file or Results tab;
     ods listing close;
     proc means data=&dsn stackods n mean 
                     stddev min max median Q1 Q3 maxdec=3;
         var &vars;
         class &class;
-        by &by; * Untested in ods output for this macro;
+        by &by;
         ods output summary=&outds;
     run;
     ods listing;
@@ -168,7 +183,7 @@
     data &outds (drop=Mean StdDev Median Q1 Q3);
         set &outds;
         * Create two new variables which concat. ;
-        * together other variables;
+        * together other variables.  The || means concatenate;
         MeanSD = round(Mean, 0.01)||' ('||
             strip(round(StdDev, 0.01))||')';
         MedianIQR = round(Median, 0.01)||' ('||
