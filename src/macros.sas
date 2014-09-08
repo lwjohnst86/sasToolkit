@@ -13,18 +13,25 @@
 
 /**
 
+    Import gzipped csv dataset
+
+    <p>
+
     Imports a compressed (gz) csv file into SAS.  SAS uncompresses it,
     reads it, then deletes the uncompressed version while keeping the
     compressed version.
     
     <p>
     
-    Dependencies currently: some type of Unix shell, as well as uses `csvimport` macro.
+    Dependencies: some type of Unix shell, `csvimport` macro.
     
     * @param dataset Input dataset, with full path to its location
     * @param outds Output dataset
     * @param dir Directory where the input dataset is stored
     * @return Creates a temp dataset in SAS
+    * @example
+
+    %csvgz_import(dataset=cohortData, outds=working, dir=./data);
     
     */
 %macro csvgz_import(dataset=, outds=&ds, dir= );
@@ -41,16 +48,47 @@
     x rm &dir./temp.csv;
     %mend csvgz_import;
 
-/* csvimport -- import csv into sas */
-%macro csvimport(dataset=, outds=&dataset, dir= );
-    proc import datafile="&dir./&dataset."
+/**
+
+    Import csv dataset
+
+    <p>
+
+    Imports a non-compressed csv (comma separated values) dataset and
+    puts it in the SAS workspace (outds).
+
+    * @param dataset Input dataset
+    * @param outds Output dataset
+    * @param dir Directory where the input dataset is located
+    * @return Outputs the csv dataset into the SAS workspace
+
+    */
+%macro csvimport(dataset=, outds=&dataset, dir=../dataset);
+    proc import datafile="&dir./&dataset..csv"
         out=&outds
         dbms=csv
         replace;
     run;
     %mend csvimport;
 
-/* contents -- view contents of all ds in parmbuffer. Default lib is work */
+/**
+
+    Print dataset variable names
+
+    <p>
+
+    The macro takes a dataset or multiple datasets in a given library
+    (lib) and prints the variable names (the header row).  It also prints
+    out the variable type (character vs numeric) and the variable format.
+
+    * @param dataset Input dataset or datasets
+    * @param lib The libname where the dataset is located
+    * @return Prints the variable names of a dataset
+    * @example
+
+    %contents(dataset=cohortData, lib=work);
+
+    */
 %macro contents(dataset=, lib=work);
     %do i = 1 %to %sysfunc(countw(&dataset));
         %let dsn = %scan(&dataset, &i);
@@ -67,8 +105,13 @@
 
 /**
 
-    Macro to output a dataset to a csv file in a specified directory
-    (i.e. a folder).  It also suppresses double quotes.
+    Output dataset to csv file
+
+    <p>
+    
+    Saves a dataset, typically one that contains the results from a
+    statistical test (eg. means), as a csv file.  It also suppresses
+    double quotes.
 
     <p>
     <b>Examples:</b>
@@ -81,11 +124,14 @@
     %output_data(dataset=means, dir=./output);<br>
     </code>
 
-    * @param	dataset	Results output dataset to print to csv
-    * @param	dir		Directory where the results will be output into.  If no such directory exists, one will be created
-    * @return	Outputs a csv file to a specified directory
+    * @param dataset Dataset to save as a csv file
+    * @param dir Directory where the results will be output to
+    * @return Outputs a csv file to a specified directory
     * @example
 
+    proc means;
+    ods output summary=means;
+    %output_data(dataset=means, dir=./output);
 
     */
 %macro output_data(dataset= , dir=); 
@@ -109,20 +155,32 @@
 
 /**
 
+    Summary statistics: means and medians
+
+    <p>
+
     Macro to generate univariate (or divariate if a class variable is
     specified) means of continuous variables.  It compresses the mean + SD
     and the median + IQR into one column/variable.
 
-    * @param	vars	Continuous variables to determine the mean
-    * @param	by	I haven't tested this option yet.  It may not work
-    * @param	class	Can do the means of a variable by a discrete variable
-    * @param	outds	Dataset to output results to
-    * @param	dsn	The name of the input dataset to use
+    * @param	vars	Continuous variables to summarize
+    * @param	class	Generate summary stats on each value of a discrete
+    variable. Does not need to be sorted
+    * @param	by	Does the exact same thing as class, and though it is
+    faster, it requires a proc sort beforehand
+    * @param	outds	Dataset name that the results will be output into
+    * @param	dsn	Input dataset
     * @return	Returns a proc print of the results by default, but outputs a dataset if specified.
+    * @example
+
+    data working;
+    set sashelp.class;
+    %means(vars=Height Weight Age, class=Sex, dsn=working, outds=means);
 
     */
 %macro means(vars=, by=, class=, where=, outds=_NULL_, dsn=&ds);
 
+    * Suppress output to lst file or Results tab;
     ods listing close;
     proc means data=&dsn stackods n mean 
         stddev min max median Q1 Q3 maxdec=3;
@@ -137,7 +195,7 @@
     data &outds (drop=Mean StdDev Median Q1 Q3);
         set &outds;
         * Create two new variables which concat. ;
-        * together other variables;
+        * together other variables.  The || means concatenate;
         MeanSD = round(Mean, 0.01)||' ('||
             strip(round(StdDev, 0.01))||')';
         MedianIQR = round(Median, 0.01)||' ('||
@@ -653,4 +711,3 @@
         if mod(_n_, &n) eq 0 then output;
     run;
     %mend nth_ds;
-
