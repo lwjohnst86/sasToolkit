@@ -24,6 +24,7 @@
 				<ul class="submenu">
 								
 										
+											<li><a href="#summary_filename">FILENAME</a></li>	
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
@@ -37,6 +38,7 @@
 				<ul class="submenu">			
 										
 										
+											<li><a href="#detail_filename">FILENAME</a></li>	
 										
 											<li><a href="#detail_macro">MACRO</a></li>	
 									</ul>
@@ -66,6 +68,22 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 
 
+	
+	<br><a name="summary_filename"></a>
+	<table class="gtbl" cellpadding="0" cellspacing="0">
+		<tr>
+			<th colspan="2">Filename Summary</th>
+		</tr>
+
+					
+			<tr valign="top">
+				<td>
+					<code><b><a href="#filename1">temp</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+			</tr>
+		
+	</table>
 
 	
 	<br><a name="summary_macro"></a>
@@ -78,7 +96,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro1">anova ( category= , numerical= , dsn=&ds , adjust=tukey , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs an ANOVA and outputs the results into a nice format that can easily be pushed to LaTeX/pgfplotstable to be generated into tables in reports or presentations.
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANOVA loop Runs an ANOVA and outputs the results into a dataset that can be converted into a nice format that can easily be pushed to LaTeX/pgfplotstable to generate tables in reports or presentations.
 				</td>
 			</tr>
 					
@@ -106,28 +124,28 @@ Contains macros that are used to make statistical analysis more or less easier, 
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro5">contents ( dataset= , lib=work )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print dataset variable names <p> The macro takes a dataset or multiple datasets in a given library (lib) and prints the variable names (the header row).
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro6">correlation ( rowvar= , colvar= , covar= , outds= , coeff_test=Spearman , dsn=&ds )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Computes correlation coefficients and outputs a csv file with asterisks as significance values.
+					<code><b><a href="#macro6">correlation ( topvar= , sidevar= , covar= , where= , outds=_NULL_ , coeff_test=Spearman , dsn=&ds )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Correlation coefficient test <p> Computes correlation coefficients and outputs a csv file with asterisks as significance values.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro7">csvgz_import ( dataset= , outds=&dataset , dir=../dataset )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Imports a compressed (gz) csv file into SAS.
+					<code><b><a href="#macro7">csvgz_import ( dataset= , outds=&ds , dir= )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import gzipped csv dataset <p> Imports a compressed (gz) csv file into SAS.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro8">csvimport ( dataset= , outds=&dataset , dir=../dataset )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import csv dataset <p> Imports a non-compressed csv (comma separated values) dataset and puts it in the SAS workspace (outds).
 				</td>
 			</tr>
 					
@@ -140,15 +158,15 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro10">freq ( vars= , dsn=&ds , outds=_NULL_ )</a></b></code>
+					<code><b><a href="#macro10">freq ( vars= , by= , dsn=&ds , outds=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Macro for frequencies of categorical/discrete variables.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro11">means ( vars= , by= , class= , outds=_NULL_ , dsn=&ds )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Macro to generate univariate (or divariate if a class variable is specified) means of continuous variables.
+					<code><b><a href="#macro11">means ( vars= , by= , class= , where= , outds=_NULL_ , dsn=&ds )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Summary statistics: means and medians <p> Macro to generate univariate (or divariate if a class variable is specified) means of continuous variables.
 				</td>
 			</tr>
 					
@@ -168,8 +186,8 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro14">output_data ( dataset= , dir=../output )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Macro to output a dataset to a csv file in a specified directory (i.
+					<code><b><a href="#macro14">output_data ( dataset= , dir= )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Output dataset to csv file <p> Saves a dataset, typically one that contains the results from a statistical test (eg.
 				</td>
 			</tr>
 					
@@ -189,14 +207,30 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		</tr>
 		<tr valign="top">
 			<td>
-				<code>csvimport, for, means</code>
+				<code>csvimport, for</code>
 			</td>
 		</tr>
 	</table>
 
 
 
+	<br><a name="detail_filename"></a>
+	<table class="gtbl" cellpadding="0" cellspacing="0">
+		<tr>
+			<th colspan="2">Filename Detail</th>
+		</tr>
+	</table>
+	
+				
+		<a name="filename1"></a>
 
+		<h3>temp</h3>
+		<pre>filename <b>temp temp</b>;</pre>
+		<dl>
+			<dd></dd>
+		</dl>
+
+			
 	<br><a name="detail_macro"></a>
 	<table class="gtbl" cellpadding="0" cellspacing="0">
 		<tr>
@@ -210,7 +244,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<h3>anova</h3>
 		<pre>%macro <b>anova ( category= , numerical= , dsn=&ds , adjust=tukey , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</b>;</pre>
 		<dl>
-			<dd>Runs an ANOVA and outputs the results into a nice format that can easily be pushed to LaTeX/pgfplotstable to be generated into tables in reports or presentations. <p> There are loops in this macro, such that the variables on the side of the output ("category") are looped by the header variable (top of the output, "numerical").  For example, I want an output to eventually use as a table, with BMI and waist as the columns and sex and ethnicity on the side as rows.  Sex and ethnicity get looped by BMI first, then sex and ethnicity get looped by waist next.  This way, BMI will be the first column of results and waist will be the next column of results. <p> In addition, the output are formatted in a way to not need to manipulate the results in any way to fit as a table in a manuscript or presentations. For instance, means and standard deviations are output as a single column (as "mean (SD)"), when before they were two columns.</dd>
+			<dd>ANOVA loop Runs an ANOVA and outputs the results into a dataset that can be converted into a nice format that can easily be pushed to LaTeX/pgfplotstable to generate tables in reports or presentations. <p> An ANCOVA can be run if ccovar or dcovar variables are used (ie. adjusting for confounders).  The output of this macro can be used in conjunction with the %means macro to make into a nice table format with means and SD, etc.</dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
@@ -360,17 +394,19 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<h3>contents</h3>
 		<pre>%macro <b>contents ( dataset= , lib=work )</b>;</pre>
 		<dl>
-			<dd></dd>
+			<dd>Print dataset variable names <p> The macro takes a dataset or multiple datasets in a given library (lib) and prints the variable names (the header row).  It also prints out the variable type (character vs numeric) and the variable format.</dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dataset - 
+													<dd>dataset - Input dataset or datasets
 															</dd>
-													<dd>lib - 
+													<dd>lib - The libname where the dataset is located
 																 (default value: work)
 															</dd>
 																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Prints the variable names of a dataset</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -380,28 +416,33 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<a name="macro6"></a>
 
 		<h3>correlation</h3>
-		<pre>%macro <b>correlation ( rowvar= , colvar= , covar= , outds= , coeff_test=Spearman , dsn=&ds )</b>;</pre>
+		<pre>%macro <b>correlation ( topvar= , sidevar= , covar= , where= , outds=_NULL_ , coeff_test=Spearman , dsn=&ds )</b>;</pre>
 		<dl>
-			<dd>Computes correlation coefficients and outputs a csv file with asterisks as significance values. <p> You can specify which type of test you compute, such as Spearman or Pearson. You can also run partial correlations (adjusting for covariates). <p> <b>Examples:</b> <p></dd>
+			<dd>Correlation coefficient test <p> Computes correlation coefficients and outputs a csv file with asterisks as significance values. <p> You can specify which type of test you compute, such as Spearman or Pearson. You can also run partial correlations (adjusting for covariates). <p> <b>Examples:</b> <p> <code> %let continuous = Weight Height Age; %let exposure = CarbIntake ProteinIntake; %correlation(topvar=&exposure, sidevar=&continuous, dsn=dataset, outds=corr, where=Sex eq "Male", coeff_test=Pearson); proc print data=corr; run; <\code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>rowvar - Contains the variables that will be on the side of the output, i.e. those that make up the <b>rows</b>
+													<dd>topvar - Variables that will be on the top of the output, i.e. those that make up the <b>columns</b>
 															</dd>
-													<dd>colvar - Contains the variables that will be on the top of the output, i.e. those that make up the <b>columns</b>
+													<dd>sidevar - Variables that will be on the side of the output, i.e. those that make up the <b>rows</b>
 															</dd>
-													<dd>covar - Contains the optional
+													<dd>covar - Variables to adjust for the correlation (ie. confounder)
 															</dd>
-													<dd>outds - 
+													<dd>where - Variable to subset by (ie. where sex = "male")
 															</dd>
-													<dd>coeff_test - 
+													<dd>outds - Output dataset
+																 (default value: _NULL_)
+															</dd>
+													<dd>coeff_test - The correlation coefficient test to use
 																 (default value: Spearman)
 															</dd>
-													<dd>dsn - 
+													<dd>dsn - Dataset that contains the variables that will be analyzed by the correlation test
 																 (default value: &ds)
 															</dd>
 																
+											<dt><br><b>Returns:</b></dt>
+						<dd>By default the results are printed, but no dataset is output. An output dataset can be specified by providing a name for the variable <code>outds</code></dd>
 									</dl>
 			</dd>
 		</dl>
@@ -411,20 +452,19 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<a name="macro7"></a>
 
 		<h3>csvgz_import</h3>
-		<pre>%macro <b>csvgz_import ( dataset= , outds=&dataset , dir=../dataset )</b>;</pre>
+		<pre>%macro <b>csvgz_import ( dataset= , outds=&ds , dir= )</b>;</pre>
 		<dl>
-			<dd>Imports a compressed (gz) csv file into SAS.  SAS uncompresses it, reads it, then deletes the uncompressed version while keeping the compressed version. <p> Dependencies currently: some type of Unix shell, as well as uses `csvimport` macro.</dd>
+			<dd>Import gzipped csv dataset <p> Imports a compressed (gz) csv file into SAS.  SAS uncompresses it, reads it, then deletes the uncompressed version while keeping the compressed version. <p> Dependencies: some type of Unix shell, `csvimport` macro.</dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dataset - Input dataset
+													<dd>dataset - Input dataset, with full path to its location
 															</dd>
 													<dd>outds - Output dataset
-																 (default value: &dataset)
+																 (default value: &ds)
 															</dd>
 													<dd>dir - Directory where the input dataset is stored
-																 (default value: ../dataset)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
@@ -440,20 +480,22 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<h3>csvimport</h3>
 		<pre>%macro <b>csvimport ( dataset= , outds=&dataset , dir=../dataset )</b>;</pre>
 		<dl>
-			<dd></dd>
+			<dd>Import csv dataset <p> Imports a non-compressed csv (comma separated values) dataset and puts it in the SAS workspace (outds).</dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dataset - 
+													<dd>dataset - Input dataset
 															</dd>
-													<dd>outds - 
+													<dd>outds - Output dataset
 																 (default value: &dataset)
 															</dd>
-													<dd>dir - 
+													<dd>dir - Directory where the input dataset is located
 																 (default value: ../dataset)
 															</dd>
 																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Outputs the csv dataset into the SAS workspace</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -482,7 +524,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<a name="macro10"></a>
 
 		<h3>freq</h3>
-		<pre>%macro <b>freq ( vars= , dsn=&ds , outds=_NULL_ )</b>;</pre>
+		<pre>%macro <b>freq ( vars= , by= , dsn=&ds , outds=_NULL_ )</b>;</pre>
 		<dl>
 			<dd>Macro for frequencies of categorical/discrete variables.  Only does univariate frequencies.</dd>
 			<dd>
@@ -490,6 +532,8 @@ Contains macros that are used to make statistical analysis more or less easier, 
 											<dt><br><b>Parameters:</b></dt>
 							
 													<dd>vars - Discrete variables to analyze
+															</dd>
+													<dd>by - Variable to group by
 															</dd>
 													<dd>dsn - Name of dataset to analyze
 																 (default value: &ds)
@@ -509,23 +553,25 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<a name="macro11"></a>
 
 		<h3>means</h3>
-		<pre>%macro <b>means ( vars= , by= , class= , outds=_NULL_ , dsn=&ds )</b>;</pre>
+		<pre>%macro <b>means ( vars= , by= , class= , where= , outds=_NULL_ , dsn=&ds )</b>;</pre>
 		<dl>
-			<dd>Macro to generate univariate (or divariate if a class variable is specified) means of continuous variables.  It compresses the mean + SD and the median + IQR into one column/variable.</dd>
+			<dd>Summary statistics: means and medians <p> Macro to generate univariate (or divariate if a class variable is specified) means of continuous variables.  It compresses the mean + SD and the median + IQR into one column/variable.</dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>vars - Continuous variables to determine the mean
+													<dd>vars - Continuous variables to summarize
 															</dd>
-													<dd>by - I haven't tested this option yet.  It may not work
+													<dd>by - Does the exact same thing as class, and though it is faster, it requires a proc sort beforehand
 															</dd>
-													<dd>class - Can do the means of a variable by a discrete variable
+													<dd>class - Generate summary stats on each value of a discrete variable. Does not need to be sorted
 															</dd>
-													<dd>outds - Dataset to output results to
+													<dd>where - 
+															</dd>
+													<dd>outds - Dataset name that the results will be output into
 																 (default value: _NULL_)
 															</dd>
-													<dd>dsn - The name of the input dataset to use
+													<dd>dsn - Input dataset
 																 (default value: &ds)
 															</dd>
 																
@@ -600,17 +646,16 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<a name="macro14"></a>
 
 		<h3>output_data</h3>
-		<pre>%macro <b>output_data ( dataset= , dir=../output )</b>;</pre>
+		<pre>%macro <b>output_data ( dataset= , dir= )</b>;</pre>
 		<dl>
-			<dd>Macro to output a dataset to a csv file in a specified directory (i.e. a folder).  It also suppresses double quotes. <p> <b>Examples:</b> <p> <code> proc means;<br> ods output summary=means;<br> run;<br> <p> %output_data(dataset=means, dir=./output);<br> </code></dd>
+			<dd>Output dataset to csv file <p> Saves a dataset, typically one that contains the results from a statistical test (eg. means), as a csv file.  It also suppresses double quotes. <p> <b>Examples:</b> <p> <code> proc means;<br> ods output summary=means;<br> run;<br> <p> %output_data(dataset=means, dir=./output);<br> </code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dataset - Results output dataset to print to csv
+													<dd>dataset - Dataset to save as a csv file
 															</dd>
 													<dd>dir - Directory where the results will be output to
-																 (default value: ../output)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
@@ -686,6 +731,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 				<ul class="submenu">
 								
 										
+											<li><a href="#summary_filename">FILENAME</a></li>	
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
@@ -699,6 +745,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 				<ul class="submenu">			
 										
 										
+											<li><a href="#detail_filename">FILENAME</a></li>	
 										
 											<li><a href="#detail_macro">MACRO</a></li>	
 									</ul>
@@ -710,7 +757,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on August 01, 2014</td>
+		<td align="left" width="50%">Last updated on September 10, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">
