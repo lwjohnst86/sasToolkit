@@ -1,5 +1,15 @@
 * TASK LIST
 
+*** TODO Create a script to cut away quick tags (``) to real tags (<code>)
+    :PROPERTIES:
+    :ID:       2ceef1bc-2672-4f82-86d8-e22057a088ff
+    :END:
+
+*** TODO Make the SAS macros into an autocall library
+    :PROPERTIES:
+    :ID:       3d8d20be-8c02-4b96-911e-3d6d3bc3bdc4
+    :END:
+
 *** TODO Create tool to convert SAS comments into md or pdf
     :PROPERTIES:
     :ID:       b2e0ecc8-222a-43bd-9310-052922498a52
@@ -13,6 +23,7 @@
     :END:  
     Get DocItOut to recognize README.md the same as it recognizes
     readme.txt.
+
 *** TODO Make a makefile to change name of readme from .txt to .md?
     :PROPERTIES:
     :ID:       7034661a-07f4-425a-b825-3be7f4762b1f
@@ -30,9 +41,11 @@
     Or, better yet, how about + 1.0.0 for major changes, + 0.1.0 for
     new macros, and + 0.0.1 for edits to existing macros from past
     release points.
+
 *** DONE Use a development branch vs a master branch 
     CLOSED: [2014-08-12 Tue 13:21]
     To have it more stable over time.
+
 *** TODO Add command in output_data to create a output dir
     :PROPERTIES:
     :ID:       e08688b2-5c23-4576-8004-ed146f1dceb6
