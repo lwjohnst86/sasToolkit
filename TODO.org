@@ -1,5 +1,9 @@
 * TASK LIST
 
+*** TODO Update the README
+
+*** TODO Include the DocItOut pdf with the repo
+
 *** TODO Create a script to cut away quick tags (``) to real tags (<code>)
     :PROPERTIES:
     :ID:       2ceef1bc-2672-4f82-86d8-e22057a088ff
