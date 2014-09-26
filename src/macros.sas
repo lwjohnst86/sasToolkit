@@ -42,7 +42,7 @@
     x gunzip -c &dataset. > &dir./temp.csv;
     
     * Import using csvimport macro;
-    %csvimport(dataset=temp.csv, outds=&outds, dir=&dir);
+    %csvimport(dataset=temp, outds=&outds, dir=&dir);
 
     * Delete the temporary uncompressed file;
     x rm &dir./temp.csv;
@@ -217,12 +217,13 @@
     * @return	Only prints the results by default, but does output a dataset if specified
 
     */
-%macro freq(vars=, by=, dsn=&ds, outds=_NULL_);
+%macro freq(vars, by=, where=, dsn=&ds, outds=_NULL_);
 
     ods listing close;
     proc freq data=&dsn;
         table &vars / list;
         by &by;
+        where &where;
         ods output OneWayFreqs = &outds;
     run;
     ods listing;
@@ -240,13 +241,11 @@
         %for(i, in=(&vars), do=%nrstr(
             if &i. ne '' then Categories = &i.;
         ));
-        if first.Table then Table = Table;
-        else Table = '';
         %if &by = %then %do;
             keep Table Categories nPerc CumFrequency;
             %end;
         %else %if &by ne %then %do;
-            keep VN Table Categories nPerc CumFrequency;
+            keep &by Table Categories nPerc CumFrequency;
             %end;
     proc print;
     run;
@@ -291,14 +290,14 @@
     * @param outds Output dataset
     * @param coeff_test The correlation coefficient test to use
     * @param dsn Dataset that contains the variables that will be analyzed
-    by the correlation test
+        by the correlation test
     * @return By default the results are printed, but no dataset is output.
-    An output dataset can be specified by providing a name for the variable
-    <code>outds</code>
-    
+        An output dataset can be specified by providing a name for the variable
+        <code>outds</code>
+
     */
 %macro correlation(topvar=, sidevar=, covar=, where=,
-    outds=_NULL_, coeff_test=Spearman, dsn=&ds);
+        outds=_NULL_, coeff_test=Spearman, dsn=&ds);
     %if &covar = %then %let partial = ;
     %else %let partial = Partial;
     ods listing close;
@@ -325,7 +324,8 @@
         drop &i. P&i.;
         ));
     run;
-    proc print;
+    proc print data=&outds;
+    run;
     %mend correlation;
 
 /* Macro for PCA --- update this macro */
@@ -390,11 +390,13 @@
     * @param	outpdiff	Name of output for the between group p-values.
     * @param	dcovar		If ANCOVA is needed, this is the discrete covariate(s) to adjust for.
     * @param	ccovar		If ANCOVA is needed, this is the continuous covariate(s) to adjust for.
+    * @param where Subset the data by the where variable
+    * @param by Split the analysis up by a categorical variable
     * @return	The main output are proc prints of the output datasets outds and outpdiff, though these datasets are by default not output into the SAS workspace.
 
     */
-%macro anova(category=, numerical=, dsn=&ds, adjust=tukey,
-    outds=_NULL_, outpdiff=_NULL_, dcovar=, ccovar=);
+%macro anova(category=, numerical=, dsn=&ds, adjust=tukey, by=,
+    where=, outds=_NULL_, outpdiff=_NULL_, dcovar=, ccovar=);
 
     %local i j count;
     %let count = 0;
@@ -410,6 +412,8 @@
                 class &categ &dcovar;
                 model &numvar = &categ &ccovar / ss3;
                 lsmeans &categ / adjust=&adjust pdiff;
+                where &where;
+                by &by;
                 ods output Diff=diff&count ModelANOVA=model&count;
             run;
             ods listing;
@@ -418,11 +422,27 @@
         %end;
 
     data &outds;
+        length Dependent $ 35.;
         set model1-model&count;
+    run;
+
+    * Sort the data by the by variable to be consistent with my ;
+    * other macros (e.g. the means macro);
+    %if &by ne %then %do;
+        proc sort data=&outds;
+            by &by;
+        run;
+        %end;
+
     proc print; 
+    run;
+
     data &outpdiff; 
+        length Dependent $ 35.;
         set diff1-diff&count; 
+    run;
     proc print;
+    run;
     %mend anova;
 
 
@@ -711,3 +731,234 @@
         if mod(_n_, &n) eq 0 then output;
     run;
     %mend nth_ds;
+
+
+/**
+
+    Merge output datasets from the means and anova macros
+
+
+    This macro merges the results of the ``means`' and ``anova`' macro, which
+    are datasets, into one dataset with the p-value included for
+    difference between groups.  The output for the means needs to have had
+    an argument for the by variable (``by=`'), so that the means dataset can
+    be transformed from long to wide.  The variables from both the ``means`'
+    and the ``anova`' macro need to be in the same order/sequence.
+
+    
+    * @param meansds Output dataset from the ``means`' macro, needs to be
+    the first argument
+
+    * @param anovads Output dataset from the ``anova`' macro, has to be
+    the second argument
+    
+    * @param byVar The categorical (or discrete/binary number, such as
+    for an order) variable that was used to group both the anova and the
+    means datasets
+
+    * @param byVarNumLevels The levels of the discrete/binary number
+    ``byVar`', such as 0 1, 0 1 2 3, etc
+
+    * @param byVarCatLevels The levels of the categorical ``byVar`', such
+    as Yes No or Female Male
+
+    * @param outds Optional as the output dataset will be named after
+    the ``means`' dataset
+
+    * @author Luke Johnston
+
+    * @return Outputs a dataset with the merged means and p-values for
+    differences between groups
+    
+    */
+%macro mergeMeansAnova (meansds, anovads, byVar, byVarNumLevels=_NULL_,
+    byVarCatLevels=_NULL_, outds=_NULL_);
+
+    * If no outds name is provided, use the name of the means dataset;
+    %if &outds = _NULL_ %then %let outds = &meansds;
+
+    * If neither of the levels variables are used, put a warning and stop the macro;
+    %if &byVarNumLevels = _NULL_ and &byVarCatLevels = _NULL_ %then %do;
+        %put WARNING: Please specify whether the byVar has number or categorical levels.lab;
+        %put Use the byVarCatLevels or byVarNumLevels arguments in the mergeMeansAnova macro.;
+        %return;
+        %end;
+
+    * Set the levels variable for inclusion into the datastep;
+    %if &byVarCatLevels ne _NULL_ %then %do;
+        %let levels = &byVarCatLevels;
+        %put The levels for the by variable are: &byVarCatLevels;
+        %end;
+    %else %if &byVarNumLevels ne _NULL_ %then %do;
+        %let levels = &byVarNumLevels;
+        %put The levels for the by variable are: &byVarNumLevels;
+        %end;
+    
+    data &outds;
+        retain ;
+        * Add quotes around the &i variable if the CatLevels is used;
+        %if &byVarCatLevels ne _NULL_ %then %do;
+            %for(i, in=(&levels), do=%nrstr(
+                set &meansds (where=(&byVar = "&i")
+                rename=(MeanSD = MeanSD&i MedianIQR = MedianIR&i N = N&i)
+                );
+            drop Min Max &byVar;
+            ));
+            %end;
+
+        * Otherwise, do not use quotes around the &i if the NumLevel is used;
+        %if &byVarNumLevels ne _NULL_ %then %do;
+            %for(i, in=(&levels), do=%nrstr(
+                set &meansds (where=(&byVar = &i.)
+                rename=(MeanSD = MeanSD&i MedianIQR = MedianIR&i N = N&i)
+                );
+            drop Min Max &byVar;
+            ));
+            %end;
+
+        set &anovads (keep=ProbF Dependent rename=(ProbF = P));
+
+        * Check to make sure that the Variables from both anova and means dataset ;
+        * are the same. If not, output a warning to the log file;
+        if Dependent = Variable then;
+        else if Dependent ne Variable then do;
+            put "WARNING: Check the sequence of your variables in both the anova and means macros";
+            put "Make sure both anova and means macro number/continuous variables are in the same order";
+            end;
+
+        format P pvalue8.2;
+        drop Dependent NObs _control_;
+    run;
+    %mend mergeMeansAnova;
+
+
+
+    %macro gee(dsn, x=, y=, time=, subject=, ccovar=, dcovar=,
+        dist=normal, link=identity, wcorr=exch, sigDigits=0.001,
+        outAll=_NULL_, outCore=tmp, outObs=tmp);
+
+        * Keep these variables inside the macro;
+        %local i j count;
+
+        * Put information on macro arguments into the log;
+        %put GEE is running with a &dist distribution assumption, ;
+        %put     an &link link, and using the &wcorr working correlation ;
+        %put     matrix.  The cluster, subject, or case is the &subject ;
+        %put     variable.  The time variable used is &time.;
+
+        %put The GEE is conditioned on/adjusted for &ccovar (continuous) ;
+        %put     and &dcovar (discrete);
+
+        * Start the counter, which will be used to merge all the ;
+        * looped datasets;
+        %let count = 0;
+        %do i = 1 %to %sysfunc(countw(&y));
+            * Extract one y from the list of y variables given;
+            %let yvar = %scan(&y, &i);
+            %do j = 1 %to %sysfunc(countw(&x));
+                * Add to the counter variable;
+                %let count = %eval(&count + 1);
+                * Extract one x from the list of x variables given;
+                %let xvar = %scan(&x, &j);
+
+                * Put information out into the log;
+                %put Running GEE on &yvar and &xvar;
+
+                * Suppress output to the lst file/output log;
+                ods listing close;
+
+                * Start the GEE proc;
+                proc genmod data=&dsn;
+                    class &subject &dcovar;
+                    model &yvar = &xvar &time &ccovar &dcovar /
+                        dist=&dist link=&link;
+                    * It is the repeated statement here that allows for GEE;
+                    * Type is the working correlation matrix to use;
+                    repeated subject = &subject / type = &wcorr covb corrw;
+                    ods output GEEModInfo = info GEERCov = covMat
+                        ConvergenceStatus = converge GEEEmpPEst = est&count
+                        NObs = obs&count;
+                    * I currently only will output the exchangeable working;
+                    * correlation matrix, tho this may change later on;
+                    %if &wcorr = exch %then %do;
+                        ods output GEEExchCorr = exchCorr;
+                        %end;
+                run;
+
+                * Output to the lst file/output log;
+                ods listing;
+
+                * Print relevant information on the GEE analysis;
+                %put GEE model information: ;
+                proc print data=info;
+                    var Label1 cValue1;
+                proc print data=converge;
+                proc print data=covMat;
+                run;
+
+                * Again, this only will print the exchangeable corr;
+                %if &wcorr = exch %then %do;
+                    proc print data=exchCorr;
+                        var Label1 cValue1;
+                    run;
+                    %end;
+
+                * Massage the output results into a prettier format;
+                data est&count;
+                    length Independent $ 45. Dependent $ 45. estSE $ 45.
+                        estCL $ 45.;
+                    set est&count;
+                    format ProbZ pvalue8.3;
+                    * Input the y and x into the dataset for documenting;
+                    Independent = "&xvar";
+                    Dependent = "&yvar";
+                    * Create a single variable for the estimate and SE;
+                    estSE = trim(round(Estimate, &sigDigits.))||' ('||
+                        strip(round(StdErr, &sigDigits.))||')';
+                    estSE = right(estSE);
+                    * Create a single variable for the estimate and 95 CI;
+                    estCL = trim(round(Estimate, &sigDigits.))||' ('||
+                        strip(round(LowerCL, &sigDigits.))||', '||
+                        strip(round(UpperCL, &sigDigits.))||')';
+                    estCL = right(estCL);
+                    rename ProbZ = p;
+                run;
+
+                * Subset the estimate dataset to contain only the variables;
+                * of interest;
+                data estCore&count (drop=Parm);
+                    set est&count;
+                    if Parm = "&xvar" then output;
+                    else delete;
+                run;
+
+                * Massage the observation output data to a simpler format;
+                data obs&count;
+                    length Independent $ 45. Dependent $ 45.;
+                    set obs&count (keep=NObsRead NObsUsed NMiss);
+                    * Keep only the first line;
+                    by NObsRead;
+                    Independent = "&xvar";
+                    Dependent = "&yvar";
+                    if first.NObsRead then output;
+                    else delete;
+                run;
+                %end;
+            %end;
+
+        * Create combined datasets for all of the looped ;
+        * datasets;
+        data &outAll;
+            set est1-est&count;
+        data &outCore;
+            set estCore1-estCore&count;
+        run;
+        proc print data=&outCore;
+        run;
+
+        data &outObs;
+            set obs1-obs&count;
+        run;
+        proc print data=&outObs;
+        run;
+        %mend gee;
