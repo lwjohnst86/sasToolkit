@@ -27,7 +27,6 @@
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
-											<li><a href="#summary_macro_call">MACRO CALL</a></li>	
 									</ul>
 			</td>
 		</tr>
@@ -47,11 +46,18 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>For</h1>
+<h1>gee</h1>
+
+... title of macro goes here... ... description of macro goes here...
 
 
-
-
+	<dl>
+	
+				<dt><br><b>Author:</b></dt>
+	
+							<dd></dd>
+						
+			</dl>
 
 <br>
 
@@ -68,24 +74,13 @@
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">for ( macro_var_list= , in= , do= )</a></b></code>
+					<code><b><a href="#macro1">gee ( dsn= , x= , y= , time= , subject= , ccovar= , dcovar= , dist=normal , link=identity , wcorr=exch , sigDigits=0.001 , outAll=_NULL_ , outCore=tmp , outObs=tmp )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 		
 	</table>
 
-	<br><a name="summary_macro_call"></a>
-	<table class="gtbl" cellpadding="0" cellspacing="0">
-		<tr>
-			<th colspan="2">Macro Call Summary</th>
-		</tr>
-		<tr valign="top">
-			<td>
-				<code>_for_loop_, qleft, qsubstr, qtrim, trim</code>
-			</td>
-		</tr>
-	</table>
 
 
 
@@ -100,19 +95,48 @@
 				
 		<a name="macro1"></a>
 
-		<h3>for</h3>
-		<pre>%macro <b>for ( macro_var_list= , in= , do= )</b>;</pre>
+		<h3>gee</h3>
+		<pre>%macro <b>gee ( dsn= , x= , y= , time= , subject= , ccovar= , dcovar= , dist=normal , link=identity , wcorr=exch , sigDigits=0.001 , outAll=_NULL_ , outCore=tmp , outObs=tmp )</b>;</pre>
 		<dl>
 			<dd></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>macro_var_list - 
+													<dd>dsn - 
 															</dd>
-													<dd>in - 
+													<dd>x - 
 															</dd>
-													<dd>do - 
+													<dd>y - 
+															</dd>
+													<dd>time - 
+															</dd>
+													<dd>subject - 
+															</dd>
+													<dd>ccovar - 
+															</dd>
+													<dd>dcovar - 
+															</dd>
+													<dd>dist - 
+																 (default value: normal)
+															</dd>
+													<dd>link - 
+																 (default value: identity)
+															</dd>
+													<dd>wcorr - 
+																 (default value: exch)
+															</dd>
+													<dd>sigDigits - 
+																 (default value: 0.001)
+															</dd>
+													<dd>outAll - 
+																 (default value: _NULL_)
+															</dd>
+													<dd>outCore - 
+																 (default value: tmp)
+															</dd>
+													<dd>outObs - 
+																 (default value: tmp)
 															</dd>
 																
 									</dl>
@@ -146,7 +170,6 @@
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
-											<li><a href="#summary_macro_call">MACRO CALL</a></li>	
 									</ul>
 			</td>
 		</tr>

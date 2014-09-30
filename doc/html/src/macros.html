@@ -95,7 +95,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">anova ( category= , numerical= , dsn=&ds , adjust=tukey , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</a></b></code>
+					<code><b><a href="#macro1">anova ( category= , numerical= , dsn=&ds , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANOVA loop Runs an ANOVA and outputs the results into a dataset that can be converted into a nice format that can easily be pushed to LaTeX/pgfplotstable to generate tables in reports or presentations.
 				</td>
 			</tr>
@@ -158,7 +158,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro10">freq ( vars= , by= , dsn=&ds , outds=_NULL_ )</a></b></code>
+					<code><b><a href="#macro10">freq ( vars= , by= , where= , dsn=&ds , outds=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Macro for frequencies of categorical/discrete variables.
 				</td>
 			</tr>
@@ -172,28 +172,35 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro12">nth_ds ( nth_row= , ds= )</a></b></code>
+					<code><b><a href="#macro12">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Merge output datasets from the means and anova macros This macro merges the results of the ``means`' and ``anova`' macro, which are datasets, into one dataset with the p-value included for difference between groups.
+				</td>
+			</tr>
+					
+			<tr valign="top">
+				<td>
+					<code><b><a href="#macro13">nth_ds ( nth_row= , ds= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro13">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
+					<code><b><a href="#macro14">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro14">output_data ( dataset= , dir= )</a></b></code>
+					<code><b><a href="#macro15">output_data ( dataset= , dir= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Output dataset to csv file <p> Saves a dataset, typically one that contains the results from a statistical test (eg.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro15">pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</a></b></code>
+					<code><b><a href="#macro16">pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
@@ -242,7 +249,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<a name="macro1"></a>
 
 		<h3>anova</h3>
-		<pre>%macro <b>anova ( category= , numerical= , dsn=&ds , adjust=tukey , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</b>;</pre>
+		<pre>%macro <b>anova ( category= , numerical= , dsn=&ds , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</b>;</pre>
 		<dl>
 			<dd>ANOVA loop Runs an ANOVA and outputs the results into a dataset that can be converted into a nice format that can easily be pushed to LaTeX/pgfplotstable to generate tables in reports or presentations. <p> An ANCOVA can be run if ccovar or dcovar variables are used (ie. adjusting for confounders).  The output of this macro can be used in conjunction with the %means macro to make into a nice table format with means and SD, etc.</dd>
 			<dd>
@@ -258,6 +265,10 @@ Contains macros that are used to make statistical analysis more or less easier, 
 															</dd>
 													<dd>adjust - Adjustment made for post-hoc test.
 																 (default value: tukey)
+															</dd>
+													<dd>by - Split the analysis up by a categorical variable
+															</dd>
+													<dd>where - Subset the data by the where variable
 															</dd>
 													<dd>outds - Main output that is the purpose for this macro.
 																 (default value: _NULL_)
@@ -524,7 +535,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		<a name="macro10"></a>
 
 		<h3>freq</h3>
-		<pre>%macro <b>freq ( vars= , by= , dsn=&ds , outds=_NULL_ )</b>;</pre>
+		<pre>%macro <b>freq ( vars= , by= , where= , dsn=&ds , outds=_NULL_ )</b>;</pre>
 		<dl>
 			<dd>Macro for frequencies of categorical/discrete variables.  Only does univariate frequencies.</dd>
 			<dd>
@@ -534,6 +545,8 @@ Contains macros that are used to make statistical analysis more or less easier, 
 													<dd>vars - Discrete variables to analyze
 															</dd>
 													<dd>by - Variable to group by
+															</dd>
+													<dd>where - 
 															</dd>
 													<dd>dsn - Name of dataset to analyze
 																 (default value: &ds)
@@ -585,6 +598,40 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 		<a name="macro12"></a>
 
+		<h3>mergeMeansAnova</h3>
+		<pre>%macro <b>mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</b>;</pre>
+		<dl>
+			<dd>Merge output datasets from the means and anova macros This macro merges the results of the ``means`' and ``anova`' macro, which are datasets, into one dataset with the p-value included for difference between groups.  The output for the means needs to have had an argument for the by variable (``by=`'), so that the means dataset can be transformed from long to wide.  The variables from both the ``means`' and the ``anova`' macro need to be in the same order/sequence.</dd>
+			<dd>
+				<dl>
+											<dt><br><b>Parameters:</b></dt>
+							
+													<dd>meansds - Output dataset from the ``means`' macro, needs to be the first argument
+															</dd>
+													<dd>anovads - Output dataset from the ``anova`' macro, has to be the second argument
+															</dd>
+													<dd>byVar - The categorical (or discrete/binary number, such as for an order) variable that was used to group both the anova and the means datasets
+															</dd>
+													<dd>byVarNumLevels - The levels of the discrete/binary number ``byVar`', such as 0 1, 0 1 2 3, etc
+																 (default value: _NULL_)
+															</dd>
+													<dd>byVarCatLevels - The levels of the categorical ``byVar`', such as Yes No or Female Male
+																 (default value: _NULL_)
+															</dd>
+													<dd>outds - Optional as the output dataset will be named after the ``means`' dataset
+																 (default value: _NULL_)
+															</dd>
+																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Outputs a dataset with the merged means and p-values for differences between groups</dd>
+									</dl>
+			</dd>
+		</dl>
+
+					<div class="hr"></div>
+					
+		<a name="macro13"></a>
+
 		<h3>nth_ds</h3>
 		<pre>%macro <b>nth_ds ( nth_row= , ds= )</b>;</pre>
 		<dl>
@@ -604,7 +651,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro13"></a>
+		<a name="macro14"></a>
 
 		<h3>oddsratio</h3>
 		<pre>%macro <b>oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</b>;</pre>
@@ -643,7 +690,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro14"></a>
+		<a name="macro15"></a>
 
 		<h3>output_data</h3>
 		<pre>%macro <b>output_data ( dataset= , dir= )</b>;</pre>
@@ -666,7 +713,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro15"></a>
+		<a name="macro16"></a>
 
 		<h3>pca</h3>
 		<pre>%macro <b>pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</b>;</pre>
@@ -757,7 +804,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on September 10, 2014</td>
+		<td align="left" width="50%">Last updated on September 30, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">
