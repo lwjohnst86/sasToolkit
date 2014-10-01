@@ -1,3 +1,16 @@
+---
+title: "SAS Toolkit for running cleaner statistical analyses: Using macros to declutter your code"
+author: Luke W. Johnston
+date: 2014-08-22
+fontsize: 12pt
+geometry: margin=1in
+papersize: letterpaper
+toc: TRUE
+header-includes:
+- \usepackage[bitstream-charter]{mathdesign}
+...
+
+\newpage\newpage
 
 # Purpose #
 
@@ -92,10 +105,12 @@ When writing up SAS macros, always include documentation.  To make it
 quicker to type of formatted documentation, use the table below for
 using "quick tags" that can be converted later.
 
+\newpage\newpage
+
 | Quick tag                                 | Converted html tag |
 |-------------------------------------------+--------------------|
-| \`\`word (two backticks)                  | \<code\>           |
-| word\`\` (two backticks)                  | \</code\>          |
+| \``word (two backticks)                   | \<code\>           |
+| word\`` (two backticks)                   | \</code\>          |
 | \\\\                                      | \<p\>              |
 | \[word                                    | \<b\>              |
 | word\]                                    | \</b\>             |
