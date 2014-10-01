@@ -93,7 +93,7 @@ quicker to type of formatted documentation, use the table below for
 using "quick tags" that can be converted later.
 
 | Quick tag                                 | Converted html tag |
-|-------------------------------------------+--------------------|
+|-------------------------------------------|--------------------|
 | \`\`word (two backticks)                  | \<code\>           |
 | word\`\` (two backticks)                  | \</code\>          |
 | \\\\                                      | \<p\>              |
