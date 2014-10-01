@@ -1,13 +1,15 @@
 * TASK LIST
 
+
 *** TODO Update the README
-
-*** TODO Include the DocItOut pdf with the repo
-
-*** TODO Create a script to cut away quick tags (``) to real tags (<code>)
     :PROPERTIES:
-    :ID:       2ceef1bc-2672-4f82-86d8-e22057a088ff
+    :ID:       ccb0b4ce-acd0-4bb5-b607-dfb90b968050
     :END:
+    - [X] Include an installation and usage section
+    - [X] Update the folders section
+    - [X] Develop the style guide section
+    - [ ] Develop and describe a versioning system
+    - [X] Point the style guide to my bin with the quickSASTags script
 
 *** TODO Make the SAS macros into an autocall library
     :PROPERTIES:
@@ -28,14 +30,6 @@
     Get DocItOut to recognize README.md the same as it recognizes
     readme.txt.
 
-*** TODO Make a makefile to change name of readme from .txt to .md?
-    :PROPERTIES:
-    :ID:       7034661a-07f4-425a-b825-3be7f4762b1f
-    :END:
-*** TODO Create way to produce example documentation like in roxygen
-    :PROPERTIES:
-    :ID:       42e8e5ef-4e79-4511-82d5-a39b065836e8
-    :END: 
 *** TODO Develop a version numbering system
     :PROPERTIES:
     :ID:       2f9b9609-ce49-424d-8dce-db7a411323f2
@@ -46,11 +40,30 @@
     new macros, and + 0.0.1 for edits to existing macros from past
     release points.
 
+*** DONE Include the DocItOut pdf with the repo
+    CLOSED: [2014-09-30 Tue 21:50]
+    :PROPERTIES:
+    :ID:       7c6efd22-17e2-423d-a428-a38ee7fbec0b
+    :END:
+
+*** DONE Create a script to cut away quick tags (``) to real tags (<code>)
+    CLOSED: [2014-09-30 Tue 21:50]
+    :PROPERTIES:
+    :ID:       2ceef1bc-2672-4f82-86d8-e22057a088ff
+    :END:
+
+*** DONE Create way to produce example documentation like in roxygen
+    CLOSED: [2014-09-30 Tue 21:51]
+    :PROPERTIES:
+    :ID:       42e8e5ef-4e79-4511-82d5-a39b065836e8
+    :END: 
+
 *** DONE Use a development branch vs a master branch 
     CLOSED: [2014-08-12 Tue 13:21]
     To have it more stable over time.
 
-*** TODO Add command in output_data to create a output dir
+*** DONE Add command in output_data to create a output dir
+    CLOSED: [2014-09-30 Tue 21:51]
     :PROPERTIES:
     :ID:       e08688b2-5c23-4576-8004-ed146f1dceb6
     :END:
