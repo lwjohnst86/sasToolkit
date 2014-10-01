@@ -48,15 +48,17 @@
 <h2>root</h2>
 <h1>gee</h1>
 
-... title of macro goes here... ... description of macro goes here...
+Generalized Estimating Equations Analysis
 
 
 	<dl>
 	
 				<dt><br><b>Author:</b></dt>
 	
-							<dd></dd>
+							<dd>Luke W. Johnston</dd>
 						
+					<dt><br><b>Created:</b></dt>
+			<dd>2014-09-20</dd>
 			</dl>
 
 <br>
@@ -75,7 +77,7 @@
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro1">gee ( dsn= , x= , y= , time= , subject= , ccovar= , dcovar= , dist=normal , link=identity , wcorr=exch , sigDigits=0.001 , outAll=_NULL_ , outCore=tmp , outObs=tmp )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generalized estimating equation (GEE) loop for exposures and outcomes.
 				</td>
 			</tr>
 		
@@ -98,47 +100,49 @@
 		<h3>gee</h3>
 		<pre>%macro <b>gee ( dsn= , x= , y= , time= , subject= , ccovar= , dcovar= , dist=normal , link=identity , wcorr=exch , sigDigits=0.001 , outAll=_NULL_ , outCore=tmp , outObs=tmp )</b>;</pre>
 		<dl>
-			<dd></dd>
+			<dd>Generalized estimating equation (GEE) loop for exposures and outcomes. <p> This macro runs a longitudinal statistical test known as <b>generalized estimating equations</b>.  As with my other macros (for example <code>beta_glm<code>), this macro has two loops: one loops through all of the exposure or <code>x<code> variables and another that will loop through all the outcome or <code>y<code> variables. <p> By default, the macro prints the main findings from the GEE analysis.  However, output datasets can be specified (for instance, <code>outCore<code>), which can than be "massaged" and/or output into a <code>.csv<code> file.  Many of the macro variables can have multiple variables specified, but each additional variable must be separated by a space <b>not a comma</b>. <p> While GEE in SAS has to have the distribution, link, and working correlation matrix specified, GEE is very robust (aka consistent, reliable) to misspecified assumptions. <p> <b>Examples:</b><br></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dsn - 
+													<dd>dsn - Dataset that contains the variables of interest. This is a positional variable and must be declared first
 															</dd>
-													<dd>x - 
+													<dd>x - The independent or exposure variables.  If more than one <code>x<code> is provided, the macro will loop through each <code>x<code> and run the GEE on each
 															</dd>
-													<dd>y - 
+													<dd>y - The dependent or outcome variables.  As with the <code>x</code> variable, more than one outcome variable will be looped through the GEE
 															</dd>
-													<dd>time - 
+													<dd>time - The variable used to indicate time, for example <code>VisitNumber<code> or <code>Age</code>
 															</dd>
-													<dd>subject - 
+													<dd>subject - The variable that specifies the identifier for the subject/participant, for example <code>SID<code> or <code>ID</code>
 															</dd>
-													<dd>ccovar - 
+													<dd>ccovar - The continuous covariates or confounders
 															</dd>
-													<dd>dcovar - 
+													<dd>dcovar - The discrete/categorical covariates or confounders
 															</dd>
-													<dd>dist - 
+													<dd>dist - The distribution assumption, which is dependent on the type of data the <code>x<code> or the <code>y<code> is (for example, continuous or discrete).  Other distributions include Normal, Poisson, Binomial, Multinomial, etc.
 																 (default value: normal)
 															</dd>
-													<dd>link - 
+													<dd>link - The link function to be used in conjunction with the <code>dist<code> variable.  For example, when <code>dist=poisson<code>, the default link is <code>log<code>.  Other links include Logit, Identity, Inverse, etc.
 																 (default value: identity)
 															</dd>
-													<dd>wcorr - 
+													<dd>wcorr - The specified GEE working correlation matrix.  The standard and commonly used is the Exchangeable (or <code>exch<code>), but others include Autoregressive and Independent.  GEE is very robust (aka reliable/consistent) to a misspecified working correlation matrix
 																 (default value: exch)
 															</dd>
-													<dd>sigDigits - 
+													<dd>sigDigits - Significant digits to round the output results to
 																 (default value: 0.001)
 															</dd>
-													<dd>outAll - 
+													<dd>outAll - The name of the results dataset that contains all of the parameter estimates (that is, including the covariates)
 																 (default value: _NULL_)
 															</dd>
-													<dd>outCore - 
+													<dd>outCore - The name of the results dataset that contains the parameter estimates of <b>only</b> the <code>x<code> and <code>y<code> variables
 																 (default value: tmp)
 															</dd>
-													<dd>outObs - 
+													<dd>outObs - The output results dataset that contains the observations used in the analysis
 																 (default value: tmp)
 															</dd>
 																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Prints GEE model info, working correlations, and the parameter estimates.  By default, no result datasets are output.  However, datasets can be output to be massaged or output into a file.</dd>
 									</dl>
 			</dd>
 		</dl>
