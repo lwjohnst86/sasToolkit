@@ -13,43 +13,6 @@
 
 /**
 
-    Import gzipped csv dataset
-
-    <p>
-
-    Imports a compressed (gz) csv file into SAS.  SAS uncompresses it,
-    reads it, then deletes the uncompressed version while keeping the
-    compressed version.
-    
-    <p>
-    
-    Dependencies: some type of Unix shell, `csvimport` macro.
-    
-    * @param dataset Input dataset, with full path to its location
-    * @param outds Output dataset
-    * @param dir Directory where the input dataset is stored
-    * @return Creates a temp dataset in SAS
-    * @example
-
-    %csvgz_import(dataset=cohortData, outds=working, dir=./data);
-    
-    */
-%macro csvgz_import(dataset=, outds=&ds, dir= );
-    * Check if dir exists, create if needed;
-    x "if [ ! -d &dir ] ; then mkdir &dir; fi";
-
-    * Uncompress the file ;
-    x gunzip -c &dataset. > &dir./temp.csv;
-    
-    * Import using csvimport macro;
-    %csvimport(dataset=temp, outds=&outds, dir=&dir);
-
-    * Delete the temporary uncompressed file;
-    x rm &dir./temp.csv;
-    %mend csvgz_import;
-
-/**
-
     Import csv dataset
 
     <p>
@@ -827,7 +790,7 @@
             end;
 
         format P pvalue8.2;
-        drop Dependent NObs _control_;
+        drop Dependent;
     run;
     %mend mergeMeansAnova;
 
