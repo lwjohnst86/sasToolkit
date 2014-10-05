@@ -1,36 +1,46 @@
 * TASK LIST
 
+*** TODO Start adding pandoc syntax to files.
+    SCHEDULED: <2014-10-30 Thu>
+    I need to figure out how to move combine DocItOut with md syntax
 
-*** TODO Update the README
+*** TODO Move one macro from macros.sas into its own file
+    DEADLINE: <2014-10-07 Tue +3d>
+
+*** TODO Use StatRep pacakge for making pdf files of doc
+    SCHEDULED: <2014-10-14 Tue>
+    :PROPERTIES:
+    :ID:       8f6c4fe2-83cc-4158-8158-2bd9741b9cd1
+    :END:
+
+*** DONE Update the README
+    CLOSED: [2014-10-05 Sun 19:21]
     :PROPERTIES:
     :ID:       ccb0b4ce-acd0-4bb5-b607-dfb90b968050
     :END:
     - [X] Include an installation and usage section
     - [X] Update the folders section
     - [X] Develop the style guide section
-    - [ ] Develop and describe a versioning system
+    - [X] Develop and describe a versioning system
     - [X] Point the style guide to my bin with the quickSASTags script
 
 *** TODO Make the SAS macros into an autocall library
+    SCHEDULED: <2014-10-23 Thu>
     :PROPERTIES:
     :ID:       3d8d20be-8c02-4b96-911e-3d6d3bc3bdc4
     :END:
 
 *** TODO Create tool to convert SAS comments into md or pdf
+    DEADLINE: <2014-10-13 Mon +1w>
     :PROPERTIES:
     :ID:       b2e0ecc8-222a-43bd-9310-052922498a52
     :END:
     It will need to also run through several files in
-    the macro directory. Include a TOC.
+    the macro directory. Include a TOC. Use StatRep.
+    - [ ] Test out StatRep on one macro.
 
-*** TODO Develop README file more.
-    :PROPERTIES:
-    :ID:       83ecf69a-6e52-4cab-b99a-0c772aca8b69
-    :END:  
-    Get DocItOut to recognize README.md the same as it recognizes
-    readme.txt.
-
-*** TODO Develop a version numbering system
+*** DONE Develop a version numbering system
+    CLOSED: [2014-10-05 Sun 19:23]
     :PROPERTIES:
     :ID:       2f9b9609-ce49-424d-8dce-db7a411323f2
     :END:

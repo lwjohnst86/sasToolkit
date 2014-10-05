@@ -1,3 +1,5 @@
+# Tell Git which files to ignore
+
 *~
 *.sas7bcat
 SID-license/
