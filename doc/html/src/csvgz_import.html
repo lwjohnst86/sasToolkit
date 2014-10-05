@@ -27,6 +27,7 @@
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
+											<li><a href="#summary_macro_call">MACRO CALL</a></li>	
 									</ul>
 			</td>
 		</tr>
@@ -46,19 +47,19 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>chisq</h1>
+<h1>csvgz_import</h1>
 
-Chi-Square Statistical Analysis.
+Import gzipped compressed <code>csv<code> into SAS
 
 
 	<dl>
 	
 				<dt><br><b>Author:</b></dt>
 	
-							<dd>Luke Johnston</dd>
+							<dd>Luke W. Johnston</dd>
 						
 					<dt><br><b>Created:</b></dt>
-			<dd>2014-09-29</dd>
+			<dd>2014-10-05</dd>
 			</dl>
 
 <br>
@@ -76,13 +77,24 @@ Chi-Square Statistical Analysis.
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">chisq ( vars= , dsn= , tests=chisq , outFreq=NULL , outChi=tmp , order=freq , testOpt= , where= , by= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs a Chi-Square analysis.
+					<code><b><a href="#macro1">csvgz_import ( dataset= , outds=&ds , dir= )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Imports a gzipped (compressed) <code>csv<code> file into the SAS work space.
 				</td>
 			</tr>
 		
 	</table>
 
+	<br><a name="summary_macro_call"></a>
+	<table class="gtbl" cellpadding="0" cellspacing="0">
+		<tr>
+			<th colspan="2">Macro Call Summary</th>
+		</tr>
+		<tr valign="top">
+			<td>
+				<code>csvimport</code>
+			</td>
+		</tr>
+	</table>
 
 
 
@@ -97,39 +109,24 @@ Chi-Square Statistical Analysis.
 				
 		<a name="macro1"></a>
 
-		<h3>chisq</h3>
-		<pre>%macro <b>chisq ( vars= , dsn= , tests=chisq , outFreq=NULL , outChi=tmp , order=freq , testOpt= , where= , by= )</b>;</pre>
+		<h3>csvgz_import</h3>
+		<pre>%macro <b>csvgz_import ( dataset= , outds=&ds , dir= )</b>;</pre>
 		<dl>
-			<dd>Runs a Chi-Square analysis. <p> Chi square is a simple statistical test to calculate differences between proportions in a 2x2 and other contingency/frequency tables.  This macro simply runs a chi-square test and outputs the frequency and probability of difference between groups. <p> <b>Examples:</b> <br> <code>  Using the SAS bone marrow transplant dataset; <br> %chisq(Group Status, sashelp.bmt, where=T lt 2000, tests=chisq or, <br> testOpt=relrisk, outChi=chi); </code></dd>
+			<dd>Imports a gzipped (compressed) <code>csv<code> file into the SAS work space. <p> This macro is used to uncompress than read in a <code>csv.gz</code> (meaning gzipped) file.  SAS temporarily uncompresses the file, so that the original file remains intact. <p> <b>Requirements:</b> <code>%csvimport()<code> macro and a Unix/Linux operating system (OS).  I will need to make this macro more flexible for other OS. <p> <b>Examples:</b><br> <code>%csvgz_import(dataset=/home/username/data/projectData.csv.gz, outds=working,<br> dir=/home/username/projects/researchprojects/diabetesObesity/data);</code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>vars - Contains the variables to be analyzed. The argument is positional --- the variables must be specified first before other arguments
+													<dd>dataset - The importing dataset, with the full path to the dataset to be imported
 															</dd>
-													<dd>dsn - Dataset name which contains the variables. The argument is positional --- the variable must be specified second
+													<dd>outds - The output dataset
+																 (default value: &ds)
 															</dd>
-													<dd>tests - Specify which tests to run
-																 (default value: chisq)
-															</dd>
-													<dd>outFreq - Output dataset which contains the frequencies
-																 (default value: NULL)
-															</dd>
-													<dd>outChi - Output dataset which contains the chi-square statistics
-																 (default value: tmp)
-															</dd>
-													<dd>order - The order in which to display the variables in the <code>outFreq</code> dataset
-																 (default value: freq)
-															</dd>
-													<dd>testOpt - Options to pass to the tables <code>chisq</code> command
-															</dd>
-													<dd>where - To subset the data before analyzing the variables
-															</dd>
-													<dd>by - To run the analysis separately by categories of the by variable
+													<dd>dir - The directory where the data will temporarily created. The recommended directory is where the subsetted data will be saved to in the research project folder structure
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Prints the frequencies and chi-square statistic results by default. Will output datasets if specified.</dd>
+						<dd>Imports a compressed (<code>.csv.gz<code>) file to the specified directory.</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -161,6 +158,7 @@ Chi-Square Statistical Analysis.
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
+											<li><a href="#summary_macro_call">MACRO CALL</a></li>	
 									</ul>
 			</td>
 		</tr>

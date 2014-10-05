@@ -137,70 +137,63 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro7">csvgz_import ( dataset= , outds=&ds , dir= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import gzipped csv dataset <p> Imports a compressed (gz) csv file into SAS.
-				</td>
-			</tr>
-					
-			<tr valign="top">
-				<td>
-					<code><b><a href="#macro8">csvimport ( dataset= , outds=&dataset , dir=../dataset )</a></b></code>
+					<code><b><a href="#macro7">csvimport ( dataset= , outds=&dataset , dir=../dataset )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import csv dataset <p> Imports a non-compressed csv (comma separated values) dataset and puts it in the SAS workspace (outds).
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro9">discr_means ( discrete= )</a></b></code>
+					<code><b><a href="#macro8">discr_means ( discrete= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro10">freq ( vars= , by= , where= , dsn=&ds , outds=_NULL_ )</a></b></code>
+					<code><b><a href="#macro9">freq ( vars= , by= , where= , dsn=&ds , outds=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Macro for frequencies of categorical/discrete variables.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro11">means ( vars= , by= , class= , where= , outds=_NULL_ , dsn=&ds )</a></b></code>
+					<code><b><a href="#macro10">means ( vars= , by= , class= , where= , outds=_NULL_ , dsn=&ds )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Summary statistics: means and medians <p> Macro to generate univariate (or divariate if a class variable is specified) means of continuous variables.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro12">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
+					<code><b><a href="#macro11">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Merge output datasets from the means and anova macros This macro merges the results of the ``means`' and ``anova`' macro, which are datasets, into one dataset with the p-value included for difference between groups.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro13">nth_ds ( nth_row= , ds= )</a></b></code>
+					<code><b><a href="#macro12">nth_ds ( nth_row= , ds= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro14">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
+					<code><b><a href="#macro13">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro15">output_data ( dataset= , dir= )</a></b></code>
+					<code><b><a href="#macro14">output_data ( dataset= , dir= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Output dataset to csv file <p> Saves a dataset, typically one that contains the results from a statistical test (eg.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro16">pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</a></b></code>
+					<code><b><a href="#macro15">pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
@@ -214,7 +207,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 		</tr>
 		<tr valign="top">
 			<td>
-				<code>csvimport, for</code>
+				<code>for</code>
 			</td>
 		</tr>
 	</table>
@@ -462,32 +455,6 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 		<a name="macro7"></a>
 
-		<h3>csvgz_import</h3>
-		<pre>%macro <b>csvgz_import ( dataset= , outds=&ds , dir= )</b>;</pre>
-		<dl>
-			<dd>Import gzipped csv dataset <p> Imports a compressed (gz) csv file into SAS.  SAS uncompresses it, reads it, then deletes the uncompressed version while keeping the compressed version. <p> Dependencies: some type of Unix shell, `csvimport` macro.</dd>
-			<dd>
-				<dl>
-											<dt><br><b>Parameters:</b></dt>
-							
-													<dd>dataset - Input dataset, with full path to its location
-															</dd>
-													<dd>outds - Output dataset
-																 (default value: &ds)
-															</dd>
-													<dd>dir - Directory where the input dataset is stored
-															</dd>
-																
-											<dt><br><b>Returns:</b></dt>
-						<dd>Creates a temp dataset in SAS</dd>
-									</dl>
-			</dd>
-		</dl>
-
-					<div class="hr"></div>
-					
-		<a name="macro8"></a>
-
 		<h3>csvimport</h3>
 		<pre>%macro <b>csvimport ( dataset= , outds=&dataset , dir=../dataset )</b>;</pre>
 		<dl>
@@ -513,7 +480,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro9"></a>
+		<a name="macro8"></a>
 
 		<h3>discr_means</h3>
 		<pre>%macro <b>discr_means ( discrete= )</b>;</pre>
@@ -532,7 +499,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro10"></a>
+		<a name="macro9"></a>
 
 		<h3>freq</h3>
 		<pre>%macro <b>freq ( vars= , by= , where= , dsn=&ds , outds=_NULL_ )</b>;</pre>
@@ -563,7 +530,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro11"></a>
+		<a name="macro10"></a>
 
 		<h3>means</h3>
 		<pre>%macro <b>means ( vars= , by= , class= , where= , outds=_NULL_ , dsn=&ds )</b>;</pre>
@@ -596,7 +563,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro12"></a>
+		<a name="macro11"></a>
 
 		<h3>mergeMeansAnova</h3>
 		<pre>%macro <b>mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</b>;</pre>
@@ -630,7 +597,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro13"></a>
+		<a name="macro12"></a>
 
 		<h3>nth_ds</h3>
 		<pre>%macro <b>nth_ds ( nth_row= , ds= )</b>;</pre>
@@ -651,7 +618,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro14"></a>
+		<a name="macro13"></a>
 
 		<h3>oddsratio</h3>
 		<pre>%macro <b>oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</b>;</pre>
@@ -690,7 +657,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro15"></a>
+		<a name="macro14"></a>
 
 		<h3>output_data</h3>
 		<pre>%macro <b>output_data ( dataset= , dir= )</b>;</pre>
@@ -713,7 +680,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro16"></a>
+		<a name="macro15"></a>
 
 		<h3>pca</h3>
 		<pre>%macro <b>pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</b>;</pre>
@@ -804,7 +771,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on September 30, 2014</td>
+		<td align="left" width="50%">Last updated on October 05, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">

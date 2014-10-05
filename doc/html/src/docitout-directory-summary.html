@@ -23,23 +23,37 @@
 <h1>root</h1>
 
 Contains all macro files that can be referenced or copied to the
-relevant project folders.
-
+relevant project folders.  The best way to use these files is to add
+the directory to your SAS AUTOCALL library.  See the <code>README.pdf</code>
+file in the <code>sasToolkit<code> folder.
 <p>
 
-These SAS files are currently being maintained by Luke.  Refer to the
-GitHub repository for an up-to-date version of these SAS macro files.
-
+These SAS files are currently being maintained by Luke W. Johnston.
+Refer to the GitHub repository (github.com/lwjohnst86/sasToolkit) for
+an up-to-date version of these SAS macro files.
 <p>
 
-Preferably, when using this macros, either reference them in their
-original location (e.g. $HOME/SAS, or $HOME/Documents/SAS) or pasting
-the macro files into the project directory (folder).  If the files are
-to be pasted into the diretory (i.e. for modularity of your research
-project), it would be best to change the permissions of the file to
-`read-only`. This would ensure that the macro files outside of the
-master location would not be modified and thus maintaining your sanity
-(as multiple copies of the macro files is a nightmare to manage).
+Preferably, when using these macros, either reference them in their
+original location (e.g. $HOME/sasToolkit, or
+$HOME/Documents/sasToolkit, or C:\) or pasting the macro files into the
+project directory.  If the files are to be pasted into the diretory
+(i.e. for modularity of your research project), it would be best to
+change the permissions of the file to <code>read-only<code>. This would ensure
+that the macro files outside of the master location would not be
+modified and thus maintaining your sanity (as multiple copies of the
+macro files is a nightmare to manage).  The best bet is to use the
+AUTOCALL facility in SAS.
+<p>
+
+<b>A note on terminology:</b><br>
+
+directory = folder<br>
+
+$HOME = your home user folder (such as /home/joe/ for Linux,
+C:\Users\joe for Windows, /Users/joe for Mac)<br>
+
+AUTOCALL library = please see the <code>README.pdf<code> in the
+<code>sasToolkit<code> folder.
 
 
 <br><br>
@@ -53,6 +67,10 @@ master location would not be modified and thus maintaining your sanity
 			<td>Chi-Square Statistical Analysis.&nbsp;</td>
 		</tr>
 			<tr valign="top">
+			<td width="20%"><a href="csvgz_import.html">csvgz_import</a></td>
+			<td>Import gzipped compressed <code>csv<code> into SAS.&nbsp;</td>
+		</tr>
+			<tr valign="top">
 			<td width="20%"><a href="for.html">for</a></td>
 			<td>&nbsp;</td>
 		</tr>
@@ -63,6 +81,10 @@ master location would not be modified and thus maintaining your sanity
 			<tr valign="top">
 			<td width="20%"><a href="macros.html">macros</a></td>
 			<td>Contains macros that are used to make statistical analysis more or less easier, more manageable, and the code in the main script to be cleaner.&nbsp;</td>
+		</tr>
+			<tr valign="top">
+			<td width="20%"><a href="statrep_macros.html">statrep_macros</a></td>
+			<td>&nbsp;</td>
 		</tr>
 	</table>
 
@@ -87,7 +109,7 @@ master location would not be modified and thus maintaining your sanity
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on September 30, 2014</td>
+		<td align="left" width="50%">Last updated on October 05, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">
