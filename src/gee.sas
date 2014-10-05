@@ -95,13 +95,15 @@
     %local i j count;
 
     * Put information on macro arguments into the log;
+    %put ;
+    %put # Generalized estimating equation analysis: ;
     %put GEE is running with a &dist distribution assumption, ;
-    %put     an &link link, and using the &wcorr working correlation ;
-    %put     matrix.  The cluster, subject, or case is the &subject ;
-    %put     variable.  The time variable used is &time.;
-
+    %put %str(     )an &link link, and using the &wcorr working correlation ;
+    %put %str(     )matrix.  The cluster, subject, or case is the &subject ;
+    %put %str(     )variable.  The time variable used is &time.;
+    %put ;
     %put The GEE is conditioned on/adjusted for &ccovar (continuous) ;
-    %put     and &dcovar (discrete);
+    %put %str(     )and &dcovar (discrete);
 
     * Start the counter, which will be used to merge all the ;
     * looped datasets;
@@ -116,7 +118,7 @@
             %let xvar = %scan(&x, &j);
 
             * Put information out into the log;
-            %put Running GEE on &yvar and &xvar;
+            %put %str(*) Running GEE on &yvar and &xvar;
 
             * Suppress output to the lst file/output log;
             ods listing close;
@@ -143,7 +145,6 @@
             ods listing;
 
             * Print relevant information on the GEE analysis;
-            %put GEE model information: ;
             proc print data=info;
                 var Label1 cValue1;
             proc print data=converge;
@@ -159,8 +160,8 @@
 
             * Massage the output results into a prettier format;
             data est&count;
-                length Independent $ 45. Dependent $ 45. estSE $ 45.
-                    estCL $ 45.;
+                length Independent $ 45. Dependent $ 45.;
+                length estSE $ 43. estCL $ 45. Parm $ 45.;
                 set est&count;
                 format ProbZ pvalue8.3;
                 * Input the y and x into the dataset for documenting;
@@ -215,4 +216,7 @@
     run;
     proc print data=&outObs;
     run;
+
+    * Put an extra end space for the next macro;
+    %put ;
     %mend gee;
