@@ -36,38 +36,6 @@
 
 /**
 
-    Print dataset variable names
-
-    <p>
-
-    The macro takes a dataset or multiple datasets in a given library
-    (lib) and prints the variable names (the header row).  It also prints
-    out the variable type (character vs numeric) and the variable format.
-
-    * @param dataset Input dataset or datasets
-    * @param lib The libname where the dataset is located
-    * @return Prints the variable names of a dataset
-    * @example
-
-    %contents(dataset=cohortData, lib=work);
-
-    */
-%macro contents(dataset=, lib=work);
-    %do i = 1 %to %sysfunc(countw(&dataset));
-        %let dsn = %scan(&dataset, &i);
-        ods output Variables=vars (keep=Num Variable Type Format);
-        ods listing close;
-        proc contents order=casecollate data=&lib..&dsn;
-        run;
-        ods listing;
-        ods output close;
-        proc print data=vars;
-        run;
-        %end;
-    %mend contents;
-
-/**
-
     Output dataset to csv file
 
     <p>
