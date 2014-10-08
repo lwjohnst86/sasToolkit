@@ -2,10 +2,16 @@
 
 *** TODO Start adding pandoc syntax to files.
     SCHEDULED: <2014-10-30 Thu>
+    :PROPERTIES:
+    :ID:       27648140-a84c-4fac-b5e2-f712664c2be5
+    :END:
     I need to figure out how to move combine DocItOut with md syntax
 
 *** TODO Move one macro from macros.sas into its own file
     DEADLINE: <2014-10-07 Tue +3d>
+    :PROPERTIES:
+    :ID:       34700dca-91ca-4a8d-bcab-47abb98707c8
+    :END:
 
 *** TODO Use StatRep pacakge for making pdf files of doc
     SCHEDULED: <2014-10-14 Tue>
@@ -31,7 +37,7 @@
     :END:
 
 *** TODO Create tool to convert SAS comments into md or pdf
-    DEADLINE: <2014-10-13 Mon +1w>
+    DEADLINE: <2014-10-13 Mon +1w -1d>
     :PROPERTIES:
     :ID:       b2e0ecc8-222a-43bd-9310-052922498a52
     :END:
