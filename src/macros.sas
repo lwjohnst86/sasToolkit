@@ -65,24 +65,6 @@
     %output_data(dataset=means, dir=./output);
 
     */
-%macro output_data(dataset= , dir=); 
-    filename temp temp;
-    %put Checking if &dir needs to be created; 
-    x "if [ ! -d &dir ] ; then mkdir &dir; fi";
-    ods csv file=temp; 
-    ods listing close; 
-    proc print data=&dataset; 
-    run; 
-    ods listing; 
-    ods csv close; 
-    data _null_; 
-        infile temp; 
-        file "&dir./&dataset..csv"; 
-        input; 
-        _infile_ = compress(_infile_,'"'); 
-        put _infile_; 
-    run; 
-    %mend output_data; 
 
 /**
 
