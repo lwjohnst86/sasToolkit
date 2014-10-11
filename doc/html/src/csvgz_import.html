@@ -77,7 +77,7 @@ Import gzipped compressed <code>csv<code> into SAS
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">csvgz_import ( dataset= , outds=&ds , dir= )</a></b></code>
+					<code><b><a href="#macro1">csvgz_import ( dataset= , outds=&ds , dir=/tmp )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Imports a gzipped (compressed) <code>csv<code> file into the SAS work space.
 				</td>
 			</tr>
@@ -110,7 +110,7 @@ Import gzipped compressed <code>csv<code> into SAS
 		<a name="macro1"></a>
 
 		<h3>csvgz_import</h3>
-		<pre>%macro <b>csvgz_import ( dataset= , outds=&ds , dir= )</b>;</pre>
+		<pre>%macro <b>csvgz_import ( dataset= , outds=&ds , dir=/tmp )</b>;</pre>
 		<dl>
 			<dd>Imports a gzipped (compressed) <code>csv<code> file into the SAS work space. <p> This macro is used to uncompress than read in a <code>csv.gz</code> (meaning gzipped) file.  SAS temporarily uncompresses the file, so that the original file remains intact. <p> <b>Requirements:</b> <code>%csvimport()<code> macro and a Unix/Linux operating system (OS).  I will need to make this macro more flexible for other OS. <p> <b>Examples:</b><br> <code>%csvgz_import(dataset=/home/username/data/projectData.csv.gz, outds=working,<br> dir=/home/username/projects/researchprojects/diabetesObesity/data);</code></dd>
 			<dd>
@@ -123,6 +123,7 @@ Import gzipped compressed <code>csv<code> into SAS
 																 (default value: &ds)
 															</dd>
 													<dd>dir - The directory where the data will temporarily created. The recommended directory is where the subsetted data will be saved to in the research project folder structure
+																 (default value: /tmp)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
@@ -179,7 +180,7 @@ Import gzipped compressed <code>csv<code> into SAS
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on October 05, 2014</td>
+		<td align="left" width="50%">Last updated on October 11, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">
