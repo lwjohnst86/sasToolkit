@@ -21,8 +21,9 @@
     ** Two SAS help datasets;<br>
     %contents(datasets=class heart, lib=sashelp);<br>
 
-    * @param datasets One or more datasets you want to see the
-    contents of
+    * @param datasets One or more datasets that you want to see the
+    contents within.  It is a positional macro variable, so requires that
+    the variable be given first
 
     * @param lib The libname.  The <code>work<code> libname is the default
     environment SAS uses.  Other examples may be <code>sashelp<code>; you can also
@@ -36,13 +37,13 @@
     specified datasets.
 
     */
-%macro contents(datasets=, lib=work, outds=tmp);
+%macro contents(datasets, lib=work, outds=tmp);
 
     * Count the number of datasets provided and start the loop;
     %do i = 1 %to %sysfunc(countw(&datasets));
 
         * Extract the i-th dataset from the list;
-        %let dsn = %scan(&dataset, &i);
+        %let dsn = %scan(&datasets, &i);
 
         * Outputting to the log file;
         %put Checking contents of the dataset &i.;

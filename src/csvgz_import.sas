@@ -39,12 +39,10 @@
 directory.
 
     */
-%macro csvgz_import(dataset=, outds=&ds, dir= );
-    * Check if &dir is provided;
-    %if &dir = %then %let dir = /tmp;
+%macro csvgz_import(dataset=, outds=&ds, dir=/tmp);
 
     * Check if dir exists, create if needed;
-    x "if <b> ! -d &dir </b> ; then mkdir &dir; fi";
+    x "if [ ! -d &dir ] ; then mkdir &dir; fi";
 
     * Uncompress the file ;
     x gunzip -c &dataset. > &dir./temp.csv;
