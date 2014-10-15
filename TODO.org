@@ -8,12 +8,13 @@
     I need to figure out how to move combine DocItOut with md syntax
 
 *** TODO Move one macro from macros.sas into its own file
-    DEADLINE: <2014-10-13 Mon +3d>
+    DEADLINE: <2014-10-16 Thu +3d>
+    - State "DONE"       from "TODO"       [2014-10-14 Tue 23:00]
     - State "DONE"       from "TODO"       [2014-10-11 Sat 18:44]
     - State "DONE"       from "TODO"       [2014-10-08 Wed 13:32]
     :PROPERTIES:
     :ID:       34700dca-91ca-4a8d-bcab-47abb98707c8
-    :LAST_REPEAT: [2014-10-11 Sat 18:44]
+    :LAST_REPEAT: [2014-10-14 Tue 23:00]
     :END:
 
 *** TODO Use StatRep pacakge for making pdf files of doc
@@ -40,7 +41,7 @@
     :END:
 
 *** TODO Create tool to convert SAS comments into md or pdf
-    DEADLINE: <2014-10-13 Mon +1w -1d>
+    DEADLINE: <2014-10-17 Fri +1w -1d>
     :PROPERTIES:
     :ID:       b2e0ecc8-222a-43bd-9310-052922498a52
     :END:
