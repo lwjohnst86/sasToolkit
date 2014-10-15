@@ -3,7 +3,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Macro Library</title>
+<title>Macros Autocall</title>
 <link rel="stylesheet" type="text/css" href="../docitout.css" title="Style">
 </head>
 <body><div class="hr"></div>
@@ -133,35 +133,28 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro9">means ( vars= , by= , class= , where= , outds=_NULL_ , dsn=&ds )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Summary statistics: means and medians <p> Macro to generate univariate (or divariate if a class variable is specified) means of continuous variables.
-				</td>
-			</tr>
-					
-			<tr valign="top">
-				<td>
-					<code><b><a href="#macro10">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
+					<code><b><a href="#macro9">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Merge output datasets from the means and anova macros This macro merges the results of the ``means`' and ``anova`' macro, which are datasets, into one dataset with the p-value included for difference between groups.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro11">nth_ds ( nth_row= , ds= )</a></b></code>
+					<code><b><a href="#macro10">nth_ds ( nth_row= , ds= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro12">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
+					<code><b><a href="#macro11">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro13">pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</a></b></code>
+					<code><b><a href="#macro12">pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
@@ -460,39 +453,6 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 		<a name="macro9"></a>
 
-		<h3>means</h3>
-		<pre>%macro <b>means ( vars= , by= , class= , where= , outds=_NULL_ , dsn=&ds )</b>;</pre>
-		<dl>
-			<dd>Summary statistics: means and medians <p> Macro to generate univariate (or divariate if a class variable is specified) means of continuous variables.  It compresses the mean + SD and the median + IQR into one column/variable.</dd>
-			<dd>
-				<dl>
-											<dt><br><b>Parameters:</b></dt>
-							
-													<dd>vars - Continuous variables to summarize
-															</dd>
-													<dd>by - Does the exact same thing as class, and though it is faster, it requires a proc sort beforehand
-															</dd>
-													<dd>class - Generate summary stats on each value of a discrete variable. Does not need to be sorted
-															</dd>
-													<dd>where - 
-															</dd>
-													<dd>outds - Dataset name that the results will be output into
-																 (default value: _NULL_)
-															</dd>
-													<dd>dsn - Input dataset
-																 (default value: &ds)
-															</dd>
-																
-											<dt><br><b>Returns:</b></dt>
-						<dd>Returns a proc print of the results by default, but outputs a dataset if specified.</dd>
-									</dl>
-			</dd>
-		</dl>
-
-					<div class="hr"></div>
-					
-		<a name="macro10"></a>
-
 		<h3>mergeMeansAnova</h3>
 		<pre>%macro <b>mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</b>;</pre>
 		<dl>
@@ -525,7 +485,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro11"></a>
+		<a name="macro10"></a>
 
 		<h3>nth_ds</h3>
 		<pre>%macro <b>nth_ds ( nth_row= , ds= )</b>;</pre>
@@ -546,7 +506,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro12"></a>
+		<a name="macro11"></a>
 
 		<h3>oddsratio</h3>
 		<pre>%macro <b>oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</b>;</pre>
@@ -585,7 +545,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro13"></a>
+		<a name="macro12"></a>
 
 		<h3>pca</h3>
 		<pre>%macro <b>pca ( vars= , dsn=&ds , n= , opt_rotate=none , pcname= , varlabel= , outeig=_NULL_ , outpattern=_NULL_ , outrotpat=_NULL_ , outvariance=_NULL_ )</b>;</pre>
@@ -674,7 +634,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on October 11, 2014</td>
+		<td align="left" width="50%">Last updated on October 14, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">
