@@ -34,54 +34,6 @@
     run;
     %mend csvimport;
 
-/**
-
-    Macro for frequencies of categorical/discrete variables.  Only
-    does univariate frequencies.
-
-    * @param	vars	Discrete variables to analyze
-    * @param	by	Variable to group by
-    * @param	dsn	Name of dataset to analyze
-    * @param	outds	Results dataset to output
-    * @return	Only prints the results by default, but does output a dataset if specified
-
-    */
-%macro freq(vars, by=, where=, dsn=&ds, outds=_NULL_);
-
-    ods listing close;
-    proc freq data=&dsn;
-        table &vars / list;
-        by &by;
-        where &where;
-        ods output OneWayFreqs = &outds;
-    run;
-    ods listing;
-    
-    proc sort data=&outds;
-        by Table;
-        
-    data &outds (rename=(Table = Variable));
-        length Categories $ 45.;
-        set &outds;
-        by Table;
-        
-        nPerc = trim(Frequency)||' ('||
-            strip(round(Percent, 0.1))||')';
-        %for(i, in=(&vars), do=%nrstr(
-            if &i. ne '' then Categories = &i.;
-        ));
-        %if &by = %then %do;
-            keep Table Categories nPerc CumFrequency;
-            %end;
-        %else %if &by ne %then %do;
-            keep &by Table Categories nPerc CumFrequency;
-            %end;
-    proc print;
-    run;
-
-    %mend freq;
-
-
 
 /**
 
