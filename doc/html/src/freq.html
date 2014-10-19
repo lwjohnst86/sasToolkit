@@ -47,9 +47,9 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>csvgz_import</h1>
+<h1>freq</h1>
 
-Import gzipped compressed <code>csv<code> into SAS
+Frequency of discrete variables.
 
 
 	<dl>
@@ -59,7 +59,7 @@ Import gzipped compressed <code>csv<code> into SAS
 							<dd>Luke W. Johnston</dd>
 						
 					<dt><br><b>Created:</b></dt>
-			<dd>2014-10-05</dd>
+			<dd>2014-10-19</dd>
 			</dl>
 
 <br>
@@ -77,8 +77,8 @@ Import gzipped compressed <code>csv<code> into SAS
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">csvgz_import ( dataset= , outds=&ds , dir=/tmp )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Imports a gzipped (compressed) <code>csv<code> file into the SAS work space.
+					<code><b><a href="#macro1">freq ( vars= , dsn=&ds , by= , where= , outds=_NULL_ )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compute the frequencies of discrete variables.
 				</td>
 			</tr>
 		
@@ -91,7 +91,7 @@ Import gzipped compressed <code>csv<code> into SAS
 		</tr>
 		<tr valign="top">
 			<td>
-				<code>csvimport</code>
+				<code>for</code>
 			</td>
 		</tr>
 	</table>
@@ -109,25 +109,29 @@ Import gzipped compressed <code>csv<code> into SAS
 				
 		<a name="macro1"></a>
 
-		<h3>csvgz_import</h3>
-		<pre>%macro <b>csvgz_import ( dataset= , outds=&ds , dir=/tmp )</b>;</pre>
+		<h3>freq</h3>
+		<pre>%macro <b>freq ( vars= , dsn=&ds , by= , where= , outds=_NULL_ )</b>;</pre>
 		<dl>
-			<dd>Imports a gzipped (compressed) <code>csv<code> file into the SAS work space. <p> This macro is used to uncompress than read in a <code>csv.gz</code> (meaning gzipped) file.  SAS temporarily uncompresses the file, so that the original file remains intact. <p> <b>Requirements:</b> <code>%csvimport()<code> macro and a Unix/Linux operating system (OS).  I will need to make this macro more flexible for other OS. <p> <b>Examples:</b><br> <code>%csvgz_import(dataset=/home/username/data/projectData.csv.gz, outds=working,<br> dir=/home/username/projects/researchprojects/diabetesObesity/data);</code></dd>
+			<dd>Compute the frequencies of discrete variables. \\ Macro for determining the frequencies of categorical/discrete variables. Said another way, the macro determines the count of each category in a discrete variable (for example, the number of "Males" vs "Females"). \\ [Examples:] & %fre</dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dataset - The importing dataset, with the full path to the dataset to be imported
+													<dd>vars - Discrete variables to compute frequencies
 															</dd>
-													<dd>outds - The output dataset
+													<dd>dsn - The (input) dataset containing the variables
 																 (default value: &ds)
 															</dd>
-													<dd>dir - The directory where the data will temporarily created. The recommended directory is where the subsetted data will be saved to in the research project folder structure
-																 (default value: /tmp)
+													<dd>by - Variable to split the discrete variable up and then calculate the frequencies
+															</dd>
+													<dd>where - Expression that subsets the dataset before running the analysis
+															</dd>
+													<dd>outds - The output dataset
+																 (default value: _NULL_)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Imports a compressed (<code>.csv.gz<code>) file to the specified directory.</dd>
+						<dd>Prints the frequencies of the discrete variables.</dd>
 									</dl>
 			</dd>
 		</dl>
