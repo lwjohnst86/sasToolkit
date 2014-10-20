@@ -105,6 +105,8 @@
     %put The GEE is conditioned on/adjusted for &ccovar (continuous) ;
     %put %str(     )and &dcovar (discrete);
 
+    * Send description of analysis to listings file;
+
     * Start the counter, which will be used to merge all the ;
     * looped datasets;
     %let count = 0;
@@ -143,10 +145,12 @@
 
             * Output to the lst file/output log;
             ods listing;
-
+            
             * Print relevant information on the GEE analysis;
+            title1 "## Running GEE: ##";
+            title2 "Y = &yvar, x = &xvar, covariates = &dcovar &ccovar";
+            title3 "Time = &time";
             proc print data=info;
-                var Label1 cValue1;
             proc print data=converge;
             proc print data=covMat;
             run;
@@ -219,4 +223,5 @@
 
     * Put an extra end space for the next macro;
     %put ;
+    title3 '';
     %mend gee;

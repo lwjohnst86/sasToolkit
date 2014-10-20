@@ -18,7 +18,7 @@
     :END:
 
 *** TODO Use StatRep pacakge for making pdf files of doc
-    SCHEDULED: <2014-10-14 Tue>
+    SCHEDULED: <2014-10-17 Fri>
     :PROPERTIES:
     :ID:       8f6c4fe2-83cc-4158-8158-2bd9741b9cd1
     :END:
@@ -41,7 +41,7 @@
     :END:
 
 *** TODO Create tool to convert SAS comments into md or pdf
-    DEADLINE: <2014-10-17 Fri +1w -1d>
+    DEADLINE: <2014-10-23 Thu +1w -1d>
     :PROPERTIES:
     :ID:       b2e0ecc8-222a-43bd-9310-052922498a52
     :END:
