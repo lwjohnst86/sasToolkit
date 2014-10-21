@@ -105,8 +105,6 @@
     %put The GEE is conditioned on/adjusted for &ccovar (continuous) ;
     %put %str(     )and &dcovar (discrete);
 
-    * Send description of analysis to listings file;
-
     * Start the counter, which will be used to merge all the ;
     * looped datasets;
     %let count = 0;
