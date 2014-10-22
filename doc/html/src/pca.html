@@ -24,7 +24,6 @@
 				<ul class="submenu">
 								
 										
-											<li><a href="#summary_filename">FILENAME</a></li>	
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
@@ -37,7 +36,6 @@
 				<ul class="submenu">			
 										
 										
-											<li><a href="#detail_filename">FILENAME</a></li>	
 										
 											<li><a href="#detail_macro">MACRO</a></li>	
 									</ul>
@@ -48,41 +46,25 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>output_data</h1>
+<h1>pca</h1>
 
-Output a dataset to a <code>csv<code> file.
+Principal Component Analysis
 
 
 	<dl>
 	
 				<dt><br><b>Author:</b></dt>
 	
-							<dd>Luke W Johnston</dd>
+							<dd>Luke W. Johnston</dd>
 						
 					<dt><br><b>Created:</b></dt>
-			<dd>2014-10-11</dd>
+			<dd>2014-10-22</dd>
 			</dl>
 
 <br>
 
 
 
-	
-	<br><a name="summary_filename"></a>
-	<table class="gtbl" cellpadding="0" cellspacing="0">
-		<tr>
-			<th colspan="2">Filename Summary</th>
-		</tr>
-
-					
-			<tr valign="top">
-				<td>
-					<code><b><a href="#filename1">temp</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</td>
-			</tr>
-		
-	</table>
 
 	
 	<br><a name="summary_macro"></a>
@@ -94,8 +76,8 @@ Output a dataset to a <code>csv<code> file.
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">output_data ( dataset= , dir=tmp )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Output a dataset into a <code>csv<code> file into a directory.
+					<code><b><a href="#macro1">pca ( dsn= , vars= , numPC= , opt_rotate=none , outEig=tmp , outPattern=tmp1 , outRotPat=tmp2 , outVariance=tmp3 )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run principal component analysis to reduce the number of dimensions.
 				</td>
 			</tr>
 		
@@ -104,23 +86,7 @@ Output a dataset to a <code>csv<code> file.
 
 
 
-	<br><a name="detail_filename"></a>
-	<table class="gtbl" cellpadding="0" cellspacing="0">
-		<tr>
-			<th colspan="2">Filename Detail</th>
-		</tr>
-	</table>
-	
-				
-		<a name="filename1"></a>
 
-		<h3>temp</h3>
-		<pre>filename <b>temp temp</b>;</pre>
-		<dl>
-			<dd></dd>
-		</dl>
-
-			
 	<br><a name="detail_macro"></a>
 	<table class="gtbl" cellpadding="0" cellspacing="0">
 		<tr>
@@ -131,22 +97,38 @@ Output a dataset to a <code>csv<code> file.
 				
 		<a name="macro1"></a>
 
-		<h3>output_data</h3>
-		<pre>%macro <b>output_data ( dataset= , dir=tmp )</b>;</pre>
+		<h3>pca</h3>
+		<pre>%macro <b>pca ( dsn= , vars= , numPC= , opt_rotate=none , outEig=tmp , outPattern=tmp1 , outRotPat=tmp2 , outVariance=tmp3 )</b>;</pre>
 		<dl>
-			<dd>Output a dataset into a <code>csv<code> file into a directory. <p> This macro takes a dataset and converts it into a "comma separated value" (or <code>csv<code>) file.  The macro also removes double quotes from the output dataset. <p> <b>Examples:</b><br> <code>proc means data=sashelp.class;<br> ods output summary=meansData;<br> run;<br> %output_data(meansData, dir=./output);</code></dd>
+			<dd>Run principal component analysis to reduce the number of dimensions. <p> This macro runs a principal component analysis (PCA) on the specified variables.  PCA is a dimensionality reduction statistical technique, used to take a large number of variables and output a smaller number of variables that explain a large amount of variance within the data matrix.  PCA is a subset of factor analysis, though it differs quite markedly from exploratory (EFA) or confirmatory factor analysis (CFA), among others.  There is no assumption of an underlying factor or factors for the variables of interest, while EFA and CFA do make that assumption. <p> <b>Examples:</b><br> <code>%pca(sashelp.fish, Weight Length1 Length2 Length3 Height Width, numPC=1,<br> opt_rotate=varimax);</code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dataset - The dataset to output to the <code>csv<code> file. It is a positional argument and so needs to be first
+													<dd>dsn - The dataset that contains the variables.  Is a positional variable, so needs to be specified first
 															</dd>
-													<dd>dir - The directory/folder path that the <code>csv<code> output will be saved to
+													<dd>vars - The variables that are used to generate the principal components.  It is a positional variable and needs to be specified second
+															</dd>
+													<dd>numPC - The number of principal components to output
+															</dd>
+													<dd>opt_rotate - The (optional) rotation applied to the PCA
+																 (default value: none)
+															</dd>
+													<dd>outEig - Output the eigenvalues from the PCA
 																 (default value: tmp)
+															</dd>
+													<dd>outPattern - Output the component patterns
+																 (default value: tmp1)
+															</dd>
+													<dd>outRotPat - Output the rotated component patterns
+																 (default value: tmp2)
+															</dd>
+													<dd>outVariance - Output the variance of the patterns
+																 (default value: tmp3)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Outputs a <code>csv<code> file.</dd>
+						<dd>Prints the eigenvalues, explained variance, and component patterns by default</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -175,7 +157,6 @@ Output a dataset to a <code>csv<code> file.
 				<ul class="submenu">
 								
 										
-											<li><a href="#summary_filename">FILENAME</a></li>	
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
@@ -188,7 +169,6 @@ Output a dataset to a <code>csv<code> file.
 				<ul class="submenu">			
 										
 										
-											<li><a href="#detail_filename">FILENAME</a></li>	
 										
 											<li><a href="#detail_macro">MACRO</a></li>	
 									</ul>

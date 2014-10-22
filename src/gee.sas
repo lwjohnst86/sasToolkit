@@ -148,6 +148,7 @@
             title1 "## Running GEE: ##";
             title2 "Y = &yvar, x = &xvar, covariates = &dcovar &ccovar";
             title3 "Time = &time";
+            footnote ' ';
             proc print data=info;
             proc print data=converge;
             proc print data=covMat;

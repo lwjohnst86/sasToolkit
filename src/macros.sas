@@ -109,29 +109,6 @@
     run;
     %mend correlation;
 
-/* Macro for PCA --- update this macro */
-%macro pca (vars=, dsn= &ds, n=, opt_rotate=none, pcname=, varlabel=,
-    outeig= _NULL_, outpattern= _NULL_, outrotpat= _NULL_,
-    outvariance= _NULL_);
-    proc factor data=&dsn
-        simple method=prin priors=one nfact=&n
-        rotate=&opt_rotate out=&dsn;
-        var &vars;
-        ods output Eigenvalues = &outeig FactorPattern = &outpattern
-            VarExplain = &outvariance;
-        %if &opt_rotate = varimax %then %do;
-            ods output OrthRotFactPat = &outrotpat;
-            %end;
-    run;
-    %if &n = 1 %then %do;
-        data &dsn;
-            set &dsn;
-            rename Factor1 = &pcname;
-            label Factor1 = "&varlabel";
-        run;
-        %end;
-    %mend pca;
-
 /* Update this macro. Macro for stature means by discrete variable */
 %macro discr_means(discrete) / parmbuff;
     %local i;
@@ -419,7 +396,8 @@
     dcovar = , ccovar = , interactvar = ,
     dsn = &ds, outall = _NULL_,
     outcore = _NULL_, outObs = _NULL_,
-    outRSq = _NULL_, outResid = tmp, sigDigits = 0.01);
+    outRSq = _NULL_, outResid = tmp, sigDigits = 0.01,
+    by=);
     %local i j count;
     %let count = 0;
     %do i = 1 %to %sysfunc(countw(&y));
@@ -446,6 +424,7 @@
                 ods output ParameterEstimates = beta&count
                     FitStatistics = fit&count NObs = obs&count;
                 output out = &outResid student = rstud_&yvar r = r_&yvar;
+                by &by;
             run;
             ods listing;
             
