@@ -34,23 +34,6 @@
     run;
     %mend csvimport;
 
-
-/* Update this macro. Macro for stature means by discrete variable */
-%macro discr_means(discrete) / parmbuff;
-    %local i;
-    %let i = 1;
-    %let discrete = %scan(&syspbuff, &i);
-    %do %while(&discrete ne);
-        proc means data=&ds n mean stddev median;
-            var &continuous; * Define continuous before macro execution;
-            class &discrete;
-        run;
-        %let i = %eval(&i + 1);
-        %let discrete = %scan(&syspbuff, &i);
-        %end;
-    %mend discr_means;
-
-
 /**
 
     ANOVA loop
