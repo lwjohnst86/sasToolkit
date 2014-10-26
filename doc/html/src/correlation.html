@@ -47,9 +47,9 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>csvgz_import</h1>
+<h1>correlation</h1>
 
-Import gzipped compressed <code>csv<code> into SAS
+Correlation coefficient statistics.
 
 
 	<dl>
@@ -59,7 +59,7 @@ Import gzipped compressed <code>csv<code> into SAS
 							<dd>Luke W. Johnston</dd>
 						
 					<dt><br><b>Created:</b></dt>
-			<dd>2014-10-05</dd>
+			<dd>2014-10-26</dd>
 			</dl>
 
 <br>
@@ -77,8 +77,8 @@ Import gzipped compressed <code>csv<code> into SAS
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">csvgz_import ( dataset= , outds=&ds , dir=/tmp )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Imports a gzipped (compressed) <code>csv<code> file into the SAS work space.
+					<code><b><a href="#macro1">correlation ( dsn= , topvar= , sidevar= , covar= , where= , outds=_NULL_ , coeff_test=Spearman )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compute correlation coefficients.
 				</td>
 			</tr>
 		
@@ -91,7 +91,7 @@ Import gzipped compressed <code>csv<code> into SAS
 		</tr>
 		<tr valign="top">
 			<td>
-				<code>csvimport</code>
+				<code>for</code>
 			</td>
 		</tr>
 	</table>
@@ -109,25 +109,33 @@ Import gzipped compressed <code>csv<code> into SAS
 				
 		<a name="macro1"></a>
 
-		<h3>csvgz_import</h3>
-		<pre>%macro <b>csvgz_import ( dataset= , outds=&ds , dir=/tmp )</b>;</pre>
+		<h3>correlation</h3>
+		<pre>%macro <b>correlation ( dsn= , topvar= , sidevar= , covar= , where= , outds=_NULL_ , coeff_test=Spearman )</b>;</pre>
 		<dl>
-			<dd>Imports a gzipped (compressed) <code>csv<code> file into the SAS work space. <p> This macro is used to uncompress than read in a <code>csv.gz</code> (meaning gzipped) file.  SAS temporarily uncompresses the file, so that the original file remains intact. <p> <b>Requirements:</b> <code>%csvimport()<code> macro and a Unix/Linux operating system (OS).  I will need to make this macro more flexible for other OS. <p> <b>Examples:</b><br> <code>%csvgz_import(dataset=/home/username/data/projectData.csv.gz, outds=working,<br> dir=/home/username/projects/researchprojects/diabetesObesity/data);</code></dd>
+			<dd>Compute correlation coefficients. <p> Runs any type of correlation coefficients on either continuous or discrete variables.  You can specify to use either Spearman, Pearson, Tau, and others for calculating the coefficients.  Partial correlations, which are adjusted for other variables, can also be computed. <p> <b>Examples:</b><br> <code>%correlation(topvar=</dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dataset - The importing dataset, with the full path to the dataset to be imported
+													<dd>dsn - The dataset with the variables.  The macro argument is positional and needs to be specified first
+															</dd>
+													<dd>topvar - The variables on the top of the output (the header row; those that make up the <b>columns</b>).  This macro argument is positional and needs to be specified second.
+															</dd>
+													<dd>sidevar - The variables on the side of the output (generally the first column; those that make up the <b>rows</b>).  This variable is optional.  If not specified, the correlations form a matrix.
+															</dd>
+													<dd>covar - Variables to adjust for
+															</dd>
+													<dd>where - A condition to subset the analysis by (for example, <code>where=Sex eq 'F'<code>)
 															</dd>
 													<dd>outds - The output dataset
-																 (default value: &ds)
+																 (default value: _NULL_)
 															</dd>
-													<dd>dir - The directory where the data will temporarily created. The recommended directory is where the subsetted data will be saved to in the research project folder structure
-																 (default value: /tmp)
+													<dd>coeff_test - The correlation statistical test to run (<code>Spearman<code>, <code>Pearson<code>, <code>Tau<code>, etc.)
+																 (default value: Spearman)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Imports a compressed (<code>.csv.gz<code>) file to the specified directory.</dd>
+						<dd>Prints the correlation coefficients.  The results are not sent to the output dataset by default.</dd>
 									</dl>
 			</dd>
 		</dl>

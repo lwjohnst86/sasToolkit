@@ -10,16 +10,16 @@
 /**
 
     Compute the frequencies of discrete variables.
-    \\
+    <p>
 
     Macro for determining the frequencies of categorical/discrete
     variables. Said another way, the macro determines the count of each
     category in a discrete variable (for example, the number of "Males" vs
     "Females").
-    \\
+    <p>
 
-    [Examples:] &
-    %fre
+    <b>Examples:</b><br>
+    <code>%freq(Group Status, dsn=sashelp.bmt, where=T gt 500, outds=test);</code>
 
     * @param vars Discrete variables to compute frequencies
 

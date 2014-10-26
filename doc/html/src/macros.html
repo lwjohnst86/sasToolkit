@@ -105,42 +105,28 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro5">correlation ( topvar= , sidevar= , covar= , where= , outds=_NULL_ , coeff_test=Spearman , dsn=&ds )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Correlation coefficient test <p> Computes correlation coefficients and outputs a csv file with asterisks as significance values.
-				</td>
-			</tr>
-					
-			<tr valign="top">
-				<td>
-					<code><b><a href="#macro6">csvimport ( dataset= , outds=&dataset , dir=../dataset )</a></b></code>
+					<code><b><a href="#macro5">csvimport ( dataset= , outds=&dataset , dir=../dataset )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import csv dataset <p> Imports a non-compressed csv (comma separated values) dataset and puts it in the SAS workspace (outds).
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro7">discr_means ( discrete= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</td>
-			</tr>
-					
-			<tr valign="top">
-				<td>
-					<code><b><a href="#macro8">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
+					<code><b><a href="#macro6">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Merge output datasets from the means and anova macros This macro merges the results of the ``means`' and ``anova`' macro, which are datasets, into one dataset with the p-value included for difference between groups.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro9">nth_ds ( nth_row= , ds= )</a></b></code>
+					<code><b><a href="#macro7">nth_ds ( nth_row= , ds= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro10">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
+					<code><b><a href="#macro8">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
@@ -328,42 +314,6 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 		<a name="macro5"></a>
 
-		<h3>correlation</h3>
-		<pre>%macro <b>correlation ( topvar= , sidevar= , covar= , where= , outds=_NULL_ , coeff_test=Spearman , dsn=&ds )</b>;</pre>
-		<dl>
-			<dd>Correlation coefficient test <p> Computes correlation coefficients and outputs a csv file with asterisks as significance values. <p> You can specify which type of test you compute, such as Spearman or Pearson. You can also run partial correlations (adjusting for covariates). <p> <b>Examples:</b> <p> <code> %let continuous = Weight Height Age; %let exposure = CarbIntake ProteinIntake; %correlation(topvar=&exposure, sidevar=&continuous, dsn=dataset, outds=corr, where=Sex eq "Male", coeff_test=Pearson); proc print data=corr; run; <\code></dd>
-			<dd>
-				<dl>
-											<dt><br><b>Parameters:</b></dt>
-							
-													<dd>topvar - Variables that will be on the top of the output, i.e. those that make up the <b>columns</b>
-															</dd>
-													<dd>sidevar - Variables that will be on the side of the output, i.e. those that make up the <b>rows</b>
-															</dd>
-													<dd>covar - Variables to adjust for the correlation (ie. confounder)
-															</dd>
-													<dd>where - Variable to subset by (ie. where sex = "male")
-															</dd>
-													<dd>outds - Output dataset
-																 (default value: _NULL_)
-															</dd>
-													<dd>coeff_test - The correlation coefficient test to use
-																 (default value: Spearman)
-															</dd>
-													<dd>dsn - Dataset that contains the variables that will be analyzed by the correlation test
-																 (default value: &ds)
-															</dd>
-																
-											<dt><br><b>Returns:</b></dt>
-						<dd>By default the results are printed, but no dataset is output. An output dataset can be specified by providing a name for the variable <code>outds</code></dd>
-									</dl>
-			</dd>
-		</dl>
-
-					<div class="hr"></div>
-					
-		<a name="macro6"></a>
-
 		<h3>csvimport</h3>
 		<pre>%macro <b>csvimport ( dataset= , outds=&dataset , dir=../dataset )</b>;</pre>
 		<dl>
@@ -389,26 +339,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro7"></a>
-
-		<h3>discr_means</h3>
-		<pre>%macro <b>discr_means ( discrete= )</b>;</pre>
-		<dl>
-			<dd></dd>
-			<dd>
-				<dl>
-											<dt><br><b>Parameters:</b></dt>
-							
-													<dd>discrete - 
-															</dd>
-																
-									</dl>
-			</dd>
-		</dl>
-
-					<div class="hr"></div>
-					
-		<a name="macro8"></a>
+		<a name="macro6"></a>
 
 		<h3>mergeMeansAnova</h3>
 		<pre>%macro <b>mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</b>;</pre>
@@ -442,7 +373,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro9"></a>
+		<a name="macro7"></a>
 
 		<h3>nth_ds</h3>
 		<pre>%macro <b>nth_ds ( nth_row= , ds= )</b>;</pre>
@@ -463,7 +394,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro10"></a>
+		<a name="macro8"></a>
 
 		<h3>oddsratio</h3>
 		<pre>%macro <b>oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</b>;</pre>
@@ -548,7 +479,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on October 22, 2014</td>
+		<td align="left" width="50%">Last updated on October 26, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">

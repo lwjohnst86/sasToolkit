@@ -34,6 +34,10 @@
     principal components.  It is a positional variable and needs to be
     specified second
 
+    * @param by Variable to split the analysis up
+
+    * @param where Condition to subset the analysis
+
     * @param numPC The number of principal components to output
 
     * @param opt_rotate The (optional) rotation applied to the PCA
@@ -50,7 +54,7 @@
     component patterns by default
 
     */
-%macro pca(dsn, vars, numPC=, opt_rotate=none,
+%macro pca(dsn, vars, numPC=, opt_rotate=none, by=, where=,
     outEig= tmp, outPattern= tmp1, outRotPat= tmp2,
     outVariance= tmp3);
 
@@ -62,6 +66,8 @@
         simple method=prin priors=one nfact=&numPC
         rotate=&opt_rotate out=&dsn;
         var &vars;
+        where &where;
+        by &by;
         ods output Eigenvalues = &outEig FactorPattern = &outPattern
             VarExplain = &outVariance;
 
