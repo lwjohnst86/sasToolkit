@@ -80,9 +80,10 @@
     data &outds;
         set &outds;
         %for(i, in=(&topvar), do=%nrstr(
-            length t&i. $ 45;
+            length t&i. $ 22;
         &i. = round(&i, 0.01);
-        if P&i. < 0.001 then t&i = &i.||' ***'; 
+        if &i. = 1 then;
+        else if P&i. < 0.001 then t&i = &i.||' ***'; 
         else if P&i. < 0.01 then t&i = &i.||' **';
         else if P&i. < 0.05 then t&i = &i.||' *';
         else t&i. = &i.;
