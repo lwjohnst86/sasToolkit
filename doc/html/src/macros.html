@@ -77,56 +77,49 @@ Contains macros that are used to make statistical analysis more or less easier, 
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">anova ( category= , numerical= , dsn=&ds , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANOVA loop Runs an ANOVA and outputs the results into a dataset that can be converted into a nice format that can easily be pushed to LaTeX/pgfplotstable to generate tables in reports or presentations.
-				</td>
-			</tr>
-					
-			<tr valign="top">
-				<td>
-					<code><b><a href="#macro2">aroc ( y=&dep , x=&indep , ccovar= , dcovar= , dsn=&ds , outds= )</a></b></code>
+					<code><b><a href="#macro1">aroc ( y=&dep , x=&indep , ccovar= , dcovar= , dsn=&ds , outds= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro3">beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , interactvar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 , by= )</a></b></code>
+					<code><b><a href="#macro2">beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , interactvar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 , by= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs linear regression, sending the results into output datasets that can be used in LaTeX as tables.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro4">compareROC ( subset= , indep1= , indep2= , dsn= , outds= )</a></b></code>
+					<code><b><a href="#macro3">compareROC ( subset= , indep1= , indep2= , dsn= , outds= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro5">csvimport ( dataset= , outds=&dataset , dir=../dataset )</a></b></code>
+					<code><b><a href="#macro4">csvimport ( dataset= , outds=&dataset , dir=../dataset )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import csv dataset <p> Imports a non-compressed csv (comma separated values) dataset and puts it in the SAS workspace (outds).
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro6">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
+					<code><b><a href="#macro5">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Merge output datasets from the means and anova macros This macro merges the results of the ``means`' and ``anova`' macro, which are datasets, into one dataset with the p-value included for difference between groups.
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro7">nth_ds ( nth_row= , ds= )</a></b></code>
+					<code><b><a href="#macro6">nth_ds ( nth_row= , ds= )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro8">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
+					<code><b><a href="#macro7">oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</a></b></code>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
@@ -158,49 +151,6 @@ Contains macros that are used to make statistical analysis more or less easier, 
 				
 		<a name="macro1"></a>
 
-		<h3>anova</h3>
-		<pre>%macro <b>anova ( category= , numerical= , dsn=&ds , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</b>;</pre>
-		<dl>
-			<dd>ANOVA loop Runs an ANOVA and outputs the results into a dataset that can be converted into a nice format that can easily be pushed to LaTeX/pgfplotstable to generate tables in reports or presentations. <p> An ANCOVA can be run if ccovar or dcovar variables are used (ie. adjusting for confounders).  The output of this macro can be used in conjunction with the %means macro to make into a nice table format with means and SD, etc.</dd>
-			<dd>
-				<dl>
-											<dt><br><b>Parameters:</b></dt>
-							
-													<dd>category - Discrete variable (e.g. Sex) on the side of the table.
-															</dd>
-													<dd>numerical - Continuous variable (e.g. BMI) at the top of table.
-															</dd>
-													<dd>dsn - Dataset to be used (&ds variable is default).
-																 (default value: &ds)
-															</dd>
-													<dd>adjust - Adjustment made for post-hoc test.
-																 (default value: tukey)
-															</dd>
-													<dd>by - Split the analysis up by a categorical variable
-															</dd>
-													<dd>where - Subset the data by the where variable
-															</dd>
-													<dd>outds - Main output that is the purpose for this macro.
-																 (default value: _NULL_)
-															</dd>
-													<dd>outpdiff - Name of output for the between group p-values.
-																 (default value: _NULL_)
-															</dd>
-													<dd>dcovar - If ANCOVA is needed, this is the discrete covariate(s) to adjust for.
-															</dd>
-													<dd>ccovar - If ANCOVA is needed, this is the continuous covariate(s) to adjust for.
-															</dd>
-																
-											<dt><br><b>Returns:</b></dt>
-						<dd>The main output are proc prints of the output datasets outds and outpdiff, though these datasets are by default not output into the SAS workspace.</dd>
-									</dl>
-			</dd>
-		</dl>
-
-					<div class="hr"></div>
-					
-		<a name="macro2"></a>
-
 		<h3>aroc</h3>
 		<pre>%macro <b>aroc ( y=&dep , x=&indep , ccovar= , dcovar= , dsn=&ds , outds= )</b>;</pre>
 		<dl>
@@ -231,7 +181,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro3"></a>
+		<a name="macro2"></a>
 
 		<h3>beta_glm</h3>
 		<pre>%macro <b>beta_glm ( y=&dep , x=&indep , dcovar= , ccovar= , interactvar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 , by= )</b>;</pre>
@@ -285,7 +235,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro4"></a>
+		<a name="macro3"></a>
 
 		<h3>compareROC</h3>
 		<pre>%macro <b>compareROC ( subset= , indep1= , indep2= , dsn= , outds= )</b>;</pre>
@@ -312,7 +262,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro5"></a>
+		<a name="macro4"></a>
 
 		<h3>csvimport</h3>
 		<pre>%macro <b>csvimport ( dataset= , outds=&dataset , dir=../dataset )</b>;</pre>
@@ -339,7 +289,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro6"></a>
+		<a name="macro5"></a>
 
 		<h3>mergeMeansAnova</h3>
 		<pre>%macro <b>mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</b>;</pre>
@@ -373,7 +323,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro7"></a>
+		<a name="macro6"></a>
 
 		<h3>nth_ds</h3>
 		<pre>%macro <b>nth_ds ( nth_row= , ds= )</b>;</pre>
@@ -394,7 +344,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 					<div class="hr"></div>
 					
-		<a name="macro8"></a>
+		<a name="macro7"></a>
 
 		<h3>oddsratio</h3>
 		<pre>%macro <b>oddsratio ( y=&dep , x=&indep , dcovar= , ccovar= , dsn=&ds , outall=_NULL_ , outcore=_NULL_ , outobs=_NULL_ )</b>;</pre>
@@ -479,7 +429,7 @@ Contains macros that are used to make statistical analysis more or less easier, 
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on October 26, 2014</td>
+		<td align="left" width="50%">Last updated on October 28, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">

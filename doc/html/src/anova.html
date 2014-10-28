@@ -46,19 +46,19 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>contents</h1>
+<h1>anova</h1>
 
-Print dataset variable contents.
+Analysis of Variance (ANOVA)
 
 
 	<dl>
 	
 				<dt><br><b>Author:</b></dt>
 	
-							<dd>Luke W Johnston</dd>
+							<dd>Luke W. Johnston</dd>
 						
 					<dt><br><b>Created:</b></dt>
-			<dd>2014-10-08</dd>
+			<dd>2014-10-28</dd>
 			</dl>
 
 <br>
@@ -76,8 +76,8 @@ Print dataset variable contents.
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">contents ( datasets= , lib=work , outds=tmp )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print the variable contents of one or more datasets.
+					<code><b><a href="#macro1">anova ( dsn= , category= , numerical= , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analysis of Variance (ANOVA) loop <p> Runs an ANOVA, using a loop for multiple variables, and prints out the pertinent information.
 				</td>
 			</tr>
 		
@@ -97,25 +97,40 @@ Print dataset variable contents.
 				
 		<a name="macro1"></a>
 
-		<h3>contents</h3>
-		<pre>%macro <b>contents ( datasets= , lib=work , outds=tmp )</b>;</pre>
+		<h3>anova</h3>
+		<pre>%macro <b>anova ( dsn= , category= , numerical= , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</b>;</pre>
 		<dl>
-			<dd>Print the variable contents of one or more datasets. <p> This macro loops through multiple (or just one) dataset and prints off all the variable names (the header row) of each dataset.  It also prints what type the variable is, either a character or a numeric. <p> <b>Examples:</b><br>  Two SAS help datasets;<br> %contents(datasets=class heart, lib=sashelp);<br></dd>
+			<dd>Analysis of Variance (ANOVA) loop <p> Runs an ANOVA, using a loop for multiple variables, and prints out the pertinent information. An Analysis of Covariance (ANCOVA) can also be run if the <code>dcovar<code> or <code>ccovar<code> arguments are specified. <p> <b>Examples:</b><br></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>datasets - One or more datasets that you want to see the contents within.  It is a positional macro variable, so requires that the variable be given first
+													<dd>dsn - The dataset that contains the variables. This argument is positional and needs to be the first argument
 															</dd>
-													<dd>lib - The libname.  The <code>work<code> libname is the default environment SAS uses.  Other examples may be <code>sashelp<code>; you can also create your own libname if you have a SAS dataset (which I don't recommend having)
-																 (default value: work)
+													<dd>category - The discrete/categorical variable (for example, Sex - "M"/"F"
 															</dd>
-													<dd>outds - Specify an output dataset name to output the results of the macro
-																 (default value: tmp)
+													<dd>numerical - The continuous variable (for example, weight)
+															</dd>
+													<dd>adjust - Post-hoc test (including <code>tukey<code>, <code>bon<code>)
+																 (default value: tukey)
+															</dd>
+													<dd>by - The by variable to split the analysis based on the <code>by<code> argument variable
+															</dd>
+													<dd>where - Argument to subset the dataset by before the analysis
+															</dd>
+													<dd>outds - The main output dataset, if specified
+																 (default value: _NULL_)
+															</dd>
+													<dd>outpdiff - The output dataset that contains the post-hoc p-values between the categories of the discrete variable (<code>category</code> argument)
+																 (default value: _NULL_)
+															</dd>
+													<dd>dcovar - The discrete covariate to adjust for
+															</dd>
+													<dd>ccovar - The continuous covariate to adjust for
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Prints all the variables and their formats within the specified datasets.</dd>
+						<dd>Prints the results of the analysis, including the post-hoc test.</dd>
 									</dl>
 			</dd>
 		</dl>
