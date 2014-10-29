@@ -14,7 +14,7 @@
 
     Runs an ANOVA, using a loop for multiple variables, and prints out
     the pertinent information. An Analysis of Covariance (ANCOVA) can also
-    be run if the <code>dcovar<code> or <code>ccovar<code> arguments are specified.
+    be run if the <code>dcovar</code> or <code>ccovar</code> arguments are specified.
     <p>
 
     <b>Examples:</b><br>
@@ -27,10 +27,10 @@
 
     * @param numerical The continuous variable (for example, weight)
 
-    * @param adjust Post-hoc test (including <code>tukey<code>, <code>bon<code>)
+    * @param adjust Post-hoc test (including <code>tukey</code>, <code>bon</code>)
 
     * @param by The by variable to split the analysis based on the
-    <code>by<code> argument variable
+    <code>by</code> argument variable
 
     * @param where Argument to subset the dataset by before the
     analysis

@@ -49,7 +49,7 @@
 <h2>root</h2>
 <h1>csvgz_import</h1>
 
-Import gzipped compressed <code>csv<code> into SAS
+Import gzipped compressed <code>csv</code> into SAS
 
 
 	<dl>
@@ -78,7 +78,7 @@ Import gzipped compressed <code>csv<code> into SAS
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro1">csvgz_import ( dataset= , outds=&ds , dir=/tmp )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Imports a gzipped (compressed) <code>csv<code> file into the SAS work space.
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Imports a gzipped (compressed) <code>csv</code> file into the SAS work space.
 				</td>
 			</tr>
 		
@@ -112,7 +112,7 @@ Import gzipped compressed <code>csv<code> into SAS
 		<h3>csvgz_import</h3>
 		<pre>%macro <b>csvgz_import ( dataset= , outds=&ds , dir=/tmp )</b>;</pre>
 		<dl>
-			<dd>Imports a gzipped (compressed) <code>csv<code> file into the SAS work space. <p> This macro is used to uncompress than read in a <code>csv.gz</code> (meaning gzipped) file.  SAS temporarily uncompresses the file, so that the original file remains intact. <p> <b>Requirements:</b> <code>%csvimport()<code> macro and a Unix/Linux operating system (OS).  I will need to make this macro more flexible for other OS. <p> <b>Examples:</b><br> <code>%csvgz_import(dataset=/home/username/data/projectData.csv.gz, outds=working,<br> dir=/home/username/projects/researchprojects/diabetesObesity/data);</code></dd>
+			<dd>Imports a gzipped (compressed) <code>csv</code> file into the SAS work space. <p> This macro is used to uncompress than read in a <code>csv.gz</code> (meaning gzipped) file.  SAS temporarily uncompresses the file, so that the original file remains intact. <p> <b>Requirements:</b> <code>%csvimport()</code> macro and a Unix/Linux operating system (OS).  I will need to make this macro more flexible for other OS. <p> <b>Examples:</b><br> <code>%csvgz_import(dataset=/home/username/data/projectData.csv.gz, outds=working,<br> dir=/home/username/projects/researchprojects/diabetesObesity/data);</code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
@@ -127,7 +127,7 @@ Import gzipped compressed <code>csv<code> into SAS
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Imports a compressed (<code>.csv.gz<code>) file to the specified directory.</dd>
+						<dd>Imports a compressed (<code>.csv.gz</code>) file to the specified directory.</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -180,7 +180,7 @@ Import gzipped compressed <code>csv<code> into SAS
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on October 28, 2014</td>
+		<td align="left" width="50%">Last updated on October 29, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">

@@ -25,8 +25,8 @@
     contents within.  It is a positional macro variable, so requires that
     the variable be given first
 
-    * @param lib The libname.  The <code>work<code> libname is the default
-    environment SAS uses.  Other examples may be <code>sashelp<code>; you can also
+    * @param lib The libname.  The <code>work</code> libname is the default
+    environment SAS uses.  Other examples may be <code>sashelp</code>; you can also
     create your own libname if you have a SAS dataset (which I don't
     recommend having)
 

@@ -20,7 +20,8 @@
     <p>
 
     <b>Examples:</b><br>
-    <code>%correlation(topvar=
+    <code>%correlation(dsn=sashelp.class, topvar=Height, sidevar=Weight,
+    coeff_test=Pearson);</code>
 
     * @param dsn The dataset with the variables.  The macro argument
     is positional and needs to be specified first
@@ -37,12 +38,12 @@
     * @param covar Variables to adjust for
 
     * @param where A condition to subset the analysis by (for example,
-    <code>where=Sex eq 'F'<code>)
+    <code>where=Sex eq 'F'</code>)
 
     * @param outds The output dataset
 
     * @param coeff_test The correlation statistical test to run
-    (<code>Spearman<code>, <code>Pearson<code>, <code>Tau<code>, etc.)
+    (<code>Spearman</code>, <code>Pearson</code>, <code>Tau</code>, etc.)
 
     * @return Prints the correlation coefficients.  The results are
     not sent to the output dataset by default.

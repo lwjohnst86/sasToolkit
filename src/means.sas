@@ -27,10 +27,10 @@
     
     * @param dsn The dataset that contains the variables
     
-    * @param by Summarizes the <code>vars<code> according to a discrete,
+    * @param by Summarizes the <code>vars</code> according to a discrete,
     <b>sorted</b>, variable
     
-    * @param class Similar to <code>by<code>, except it does <b>not</b> need to be
+    * @param class Similar to <code>by</code>, except it does <b>not</b> need to be
     sorted
 
     * @param where A condition to subset the data by

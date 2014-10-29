@@ -8,14 +8,16 @@
     I need to figure out how to move combine DocItOut with md syntax
 
 *** TODO Move one macro from macros.sas into its own file
-    DEADLINE: <2014-10-19 Sun +3d>
+    DEADLINE: <2014-10-25 Sat +3d>
+    - State "DONE"       from "TODO"       [2014-10-26 Sun 19:39]
+    - State "DONE"       from "TODO"       [2014-10-26 Sun 13:53]
     - State "DONE"       from "TODO"       [2014-10-22 Wed 21:23]
     - State "DONE"       from "TODO"       [2014-10-14 Tue 23:00]
     - State "DONE"       from "TODO"       [2014-10-11 Sat 18:44]
     - State "DONE"       from "TODO"       [2014-10-08 Wed 13:32]
     :PROPERTIES:
     :ID:       34700dca-91ca-4a8d-bcab-47abb98707c8
-    :LAST_REPEAT: [2014-10-22 Wed 21:23]
+    :LAST_REPEAT: [2014-10-26 Sun 19:39]
     :END:
 
 *** TODO Use StatRep pacakge for making pdf files of doc

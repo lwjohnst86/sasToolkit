@@ -112,7 +112,7 @@ Correlation coefficient statistics.
 		<h3>correlation</h3>
 		<pre>%macro <b>correlation ( dsn= , topvar= , sidevar= , covar= , where= , outds=_NULL_ , coeff_test=Spearman )</b>;</pre>
 		<dl>
-			<dd>Compute correlation coefficients. <p> Runs any type of correlation coefficients on either continuous or discrete variables.  You can specify to use either Spearman, Pearson, Tau, and others for calculating the coefficients.  Partial correlations, which are adjusted for other variables, can also be computed. <p> <b>Examples:</b><br> <code>%correlation(topvar=</dd>
+			<dd>Compute correlation coefficients. <p> Runs any type of correlation coefficients on either continuous or discrete variables.  You can specify to use either Spearman, Pearson, Tau, and others for calculating the coefficients.  Partial correlations, which are adjusted for other variables, can also be computed. <p> <b>Examples:</b><br> <code>%correlation(dsn=sashelp.class, topvar=Height, sidevar=Weight, coeff_test=Pearson);</code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
@@ -125,12 +125,12 @@ Correlation coefficient statistics.
 															</dd>
 													<dd>covar - Variables to adjust for
 															</dd>
-													<dd>where - A condition to subset the analysis by (for example, <code>where=Sex eq 'F'<code>)
+													<dd>where - A condition to subset the analysis by (for example, <code>where=Sex eq 'F'</code>)
 															</dd>
 													<dd>outds - The output dataset
 																 (default value: _NULL_)
 															</dd>
-													<dd>coeff_test - The correlation statistical test to run (<code>Spearman<code>, <code>Pearson<code>, <code>Tau<code>, etc.)
+													<dd>coeff_test - The correlation statistical test to run (<code>Spearman</code>, <code>Pearson</code>, <code>Tau</code>, etc.)
 																 (default value: Spearman)
 															</dd>
 																
@@ -188,7 +188,7 @@ Correlation coefficient statistics.
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on October 28, 2014</td>
+		<td align="left" width="50%">Last updated on October 29, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">

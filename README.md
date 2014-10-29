@@ -142,20 +142,17 @@ When writing up SAS macros, always include documentation.  To make it
 quicker to type of formatted documentation, use the table below for
 using "quick tags" that can be converted later.
 
+| Quick tag                                 | Converted html tag    | Detail          |
+|-------------------------------------------|-----------------------|-----------------|
+| {{word}}                                  | \<code\>word\</code\> | Code font       |
+| [word]                                    | \<b\>word\</b\>       | Bolds word      |
+| \\\\ (end of line)                        | \<p\>                 | Paragraph break |
+| ' \&' (space, then \& at the end of line) | \<br\>                | Line break      |
+
 Table: Quick tags to use when writing up SAS comment documentation,
 which can be converted to the html tags by using the `sasQuickTags.sh`
 in my [git `bin` repo](github.com/lwjohnst86/bin).  These html tags
 are used by DocItOut when creating the documentation.
-
-| Quick tag                                 | Converted html tag |
-|-------------------------------------------|--------------------|
-| \`\`word (two backticks)                  | \<code\>           |
-| word\`\` (two backticks)                  | \</code\>          |
-| \\\\                                      | \<p\>              |
-| \[word                                    | \<b\>              |
-| word\]                                    | \</b\>             |
-| ' \&' (space, then \& at the end of line) | \<br\>             |
-
 
 Code within the SAS macro should always be indented properly and a new
 line should be started after the SAS semicolon ";" or if the code is

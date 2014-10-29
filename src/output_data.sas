@@ -1,6 +1,6 @@
 /*!
 
-    Output a dataset to a <code>csv<code> file.
+    Output a dataset to a <code>csv</code> file.
 
     * @author Luke W Johnston
     * @created 2014-10-11
@@ -9,11 +9,11 @@
 
 /**
 
-    Output a dataset into a <code>csv<code> file into a directory.
+    Output a dataset into a <code>csv</code> file into a directory.
     <p>
 
     This macro takes a dataset and converts it into a "comma separated
-    value" (or <code>csv<code>) file.  The macro also removes double quotes from
+    value" (or <code>csv</code>) file.  The macro also removes double quotes from
     the output dataset.
     <p>
 
@@ -23,13 +23,13 @@
     run;<br>
     %output_data(meansData, dir=./output);</code>
 
-    * @param dataset The dataset to output to the <code>csv<code> file. It is
+    * @param dataset The dataset to output to the <code>csv</code> file. It is
     a positional argument and so needs to be first
 
-    * @param dir The directory/folder path that the <code>csv<code> output
+    * @param dir The directory/folder path that the <code>csv</code> output
     will be saved to
 
-    * @return Outputs a <code>csv<code> file.
+    * @return Outputs a <code>csv</code> file.
 
     */
 %macro output_data(dataset, dir=tmp); 
