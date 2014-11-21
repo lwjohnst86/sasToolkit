@@ -3,7 +3,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Macro Library</title>
+<title>Macros Autocall</title>
 <link rel="stylesheet" type="text/css" href="../docitout.css" title="Style">
 </head>
 <body><div class="hr"></div>
@@ -49,9 +49,18 @@
 <h2>root</h2>
 <h1>for</h1>
 
+For loop in SAS
 
 
-
+	<dl>
+	
+				<dt><br><b>Author:</b></dt>
+	
+							<dd>Jim Anderson, UCSF, james.anderson@ucsf.edu<br> "Please keep, use and pass on the %for macro with this authorship note.  -Thanks "</dd>
+						
+					<dt><br><b>Created:</b></dt>
+			<dd>2012-02-12 (as per last update on site)</dd>
+			</dl>
 
 <br>
 
@@ -69,7 +78,7 @@
 			<tr valign="top">
 				<td>
 					<code><b><a href="#macro1">for ( macro_var_list= , in= , do= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For loop able to operate in open code.
 				</td>
 			</tr>
 		
@@ -103,18 +112,20 @@
 		<h3>for</h3>
 		<pre>%macro <b>for ( macro_var_list= , in= , do= )</b>;</pre>
 		<dl>
-			<dd></dd>
+			<dd>For loop able to operate in open code. <p> Taken from: <http://members.iinet.net.au/~brucebra/code/utility/For.sas> <p> This macro performs a loop generating SAS code.  It proceeds sequentially through one of 5 kinds of data objects: SAS dataset, value list, number range, dataset contents and directory contents.  Data object values are assigned to macro variables specified in macro_var_list upon each loop iteration. <p> Please send improvements, fixes or comments to Jim Anderson. <p> The example below loops over the dataset "report_hosps", which has dataset variables "hospid" and "hospname".  For each dataset observation, macro variables &hospid and &hospname are assigned values from the identically named dataset variables and the loop code is generated, which in the example prints a report. <p> <b>Examples:</b><br> <code> %for(hospid hospname, in=<b>report_hosps</b>, do=%nrstr(<br> title "&hospid &hospname Patient Safety Indicators";<br> proc print data=psi_iqi(where=(hospid="&hospid")); run;<br> )) </code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>macro_var_list - 
+													<dd>macro_var_list - space-separated list of macro variable names to be assigned values upon each loop iteration. Is a positional argument, so needs to come first
 															</dd>
-													<dd>in - 
+													<dd>in - Data object to access. Object type is distinguished by choice of brackets (or no backets for a range):<br> <ul> <li>(a b c) - a space-separated value list whose values are sequentially accessed. Space is the default value separator.  Enclose other separator characters in nested parentheses, e.g., in=((|)Joe Jones|Al Smith) The variables named in macro_var_list are assigned successive values from the value list. When all variables are assigned, the "do=" SAS code is generated.  The process repeats until the end of value list is reached.  If the end of value list is reached before all variables in macro_var_list are assigned values, then the iteration is terminated without generating the "do=" code on the partially assigned variables (the number of values in the value list should be a multiple of the number of names in macro_var_list). </li> <li>[xyz] - a SAS dataset whose observations are sequentially accessed.  The dataset name can be qualified with a libname and where clause. For each observation in the dataset, all macro variables in the macro_var_list are assigned values of identically named dataset variables and the "do=" SAS code is generated.</li> <li>{xyz} - a SAS dataset whose variable descriptions (proc contents) are sequentially accessed. The dataset name can be qualified with a libname. For each variable in the dataset, the macro variables in the macro_var_list are assigned values to describe the dataset variable and the "do=" SAS code is generated.  Valid names in macro_var_list are "name", "type", "length", "format" and "label". <ul> <li>name - is set to the variable name</li> <li>type - is set to 1 for numeric variables and 2 for character variables.</li> <li>format - is set to the variable format</li> <li>length - is set to the variable length</li> <li>label  - is set to the variable label</li> </ul></li> <li><c:\abc> - a directory path whose file descriptions are sequentially accessed. For each file in the directory, the macro variables in the macro_var_list are assigned values to describe a directory file and the "do=" SAS code is generated.  Valid names in macro_var_list are "filepath", "filename", "shortname", "extension", and "isdir". <ul> <li>filepath - full pathname of file</li> <li>filename - filename with extension</li> <li>shortname - filename without extension</li> <li>extension - file extension</li> <li>isdir - 1 if file is directory, else 0 </li> </ul></li> <li>1:100 - a number range whose values are sequentially accessed. A range with 2 numbers uses a single colon and has an implied increment of 1.  For a range with 3 numbers (e.g., in=1:11:2), the final number is the increment. The first variable in the macro_var_list is assigned values as it would be by a %do-%to-%by statement. </li> <li>NOTE: Macro variable values obtained from datasets remain unquoted when they contain only letters, digits, whitespace, '_' and '.', otherwise they are quoted.  Values obtained from value list are always unquoted.</li> </ul>
 															</dd>
-													<dd>do - 
+													<dd>do - The SAS code to be generated for each iteration of the %for macro.  If macro variable substitution is to be done in the loop code (the typical case) enclose the code in a %nrstr() macro call to defer macro substitution to loop generation time.
 															</dd>
 																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Loops through the <code>in</code> variable, executing whatever code is after the <code>do</code> variable.</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -167,7 +178,7 @@
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on October 05, 2014</td>
+		<td align="left" width="50%">Last updated on November 21, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">

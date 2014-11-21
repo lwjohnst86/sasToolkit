@@ -15,15 +15,15 @@
 
     This macro runs a longitudinal statistical test known as
     <b>generalized estimating equations</b>.  As with my other macros (for
-    example <code>beta_glm<code>), this macro has two loops: one loops through all
-    of the exposure or <code>x<code> variables and another that will loop through
-    all the outcome or <code>y<code> variables.
+    example <code>beta_glm</code>), this macro has two loops: one loops through all
+    of the exposure or <code>x</code> variables and another that will loop through
+    all the outcome or <code>y</code> variables.
     <p>
 
     By default, the macro prints the main findings from the GEE
     analysis.  However, output datasets can be specified (for instance,
-    <code>outCore<code>), which can than be "massaged" and/or output into a
-    <code>.csv<code> file.  Many of the macro variables can have multiple
+    <code>outCore</code>), which can than be "massaged" and/or output into a
+    <code>.csv</code> file.  Many of the macro variables can have multiple
     variables specified, but each additional variable must be separated by
     a space <b>not a comma</b>.
     <p>
@@ -39,7 +39,7 @@
     is a positional variable and must be declared first
     
     * @param x The independent or exposure variables.  If more than
-    one <code>x<code> is provided, the macro will loop through each <code>x<code> and run
+    one <code>x</code> is provided, the macro will loop through each <code>x</code> and run
     the GEE on each
 
     * @param y The dependent or outcome variables.  As with the <code>x</code>
@@ -47,26 +47,26 @@
     GEE
     
     * @param time The variable used to indicate time, for example
-    <code>VisitNumber<code> or <code>Age</code>
+    <code>VisitNumber</code> or <code>Age</code>
     
     * @param subject The variable that specifies the identifier for
-    the subject/participant, for example <code>SID<code> or <code>ID</code>
+    the subject/participant, for example <code>SID</code> or <code>ID</code>
     
     * @param ccovar The continuous covariates or confounders
     
     * @param dcovar The discrete/categorical covariates or confounders
     
     * @param dist The distribution assumption, which is dependent on
-    the type of data the <code>x<code> or the <code>y<code> is (for example, continuous or
+    the type of data the <code>x</code> or the <code>y</code> is (for example, continuous or
     discrete).  Other distributions include Normal, Poisson, Binomial,
     Multinomial, etc.
     
     * @param link The link function to be used in conjunction with the
-    <code>dist<code> variable.  For example, when <code>dist=poisson<code>, the default
-    link is <code>log<code>.  Other links include Logit, Identity, Inverse, etc.
+    <code>dist</code> variable.  For example, when <code>dist=poisson</code>, the default
+    link is <code>log</code>.  Other links include Logit, Identity, Inverse, etc.
 
     * @param wcorr The specified GEE working correlation matrix.  The
-    standard and commonly used is the Exchangeable (or <code>exch<code>), but
+    standard and commonly used is the Exchangeable (or <code>exch</code>), but
     others include Autoregressive and Independent.  GEE is very robust
     (aka reliable/consistent) to a misspecified working correlation matrix
     
@@ -76,7 +76,7 @@
     of the parameter estimates (that is, including the covariates)
     
     * @param outCore The name of the results dataset that contains the
-    parameter estimates of <b>only</b> the <code>x<code> and <code>y<code> variables
+    parameter estimates of <b>only</b> the <code>x</code> and <code>y</code> variables
     
     * @param outObs The output results dataset that contains the
     observations used in the analysis
@@ -143,10 +143,12 @@
 
             * Output to the lst file/output log;
             ods listing;
-
+            
             * Print relevant information on the GEE analysis;
+            title1 "## Running GEE: ##";
+            title2 "Y = &yvar, x = &xvar, covariates = &dcovar &ccovar";
+            title3 "Time = &time";
             proc print data=info;
-                var Label1 cValue1;
             proc print data=converge;
             proc print data=covMat;
             run;
@@ -207,6 +209,12 @@
         set est1-est&count;
     data &outCore;
         set estCore1-estCore&count;
+        
+        * To make it easier to see significant associations;
+        if p < 0.05 then sig = '*';
+        else sig = '';
+        if Estimate < 0 then dir = "neg";
+        else if Estimate > 0 then dir = "pos";
     run;
     proc print data=&outCore;
     run;
@@ -219,4 +227,5 @@
 
     * Put an extra end space for the next macro;
     %put ;
+    title3 '';
     %mend gee;

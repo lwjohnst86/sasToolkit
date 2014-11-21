@@ -3,7 +3,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Macro Library</title>
+<title>Macros Autocall</title>
 <link rel="stylesheet" type="text/css" href="../docitout.css" title="Style">
 </head>
 <body><div class="hr"></div>
@@ -27,7 +27,6 @@
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
-											<li><a href="#summary_macro_call">MACRO CALL</a></li>	
 									</ul>
 			</td>
 		</tr>
@@ -47,11 +46,20 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>For</h1>
+<h1>anova</h1>
+
+Analysis of Variance (ANOVA)
 
 
-
-
+	<dl>
+	
+				<dt><br><b>Author:</b></dt>
+	
+							<dd>Luke W. Johnston</dd>
+						
+					<dt><br><b>Created:</b></dt>
+			<dd>2014-10-28</dd>
+			</dl>
 
 <br>
 
@@ -68,24 +76,13 @@
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">for ( macro_var_list= , in= , do= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<code><b><a href="#macro1">anova ( dsn= , category= , numerical= , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analysis of Variance (ANOVA) loop <p> Runs an ANOVA, using a loop for multiple variables, and prints out the pertinent information.
 				</td>
 			</tr>
 		
 	</table>
 
-	<br><a name="summary_macro_call"></a>
-	<table class="gtbl" cellpadding="0" cellspacing="0">
-		<tr>
-			<th colspan="2">Macro Call Summary</th>
-		</tr>
-		<tr valign="top">
-			<td>
-				<code>_for_loop_, qleft, qsubstr, qtrim, trim</code>
-			</td>
-		</tr>
-	</table>
 
 
 
@@ -100,21 +97,40 @@
 				
 		<a name="macro1"></a>
 
-		<h3>for</h3>
-		<pre>%macro <b>for ( macro_var_list= , in= , do= )</b>;</pre>
+		<h3>anova</h3>
+		<pre>%macro <b>anova ( dsn= , category= , numerical= , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</b>;</pre>
 		<dl>
-			<dd></dd>
+			<dd>Analysis of Variance (ANOVA) loop <p> Runs an ANOVA, using a loop for multiple variables, and prints out the pertinent information. An Analysis of Covariance (ANCOVA) can also be run if the <code>dcovar</code> or <code>ccovar</code> arguments are specified. <p> <b>Examples:</b><br></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>macro_var_list - 
+													<dd>dsn - The dataset that contains the variables. This argument is positional and needs to be the first argument
 															</dd>
-													<dd>in - 
+													<dd>category - The discrete/categorical variable (for example, Sex - "M"/"F"
 															</dd>
-													<dd>do - 
+													<dd>numerical - The continuous variable (for example, weight)
+															</dd>
+													<dd>adjust - Post-hoc test (including <code>tukey</code>, <code>bon</code>)
+																 (default value: tukey)
+															</dd>
+													<dd>by - The by variable to split the analysis based on the <code>by</code> argument variable
+															</dd>
+													<dd>where - Argument to subset the dataset by before the analysis
+															</dd>
+													<dd>outds - The main output dataset, if specified
+																 (default value: _NULL_)
+															</dd>
+													<dd>outpdiff - The output dataset that contains the post-hoc p-values between the categories of the discrete variable (<code>category</code> argument)
+																 (default value: _NULL_)
+															</dd>
+													<dd>dcovar - The discrete covariate to adjust for
+															</dd>
+													<dd>ccovar - The continuous covariate to adjust for
 															</dd>
 																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Prints the results of the analysis, including the post-hoc test.</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -146,7 +162,6 @@
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
-											<li><a href="#summary_macro_call">MACRO CALL</a></li>	
 									</ul>
 			</td>
 		</tr>
@@ -167,7 +182,7 @@
 
 <table width="100%">
 	<tr valign="top">
-		<td align="left" width="50%">Last updated on September 30, 2014</td>
+		<td align="left" width="50%">Last updated on November 21, 2014</td>
 		<td align="right" width="50%">
 			Powered by 
 			<a href="http://choonchernlim.com/docitout/" target="_blank">

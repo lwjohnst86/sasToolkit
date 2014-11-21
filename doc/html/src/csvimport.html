@@ -46,19 +46,19 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>chisq</h1>
+<h1>csvimport</h1>
 
-Chi-Square Statistical Analysis.
+Import csv data files
 
 
 	<dl>
 	
 				<dt><br><b>Author:</b></dt>
 	
-							<dd>Luke Johnston</dd>
+							<dd>Luke W. Johnston</dd>
 						
 					<dt><br><b>Created:</b></dt>
-			<dd>2014-09-29</dd>
+			<dd>2014-11-21 (updated)</dd>
 			</dl>
 
 <br>
@@ -76,8 +76,8 @@ Chi-Square Statistical Analysis.
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">chisq ( vars= , dsn= , tests=chisq , outFreq=NULL , outChi=tmp , order=freq , testOpt= , where= , by= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs a Chi-Square analysis.
+					<code><b><a href="#macro1">csvimport ( dataset= , outds=&dataset , dir=../data )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import comma separated value files into the SAS workspace.
 				</td>
 			</tr>
 		
@@ -97,39 +97,25 @@ Chi-Square Statistical Analysis.
 				
 		<a name="macro1"></a>
 
-		<h3>chisq</h3>
-		<pre>%macro <b>chisq ( vars= , dsn= , tests=chisq , outFreq=NULL , outChi=tmp , order=freq , testOpt= , where= , by= )</b>;</pre>
+		<h3>csvimport</h3>
+		<pre>%macro <b>csvimport ( dataset= , outds=&dataset , dir=../data )</b>;</pre>
 		<dl>
-			<dd>Runs a Chi-Square analysis. <p> Chi square is a simple statistical test to calculate differences between proportions in a 2x2 and other contingency/frequency tables.  This macro simply runs a chi-square test and outputs the frequency and probability of difference between groups. <p> <b>Examples:</b> <br> <code>  Using the SAS bone marrow transplant dataset; <br> %chisq(Group Status, sashelp.bmt, where=T lt 2000, tests=chisq or, <br> testOpt=relrisk, outChi=chi); </code></dd>
+			<dd>Import comma separated value files into the SAS workspace. <p> Imports a non-compressed csv (comma separated values) dataset and puts it in the SAS workspace (outds). <p> <b>Examples:</b><br> <code> %csvimport(testdata, outds=working, dir=./data); </code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>vars - Contains the variables to be analyzed. The argument is positional --- the variables must be specified first before other arguments
+													<dd>dataset - The name of the dataset file to import, <b>WITHOUT</b> the file extension (csv; for example a file called testdata.csv, the dataset name would be testdata). Is a positional argument and must come first
 															</dd>
-													<dd>dsn - Dataset name which contains the variables. The argument is positional --- the variable must be specified second
+													<dd>outds - The name of the output dataset as it will be referenced by SAS in <code>proc</code> or <code>data</code> statements
+																 (default value: &dataset)
 															</dd>
-													<dd>tests - Specify which tests to run
-																 (default value: chisq)
-															</dd>
-													<dd>outFreq - Output dataset which contains the frequencies
-																 (default value: NULL)
-															</dd>
-													<dd>outChi - Output dataset which contains the chi-square statistics
-																 (default value: tmp)
-															</dd>
-													<dd>order - The order in which to display the variables in the <code>outFreq</code> dataset
-																 (default value: freq)
-															</dd>
-													<dd>testOpt - Options to pass to the tables <code>chisq</code> command
-															</dd>
-													<dd>where - To subset the data before analyzing the variables
-															</dd>
-													<dd>by - To run the analysis separately by categories of the by variable
+													<dd>dir - The location (file path) of the input dataset, for example ./data or /home/users/research/data
+																 (default value: ../data)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Prints the frequencies and chi-square statistic results by default. Will output datasets if specified.</dd>
+						<dd>Imports a SAS work dataset into the workspace.</dd>
 									</dl>
 			</dd>
 		</dl>

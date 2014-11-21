@@ -46,19 +46,19 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>chisq</h1>
+<h1>pca</h1>
 
-Chi-Square Statistical Analysis.
+Principal Component Analysis
 
 
 	<dl>
 	
 				<dt><br><b>Author:</b></dt>
 	
-							<dd>Luke Johnston</dd>
+							<dd>Luke W. Johnston</dd>
 						
 					<dt><br><b>Created:</b></dt>
-			<dd>2014-09-29</dd>
+			<dd>2014-10-22</dd>
 			</dl>
 
 <br>
@@ -76,8 +76,8 @@ Chi-Square Statistical Analysis.
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">chisq ( vars= , dsn= , tests=chisq , outFreq=NULL , outChi=tmp , order=freq , testOpt= , where= , by= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs a Chi-Square analysis.
+					<code><b><a href="#macro1">pca ( dsn= , vars= , numPC= , opt_rotate=none , by= , where= , outEig=tmp , outPattern=tmp1 , outRotPat=tmp2 , outVariance=tmp3 )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run principal component analysis to reduce the number of dimensions.
 				</td>
 			</tr>
 		
@@ -97,39 +97,42 @@ Chi-Square Statistical Analysis.
 				
 		<a name="macro1"></a>
 
-		<h3>chisq</h3>
-		<pre>%macro <b>chisq ( vars= , dsn= , tests=chisq , outFreq=NULL , outChi=tmp , order=freq , testOpt= , where= , by= )</b>;</pre>
+		<h3>pca</h3>
+		<pre>%macro <b>pca ( dsn= , vars= , numPC= , opt_rotate=none , by= , where= , outEig=tmp , outPattern=tmp1 , outRotPat=tmp2 , outVariance=tmp3 )</b>;</pre>
 		<dl>
-			<dd>Runs a Chi-Square analysis. <p> Chi square is a simple statistical test to calculate differences between proportions in a 2x2 and other contingency/frequency tables.  This macro simply runs a chi-square test and outputs the frequency and probability of difference between groups. <p> <b>Examples:</b> <br> <code>  Using the SAS bone marrow transplant dataset; <br> %chisq(Group Status, sashelp.bmt, where=T lt 2000, tests=chisq or, <br> testOpt=relrisk, outChi=chi); </code></dd>
+			<dd>Run principal component analysis to reduce the number of dimensions. <p> This macro runs a principal component analysis (PCA) on the specified variables.  PCA is a dimensionality reduction statistical technique, used to take a large number of variables and output a smaller number of variables that explain a large amount of variance within the data matrix.  PCA is a subset of factor analysis, though it differs quite markedly from exploratory (EFA) or confirmatory factor analysis (CFA), among others.  There is no assumption of an underlying factor or factors for the variables of interest, while EFA and CFA do make that assumption. <p> <b>Examples:</b><br> <code>%pca(sashelp.fish, Weight Length1 Length2 Length3 Height Width, numPC=1,<br> opt_rotate=varimax);</code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>vars - Contains the variables to be analyzed. The argument is positional --- the variables must be specified first before other arguments
+													<dd>dsn - The dataset that contains the variables.  Is a positional variable, so needs to be specified first
 															</dd>
-													<dd>dsn - Dataset name which contains the variables. The argument is positional --- the variable must be specified second
+													<dd>vars - The variables that are used to generate the principal components.  It is a positional variable and needs to be specified second
 															</dd>
-													<dd>tests - Specify which tests to run
-																 (default value: chisq)
+													<dd>numPC - The number of principal components to output
 															</dd>
-													<dd>outFreq - Output dataset which contains the frequencies
-																 (default value: NULL)
+													<dd>opt_rotate - The (optional) rotation applied to the PCA
+																 (default value: none)
 															</dd>
-													<dd>outChi - Output dataset which contains the chi-square statistics
+													<dd>by - Variable to split the analysis up
+															</dd>
+													<dd>where - Condition to subset the analysis
+															</dd>
+													<dd>outEig - Output the eigenvalues from the PCA
 																 (default value: tmp)
 															</dd>
-													<dd>order - The order in which to display the variables in the <code>outFreq</code> dataset
-																 (default value: freq)
+													<dd>outPattern - Output the component patterns
+																 (default value: tmp1)
 															</dd>
-													<dd>testOpt - Options to pass to the tables <code>chisq</code> command
+													<dd>outRotPat - Output the rotated component patterns
+																 (default value: tmp2)
 															</dd>
-													<dd>where - To subset the data before analyzing the variables
-															</dd>
-													<dd>by - To run the analysis separately by categories of the by variable
+													<dd>outVariance - Output the variance of the patterns
+																 (default value: tmp3)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Prints the frequencies and chi-square statistic results by default. Will output datasets if specified.</dd>
+						<dd>Prints the eigenvalues, explained variance, and component patterns by default</dd>
 									</dl>
 			</dd>
 		</dl>

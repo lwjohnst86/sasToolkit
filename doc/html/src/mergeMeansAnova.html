@@ -27,6 +27,7 @@
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
+											<li><a href="#summary_macro_call">MACRO CALL</a></li>	
 									</ul>
 			</td>
 		</tr>
@@ -46,19 +47,19 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>chisq</h1>
+<h1>mergeMeansAnova</h1>
 
-Chi-Square Statistical Analysis.
+Merge means and ANOVA output datasets
 
 
 	<dl>
 	
 				<dt><br><b>Author:</b></dt>
 	
-							<dd>Luke Johnston</dd>
+							<dd>Luke W. Johnston</dd>
 						
 					<dt><br><b>Created:</b></dt>
-			<dd>2014-09-29</dd>
+			<dd>2014-11-21 (updated)</dd>
 			</dl>
 
 <br>
@@ -76,13 +77,24 @@ Chi-Square Statistical Analysis.
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">chisq ( vars= , dsn= , tests=chisq , outFreq=NULL , outChi=tmp , order=freq , testOpt= , where= , by= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs a Chi-Square analysis.
+					<code><b><a href="#macro1">mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Merge the output datasets generated from the means and anova macros.
 				</td>
 			</tr>
 		
 	</table>
 
+	<br><a name="summary_macro_call"></a>
+	<table class="gtbl" cellpadding="0" cellspacing="0">
+		<tr>
+			<th colspan="2">Macro Call Summary</th>
+		</tr>
+		<tr valign="top">
+			<td>
+				<code>for</code>
+			</td>
+		</tr>
+	</table>
 
 
 
@@ -97,39 +109,32 @@ Chi-Square Statistical Analysis.
 				
 		<a name="macro1"></a>
 
-		<h3>chisq</h3>
-		<pre>%macro <b>chisq ( vars= , dsn= , tests=chisq , outFreq=NULL , outChi=tmp , order=freq , testOpt= , where= , by= )</b>;</pre>
+		<h3>mergeMeansAnova</h3>
+		<pre>%macro <b>mergeMeansAnova ( meansds= , anovads= , byVar= , byVarNumLevels=_NULL_ , byVarCatLevels=_NULL_ , outds=_NULL_ )</b>;</pre>
 		<dl>
-			<dd>Runs a Chi-Square analysis. <p> Chi square is a simple statistical test to calculate differences between proportions in a 2x2 and other contingency/frequency tables.  This macro simply runs a chi-square test and outputs the frequency and probability of difference between groups. <p> <b>Examples:</b> <br> <code>  Using the SAS bone marrow transplant dataset; <br> %chisq(Group Status, sashelp.bmt, where=T lt 2000, tests=chisq or, <br> testOpt=relrisk, outChi=chi); </code></dd>
+			<dd>Merge the output datasets generated from the means and anova macros. <p> This macro merges the results of the <code>means</code> and <code>anova</code> macro, which are datasets, into one dataset with the p-value included for difference between groups.  The output for the means needs to have had an argument for the by variable (<code>by=</code>), so that the means dataset can be transformed from long to wide.  The variables from both the <code>means</code> and the <code>anova</code> macro need to be in the same order/sequence. <p> <b>Examples:</b><br></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>vars - Contains the variables to be analyzed. The argument is positional --- the variables must be specified first before other arguments
+													<dd>meansds - Output dataset from the <code>means</code> macro, needs to be the first argument
 															</dd>
-													<dd>dsn - Dataset name which contains the variables. The argument is positional --- the variable must be specified second
+													<dd>anovads - Output dataset from the <code>anova</code> macro, has to be the second argument
 															</dd>
-													<dd>tests - Specify which tests to run
-																 (default value: chisq)
+													<dd>byVar - The categorical (or discrete/binary number, such as for an order) variable that was used to group both the anova and the means datasets
 															</dd>
-													<dd>outFreq - Output dataset which contains the frequencies
-																 (default value: NULL)
+													<dd>byVarNumLevels - The levels of the discrete/binary number <code>byVar</code>, such as 0 1, 0 1 2 3, etc
+																 (default value: _NULL_)
 															</dd>
-													<dd>outChi - Output dataset which contains the chi-square statistics
-																 (default value: tmp)
+													<dd>byVarCatLevels - The levels of the categorical <code>byVar</code> such as Yes No or Female Male
+																 (default value: _NULL_)
 															</dd>
-													<dd>order - The order in which to display the variables in the <code>outFreq</code> dataset
-																 (default value: freq)
-															</dd>
-													<dd>testOpt - Options to pass to the tables <code>chisq</code> command
-															</dd>
-													<dd>where - To subset the data before analyzing the variables
-															</dd>
-													<dd>by - To run the analysis separately by categories of the by variable
+													<dd>outds - Optional as the output dataset will be named after the <code>means</code> dataset
+																 (default value: _NULL_)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Prints the frequencies and chi-square statistic results by default. Will output datasets if specified.</dd>
+						<dd>Outputs a dataset with the merged means and p-values for differences between groups</dd>
 									</dl>
 			</dd>
 		</dl>
@@ -161,6 +166,7 @@ Chi-Square Statistical Analysis.
 										
 											<li><a href="#summary_macro">MACRO</a></li>	
 										
+											<li><a href="#summary_macro_call">MACRO CALL</a></li>	
 									</ul>
 			</td>
 		</tr>
