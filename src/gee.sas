@@ -209,6 +209,12 @@
         set est1-est&count;
     data &outCore;
         set estCore1-estCore&count;
+        
+        * To make it easier to see significant associations;
+        if p < 0.05 then sig = '*';
+        else sig = '';
+        if Estimate < 0 then dir = "neg";
+        else if Estimate > 0 then dir = "pos";
     run;
     proc print data=&outCore;
     run;
