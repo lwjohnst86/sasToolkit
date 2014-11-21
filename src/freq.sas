@@ -39,9 +39,10 @@
 %macro freq(vars, dsn=&ds, by=, where=, outds=_NULL_);
 
     * Send comments to log;
-    %put 
+    %put ;
     %put Analyzing frequencies of &vars.. ;
-    %put Variables come from the dataset &dsn.. ;
+    %put Variables come from the dataset `&dsn.`. ;
+    %put ;
 
     * Suppress output to Listings;
     ods listing close;
@@ -58,7 +59,7 @@
     run;
 
     data &outds (rename=(Table = Variable));
-        length Categories $ 45.;
+        length Categories $ 18.;
         set &outds;
         by Table;
         
@@ -69,12 +70,11 @@
             if &i. ne '' then Categories = &i.;
         ));
 
-        * If a by variable is not specified;
-        %if &by = %then %do;
+        * Keep the `by` variable if it is present;
+        %if %length(&by) = 0 %then %do;
             keep Table Categories nPerc CumFrequency;
             %end;
-        * If a by variable is included;
-        %else %if &by ne %then %do;
+        %else %if %length(&by) ne 0 %then %do;
             keep &by Table Categories nPerc CumFrequency;
             %end;
     run;
@@ -83,10 +83,7 @@
     * Send descriptive info to the Listings;
     title1 'Frequencies of the following variables from the &dsn dataset:';
     title2 '&vars';
-    proc print;
+    proc print data=&outds;
     run;
-
-    * Clear all titles from subsequent output;
-    title;
 
     %mend freq;
