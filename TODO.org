@@ -1,14 +1,21 @@
 * TASK LIST
 
-*** TODO Start adding pandoc syntax to files.
-    SCHEDULED: <2014-10-30 Thu>
+*** DONE Start adding pandoc syntax to files.
+    CLOSED: [2014-11-05 Wed 16:00] SCHEDULED: <2014-10-30 Thu>
     :PROPERTIES:
     :ID:       27648140-a84c-4fac-b5e2-f712664c2be5
     :END:
     I need to figure out how to move combine DocItOut with md syntax
 
-*** TODO Move one macro from macros.sas into its own file
-    DEADLINE: <2014-10-25 Sat +3d>
+*** DONE Move one macro from macros.sas into its own file
+    CLOSED: [2014-11-21 Fri 17:59]
+    - State "DONE"       from "TODO"       [2014-11-21 Fri 17:59]
+    - State "DONE"       from "TODO"       [2014-11-10 Mon 13:11]
+    - State "DONE"       from "TODO"       [2014-11-10 Mon 13:11]
+    - State "DONE"       from "TODO"       [2014-11-05 Wed 16:06]
+    - State "DONE"       from "TODO"       [2014-11-05 Wed 16:05]
+    - State "DONE"       from "TODO"       [2014-11-05 Wed 16:05]
+    - State "DONE"       from "TODO"       [2014-11-05 Wed 16:03]
     - State "DONE"       from "TODO"       [2014-10-26 Sun 19:39]
     - State "DONE"       from "TODO"       [2014-10-26 Sun 13:53]
     - State "DONE"       from "TODO"       [2014-10-22 Wed 21:23]
@@ -17,14 +24,15 @@
     - State "DONE"       from "TODO"       [2014-10-08 Wed 13:32]
     :PROPERTIES:
     :ID:       34700dca-91ca-4a8d-bcab-47abb98707c8
-    :LAST_REPEAT: [2014-10-26 Sun 19:39]
+    :LAST_REPEAT: [2014-11-21 Fri 17:59]
     :END:
 
-*** TODO Use StatRep pacakge for making pdf files of doc
-    SCHEDULED: <2014-11-25 Tue>
+*** DONE Use StatRep pacakge for making pdf files of doc
+    CLOSED: [2014-11-21 Fri 17:59] SCHEDULED: <2014-11-25 Tue>
     :PROPERTIES:
     :ID:       8f6c4fe2-83cc-4158-8158-2bd9741b9cd1
     :END:
+    Didn't end up using StatRep, used a "hack" with DocItOut and pandoc
 
 *** DONE Update the README
     CLOSED: [2014-10-05 Sun 19:21]
@@ -43,14 +51,18 @@
     :ID:       3d8d20be-8c02-4b96-911e-3d6d3bc3bdc4
     :END:
 
-*** TODO Create tool to convert SAS comments into md or pdf
-    DEADLINE: <2014-10-23 Thu +1w -1d>
+*** DONE Create tool to convert SAS comments into md or pdf
+    CLOSED: [2014-11-21 Fri 18:00]
+    - State "DONE"       from "TODO"       [2014-11-21 Fri 18:00]
+    - State "DONE"       from "TODO"       [2014-11-10 Mon 13:21]
+    - State "DONE"       from "TODO"       [2014-11-05 Wed 16:04]
+    - State "DONE"       from "TODO"       [2014-11-05 Wed 16:02]
     :PROPERTIES:
     :ID:       b2e0ecc8-222a-43bd-9310-052922498a52
+    :LAST_REPEAT: [2014-11-21 Fri 18:00]
     :END:
     It will need to also run through several files in
-    the macro directory. Include a TOC. Use StatRep.
-    - [ ] Test out StatRep on one macro.
+    the macro directory. Include a TOC. Didn't end up using StatRep.
 
 *** DONE Develop a version numbering system
     CLOSED: [2014-10-05 Sun 19:23]
