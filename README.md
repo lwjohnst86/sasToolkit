@@ -60,7 +60,7 @@ Table: Description of what each version number (in order) means in the
 versioning system.
 
 | Number               | Meaning                       |
-|----------------------+-------------------------------|
+|----------------------|-------------------------------|
 | First (eg. 1.0.0.0)  | Major changes. Incompatible   |
 |                      | with previous versions.       |
 |                      |                               |
@@ -139,7 +139,7 @@ quicker to type of formatted documentation, use the table below for
 using "quick tags" that can be converted later.
 
 | Quick tag                                 | Converted html tag    | Detail             |
-|-------------------------------------------+-----------------------+--------------------|
+|-------------------------------------------|-----------------------|--------------------|
 | {{{                                       | <code>                | Start a code block |
 | }}}                                       | </code>               | End code block     |
 | {{word}}                                  | \<code\>word\</code\> | Code font          |

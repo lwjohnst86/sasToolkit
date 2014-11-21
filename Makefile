@@ -61,9 +61,11 @@ commands :
 pdf_doc : $(PDF_DOC)
 
 ## readme   : Generate the README pdf file.
-readme : .metadata.yaml README.pdf
-	cat $< | sed 's/-+-/-|-/g' | \
-	pandoc --highlight-style=tango -o README.pdf
+readme : 
+	@sed -i 's/-+-/-|-/g' README.md
+	@pandoc .metadata.yaml README.md \
+		--highlight-style=tango \
+		-o README.pdf
 
 ## clean    : Remove extraneous files (html docs)
 clean :
