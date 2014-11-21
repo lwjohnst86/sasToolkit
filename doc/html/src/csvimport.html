@@ -46,9 +46,9 @@
 <div class="hr"></div>
 
 <h2>root</h2>
-<h1>anova</h1>
+<h1>csvimport</h1>
 
-Analysis of Variance (ANOVA)
+Import csv data files
 
 
 	<dl>
@@ -58,7 +58,7 @@ Analysis of Variance (ANOVA)
 							<dd>Luke W. Johnston</dd>
 						
 					<dt><br><b>Created:</b></dt>
-			<dd>2014-10-28</dd>
+			<dd>2014-11-21 (updated)</dd>
 			</dl>
 
 <br>
@@ -76,8 +76,8 @@ Analysis of Variance (ANOVA)
 					
 			<tr valign="top">
 				<td>
-					<code><b><a href="#macro1">anova ( dsn= , category= , numerical= , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</a></b></code>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analysis of Variance (ANOVA) loop <p> Runs an ANOVA, using a loop for multiple variables, and prints out the pertinent information.
+					<code><b><a href="#macro1">csvimport ( dataset= , outds=&dataset , dir=../data )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Import comma separated value files into the SAS workspace.
 				</td>
 			</tr>
 		
@@ -97,40 +97,25 @@ Analysis of Variance (ANOVA)
 				
 		<a name="macro1"></a>
 
-		<h3>anova</h3>
-		<pre>%macro <b>anova ( dsn= , category= , numerical= , adjust=tukey , by= , where= , outds=_NULL_ , outpdiff=_NULL_ , dcovar= , ccovar= )</b>;</pre>
+		<h3>csvimport</h3>
+		<pre>%macro <b>csvimport ( dataset= , outds=&dataset , dir=../data )</b>;</pre>
 		<dl>
-			<dd>Analysis of Variance (ANOVA) loop <p> Runs an ANOVA, using a loop for multiple variables, and prints out the pertinent information. An Analysis of Covariance (ANCOVA) can also be run if the <code>dcovar</code> or <code>ccovar</code> arguments are specified. <p> <b>Examples:</b><br></dd>
+			<dd>Import comma separated value files into the SAS workspace. <p> Imports a non-compressed csv (comma separated values) dataset and puts it in the SAS workspace (outds). <p> <b>Examples:</b><br> <code> %csvimport(testdata, outds=working, dir=./data); </code></dd>
 			<dd>
 				<dl>
 											<dt><br><b>Parameters:</b></dt>
 							
-													<dd>dsn - The dataset that contains the variables. This argument is positional and needs to be the first argument
+													<dd>dataset - The name of the dataset file to import, <b>WITHOUT</b> the file extension (csv; for example a file called testdata.csv, the dataset name would be testdata). Is a positional argument and must come first
 															</dd>
-													<dd>category - The discrete/categorical variable (for example, Sex - "M"/"F"
+													<dd>outds - The name of the output dataset as it will be referenced by SAS in <code>proc</code> or <code>data</code> statements
+																 (default value: &dataset)
 															</dd>
-													<dd>numerical - The continuous variable (for example, weight)
-															</dd>
-													<dd>adjust - Post-hoc test (including <code>tukey</code>, <code>bon</code>)
-																 (default value: tukey)
-															</dd>
-													<dd>by - The by variable to split the analysis based on the <code>by</code> argument variable
-															</dd>
-													<dd>where - Argument to subset the dataset by before the analysis
-															</dd>
-													<dd>outds - The main output dataset, if specified
-																 (default value: _NULL_)
-															</dd>
-													<dd>outpdiff - The output dataset that contains the post-hoc p-values between the categories of the discrete variable (<code>category</code> argument)
-																 (default value: _NULL_)
-															</dd>
-													<dd>dcovar - The discrete covariate to adjust for
-															</dd>
-													<dd>ccovar - The continuous covariate to adjust for
+													<dd>dir - The location (file path) of the input dataset, for example ./data or /home/users/research/data
+																 (default value: ../data)
 															</dd>
 																
 											<dt><br><b>Returns:</b></dt>
-						<dd>Prints the results of the analysis, including the post-hoc test.</dd>
+						<dd>Imports a SAS work dataset into the workspace.</dd>
 									</dl>
 			</dd>
 		</dl>

@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Macros Autocall</title>
+<link rel="stylesheet" type="text/css" href="../docitout.css" title="Style">
+</head>
+<body><div class="hr"></div>
+
+<ul class="menu">
+
+	<li><a href="../docitout-project-summary.html">Overview</a></li>	
+	<li><a href="docitout-directory-summary.html">Directory</a></li>	
+	<li class="menuSelected">File</li>	
+	<li><a href="../docitout-help.html">Help</a></li>	
+
+</ul>
+	
+	<table cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td style="font-size: 90%" align="right" wrap>SUMMARY :</td>
+			<td>
+				<ul class="submenu">
+								
+										
+										
+											<li><a href="#summary_macro">MACRO</a></li>	
+										
+									</ul>
+			</td>
+		</tr>
+		<tr>
+			<td style="font-size: 90%" align="right" wrap>DETAIL :</td>
+			<td>
+				<ul class="submenu">			
+										
+										
+										
+											<li><a href="#detail_macro">MACRO</a></li>	
+									</ul>
+			</td>
+		</tr>
+	</table>
+
+<div class="hr"></div>
+
+<h2>root</h2>
+<h1>beta_glm</h1>
+
+Simple or multiple linear regression
+
+
+	<dl>
+	
+				<dt><br><b>Author:</b></dt>
+	
+							<dd>Luke W. Johnston</dd>
+						
+					<dt><br><b>Created:</b></dt>
+			<dd>2014-11-04</dd>
+			</dl>
+
+<br>
+
+
+
+
+	
+	<br><a name="summary_macro"></a>
+	<table class="gtbl" cellpadding="0" cellspacing="0">
+		<tr>
+			<th colspan="2">Macro Summary</th>
+		</tr>
+
+					
+			<tr valign="top">
+				<td>
+					<code><b><a href="#macro1">beta_glm ( dsn= , y= , x= , dcovar= , ccovar= , interactvar= , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 , by= )</a></b></code>
+					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Multiple (or simple) linear regression for predicting the outcome based on the exposures.
+				</td>
+			</tr>
+		
+	</table>
+
+
+
+
+
+	<br><a name="detail_macro"></a>
+	<table class="gtbl" cellpadding="0" cellspacing="0">
+		<tr>
+			<th colspan="2">Macro Detail</th>
+		</tr>
+	</table>
+	
+				
+		<a name="macro1"></a>
+
+		<h3>beta_glm</h3>
+		<pre>%macro <b>beta_glm ( dsn= , y= , x= , dcovar= , ccovar= , interactvar= , outall=_NULL_ , outcore=_NULL_ , outObs=_NULL_ , outRSq=_NULL_ , outResid=tmp , sigDigits=0.01 , by= )</b>;</pre>
+		<dl>
+			<dd>Multiple (or simple) linear regression for predicting the outcome based on the exposures. <p> Runs linear regression, sending the results into output datasets that can be used in LaTeX as tables.  In this macro, there are two loops going on.  This allows any number of exposures and outcomes to be specified in the macro, running regressions on each outcome with each exposure.  This is allows the code to be cleaner, leaner, more efficient, and more maintainable. <p> The loops work in a combinatoric fashion, starting with the <code>y</code>, or dependent variable, then going through each of the <code>x</code> variables.  For instance, I want to run a regression on BMI and dietary fat with insulin resistance and blood lipids.  The <code>y</code> variable would have insulin resistance and blood lipids, while the <code>x</code> would have BMI and dietary fat.  The macro would run insulin resistance with BMI, then insulin resistance with dietary fat, then blood lipids and BMI and so on. <p> All output datasets are optional as each of the dataset variables are set to _NULL_.  The results datasets that can be output are the beta and standard error (plus p-value), the <code>$R^2$</code>, and the sample size. <p> Each variable, except for the dataset variables, can have multiple variables included, each separated by a space, <b>not</b> a comma. <p> As a reminder (for using the below variables), the linear regression equation is: $$y = B_0 + B_1 x_1 + ... + B_n x_n + e$$ <p> <b>Examples:</b> <p> <pre><code> %beta_glm(sashelp.fish, y = Weight, x = Length1 Width, dcovar = Species, outcore = regressionResults); proc print data=regressionResults; run; </code></pre></dd>
+			<dd>
+				<dl>
+											<dt><br><b>Parameters:</b></dt>
+							
+													<dd>dsn - The dataset that contains the variables.  This arg is positional and so needs to come first
+															</dd>
+													<dd>y - The outcome or dependent variable; this arg is positional and comes second.  If more than one variable is included, the macro will loop through each variable
+															</dd>
+													<dd>x - The exposure or independent variable; this arg is positional and comes third.  If more than one variable is included, the macro will loop through each variable
+															</dd>
+													<dd>dcovar - The discrete covariates
+															</dd>
+													<dd>ccovar - The continuous covariates
+															</dd>
+													<dd>interactvar - The interaction variable (if of interest)
+															</dd>
+													<dd>outall - Outputs the beta estimates for all the variables in the linear regression model, including the covariates
+																 (default value: _NULL_)
+															</dd>
+													<dd>outcore - Outputs only the beta estimates
+																 (default value: _NULL_)
+															</dd>
+													<dd>outObs - Outputs the observations read and used
+																 (default value: _NULL_)
+															</dd>
+													<dd>outRSq - Outputs the R-squared
+																 (default value: _NULL_)
+															</dd>
+													<dd>outResid - Outputs the regression residuals
+																 (default value: tmp)
+															</dd>
+													<dd>sigDigits - Specify the number of significant digits for the output datasets
+																 (default value: 0.01)
+															</dd>
+													<dd>by - Variable to run the analysis on individually (for example, to run a regression on each Sex)
+															</dd>
+																
+											<dt><br><b>Returns:</b></dt>
+						<dd>Prints the regression model beta estimates, the observations used, as well as the R-squared</dd>
+									</dl>
+			</dd>
+		</dl>
+
+			
+
+
+
+<br><br>
+
+<div class="hr"></div>
+
+<ul class="menu">
+
+	<li><a href="../docitout-project-summary.html">Overview</a></li>	
+	<li><a href="docitout-directory-summary.html">Directory</a></li>	
+	<li class="menuSelected">File</li>	
+	<li><a href="../docitout-help.html">Help</a></li>	
+
+</ul>
+	
+	<table cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td style="font-size: 90%" align="right" wrap>SUMMARY :</td>
+			<td>
+				<ul class="submenu">
+								
+										
+										
+											<li><a href="#summary_macro">MACRO</a></li>	
+										
+									</ul>
+			</td>
+		</tr>
+		<tr>
+			<td style="font-size: 90%" align="right" wrap>DETAIL :</td>
+			<td>
+				<ul class="submenu">			
+										
+										
+										
+											<li><a href="#detail_macro">MACRO</a></li>	
+									</ul>
+			</td>
+		</tr>
+	</table>
+
+<div class="hr"></div>
+
+<table width="100%">
+	<tr valign="top">
+		<td align="left" width="50%">Last updated on November 21, 2014</td>
+		<td align="right" width="50%">
+			Powered by 
+			<a href="http://choonchernlim.com/docitout/" target="_blank">
+				<img src="../logo.png" align="top" border="0">
+			</a>
+		</td>
+	</tr>
+</table></body>
+</html>
