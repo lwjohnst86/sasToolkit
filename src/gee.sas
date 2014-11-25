@@ -89,7 +89,7 @@
     */
 %macro gee(dsn, x=, y=, time=, subject=, ccovar=, dcovar=,
     dist=normal, link=identity, wcorr=exch, sigDigits=0.001,
-    outAll=_NULL_, outCore=tmp, outObs=tmp);
+    outAll=_NULL_, outCore=tmp, outObs=tmp) / minoperator;
 
     * Keep these variables inside the macro;
     %local i j count;
@@ -105,12 +105,19 @@
     %put The GEE is conditioned on/adjusted for &ccovar (continuous) ;
     %put %str(     )and &dcovar (discrete);
 
+    * Assign baseline options that will be modified by distribution type;
+    %let options = ;
+    %let d_yvar = ;
+    %let estimate_risk = ;
+   
     * Start the counter, which will be used to merge all the ;
     * looped datasets;
     %let count = 0;
     %do i = 1 %to %sysfunc(countw(&y));
         * Extract one y from the list of y variables given;
         %let yvar = %scan(&y, &i);
+
+        
         %do j = 1 %to %sysfunc(countw(&x));
             * Add to the counter variable;
             %let count = %eval(&count + 1);
@@ -120,18 +127,26 @@
             * Put information out into the log;
             %put %str(*) Running GEE on &yvar and &xvar;
 
+            * Assign options to GEE model based on selected distribution type;
+            %if &dist in (bin binomial b) %then %do;
+                %let options = descend;
+                %let d_yvar = &yvar;
+                %let estimate_risk = %str(estimate 'beta' &xvar 1 / exp);
+                %put %str(  )* The estimate is: &estimate_risk;
+                %end;
+
             * Suppress output to the lst file/output log;
             ods listing close;
 
             * Start the GEE proc;
-            proc genmod data=&dsn;
-                class &subject &dcovar;
+            proc genmod data=&dsn &options;
+                class &subject &d_yvar &dcovar;
                 model &yvar = &xvar &time &ccovar &dcovar /
                     dist=&dist link=&link;
-                * It is the repeated statement here that allows for GEE;
-                * Type is the working correlation matrix to use;
-                repeated subject = &subject / type = &wcorr covb corrw;
+                repeated subject = &subject / type = &wcorr covb;
+                &estimate_risk;
                 ods output GEEModInfo = info GEERCov = covMat
+                    GEEFitCriteria = fit
                     ConvergenceStatus = converge GEEEmpPEst = est&count
                     NObs = obs&count;
                 * I currently only will output the exchangeable working;
@@ -139,9 +154,14 @@
                 %if &wcorr = exch %then %do;
                     ods output GEEExchCorr = exchCorr;
                     %end;
+
+                * Output OR or RR estimates from bin distributions;
+                %if &dist in (binomial bin b) %then %do;
+                    ods output Estimates = Risk;
+                    %end;
             run;
 
-            * Output to the lst file/output log;
+                       * Output to the lst file/output log;
             ods listing;
             
             * Print relevant information on the GEE analysis;
@@ -149,7 +169,10 @@
             title2 "Y = &yvar, x = &xvar, covariates = &dcovar &ccovar";
             title3 "Time = &time";
             proc print data=info;
-            proc print data=converge;
+            proc print data=fit;
+            proc sql;
+                select Reason from converge
+                    where Reason not like '%converge%';
             proc print data=covMat;
             run;
 
@@ -162,8 +185,8 @@
 
             * Massage the output results into a prettier format;
             data est&count;
-                length Independent $ 45. Dependent $ 45.;
-                length estSE $ 43. estCL $ 45. Parm $ 45.;
+                length Independent $ 35. Dependent $ 35.;
+                length estSE $ 30. estCL $ 30. Parm $ 30.;
                 set est&count;
                 format ProbZ pvalue8.3;
                 * Input the y and x into the dataset for documenting;
@@ -181,18 +204,39 @@
                 rename ProbZ = p;
             run;
 
-            * Subset the estimate dataset to contain only the variables;
-            * of interest;
+            * Subset the estimate (+risk) dataset to contain only the ;
+            * variables of interest;
             data estCore&count (drop=Parm);
                 set est&count;
                 if Parm = "&xvar" then output;
                 else delete;
             run;
 
+            * Wrangle and prettify the output data dependent on the ;
+            * distribution type;
+            %if &dist in (binomial bin b) %then %do;
+                data Risk;
+                    set Risk (keep=Label LBetaEstimate LBetaLowerCL
+                        LBetaUpperCL rename=(LBetaEstimate=riskEst
+                        LBetaLowerCL=riskLowCL LBetaUpperCL=riskUpCL));
+                    riskCL = trim(round(riskEst, &sigDigits.))||' ('||
+                        strip(round(riskLowCL, &sigDigits.))||' to '||
+                        strip(round(riskUpCL, &sigDigits.))||')';
+                    if Label = "Exp(beta)" then output;
+                    else delete;
+                run;
+
+                * Merge in the risk data with the Core ds;
+                data estCore&count (drop=Label);
+                    set estCore&count;
+                    set Risk;
+                run;
+                %end;
+
             * Massage the observation output data to a simpler format;
             data obs&count;
-                length Independent $ 45. Dependent $ 45.;
-                set obs&count (keep=NObsRead NObsUsed NMiss);
+                length Independent $ 35. Dependent $ 35.;
+                set obs&count (keep=NObsRead NObsUsed);
                 * Keep only the first line;
                 by NObsRead;
                 Independent = "&xvar";
@@ -216,12 +260,14 @@
         if Estimate < 0 then dir = "neg";
         else if Estimate > 0 then dir = "pos";
     run;
+
     proc print data=&outCore;
     run;
 
     data &outObs;
         set obs1-obs&count;
     run;
+
     proc print data=&outObs;
     run;
 
